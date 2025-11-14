@@ -181,8 +181,8 @@ export default function PreCutPage() {
                 {/* Angular card wrapper */}
                 <div className="relative">
                   {/* Top left corner accent */}
-                  <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-infrared"></div>
-                  <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-infrared"></div>
+                  <div className="absolute -top-2 -left-2 w-8 h-8 border-l-2 border-t-2 border-infrared"></div>
+                  <div className="absolute -bottom-2 -right-2 w-8 h-8 border-r-2 border-b-2 border-infrared"></div>
 
                   <div className="bg-radar-grey border border-radar-grey-dark p-8 sm:p-12 relative">
                     <div className="absolute top-0 right-0 text-infrared text-xs font-heading opacity-30 p-4">
@@ -250,8 +250,8 @@ export default function PreCutPage() {
             {currentStep === 2 && vehicleData && (
               <div ref={step2Ref} className="max-w-3xl mx-auto">
                 <div className="relative">
-                  <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-infrared"></div>
-                  <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-infrared"></div>
+                  <div className="absolute -top-2 -left-2 w-8 h-8 border-l-2 border-t-2 border-infrared"></div>
+                  <div className="absolute -bottom-2 -right-2 w-8 h-8 border-r-2 border-b-2 border-infrared"></div>
 
                   <div className="bg-radar-grey border border-radar-grey-dark p-8 sm:p-12">
                     <div className="absolute top-0 right-0 text-infrared text-xs font-heading opacity-30 p-4">
@@ -339,8 +339,8 @@ export default function PreCutPage() {
                         {/* Angular corners */}
                         {selectedCoverage?.id === option.id && (
                           <>
-                            <div className="absolute -top-0.5 sm:-top-1 -left-0.5 sm:-left-1 w-4 h-4 sm:w-6 sm:h-6 border-l-2 border-t-2 border-infrared"></div>
-                            <div className="absolute -bottom-0.5 sm:-bottom-1 -right-0.5 sm:-right-1 w-4 h-4 sm:w-6 sm:h-6 border-r-2 border-b-2 border-infrared"></div>
+                            <div className="absolute -top-1 sm:-top-2 -left-1 sm:-left-2 w-4 h-4 sm:w-6 sm:h-6 border-l-2 border-t-2 border-infrared"></div>
+                            <div className="absolute -bottom-1 sm:-bottom-2 -right-1 sm:-right-2 w-4 h-4 sm:w-6 sm:h-6 border-r-2 border-b-2 border-infrared"></div>
                           </>
                         )}
 
@@ -416,8 +416,8 @@ export default function PreCutPage() {
                         >
                           {selectedMaterial?.id === material.id && (
                             <>
-                              <div className="absolute -top-1 -left-1 w-6 h-6 border-l-2 border-t-2 border-infrared"></div>
-                              <div className="absolute -bottom-1 -right-1 w-6 h-6 border-r-2 border-b-2 border-infrared"></div>
+                              <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared"></div>
+                              <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared"></div>
                             </>
                           )}
 
@@ -472,8 +472,8 @@ export default function PreCutPage() {
             {currentStep === 4 && vehicleData && selectedCoverage && selectedMaterial && (
               <div ref={step4Ref} className="max-w-4xl mx-auto">
                 <div className="relative">
-                  <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-infrared"></div>
-                  <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-infrared"></div>
+                  <div className="absolute -top-2 -left-2 w-8 h-8 border-l-2 border-t-2 border-infrared"></div>
+                  <div className="absolute -bottom-2 -right-2 w-8 h-8 border-r-2 border-b-2 border-infrared"></div>
 
                   <div className="bg-radar-grey border border-radar-grey-dark p-8 sm:p-12">
                     <div className="absolute top-0 right-0 text-infrared text-xs font-heading opacity-30 p-4">

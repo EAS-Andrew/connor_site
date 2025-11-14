@@ -214,10 +214,10 @@ export default function FAQPage() {
             <div className="max-w-3xl mx-auto">
               <div className="relative bg-radar-grey border-2 border-infrared/30 p-8 sm:p-12">
                 {/* Corner accents */}
-                <div className="absolute -top-1 -left-1 w-8 h-8 border-l-2 border-t-2 border-infrared"></div>
-                <div className="absolute -top-1 -right-1 w-8 h-8 border-r-2 border-t-2 border-infrared"></div>
-                <div className="absolute -bottom-1 -left-1 w-8 h-8 border-l-2 border-b-2 border-infrared"></div>
-                <div className="absolute -bottom-1 -right-1 w-8 h-8 border-r-2 border-b-2 border-infrared"></div>
+                <div className="absolute -top-2 -left-2 w-8 h-8 border-l-2 border-t-2 border-infrared"></div>
+                <div className="absolute -top-2 -right-2 w-8 h-8 border-r-2 border-t-2 border-infrared"></div>
+                <div className="absolute -bottom-2 -left-2 w-8 h-8 border-l-2 border-b-2 border-infrared"></div>
+                <div className="absolute -bottom-2 -right-2 w-8 h-8 border-r-2 border-b-2 border-infrared"></div>
 
                 <div className="text-center">
                   <div className="mb-4">

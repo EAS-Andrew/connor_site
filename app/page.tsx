@@ -89,11 +89,11 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Capability 01 */}
-              <div className="relative group">
-                <div className="absolute -top-1 -left-1 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
+                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-                <Card className="h-full">
+                <Card className="h-full group-hover:scale-100">
                   <div className="text-center">
                     <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-4">
                       CAPABILITY_01
@@ -113,11 +113,11 @@ export default function Home() {
               </div>
 
               {/* Capability 02 */}
-              <div className="relative group">
-                <div className="absolute -top-1 -left-1 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
+                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-                <Card className="h-full">
+                <Card className="h-full group-hover:scale-100">
                   <div className="text-center">
                     <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-4">
                       CAPABILITY_02
@@ -137,11 +137,11 @@ export default function Home() {
               </div>
 
               {/* Capability 03 */}
-              <div className="relative group">
-                <div className="absolute -top-1 -left-1 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
+                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-                <Card className="h-full">
+                <Card className="h-full group-hover:scale-100">
                   <div className="text-center">
                     <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-4">
                       CAPABILITY_03
@@ -193,11 +193,11 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               {/* System Alpha */}
-              <div className="relative">
+              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
                 <div className="absolute -top-2 -left-2 w-8 h-8 border-l-2 border-t-2 border-infrared"></div>
                 <div className="absolute -bottom-2 -right-2 w-8 h-8 border-r-2 border-b-2 border-infrared"></div>
 
-                <Card className="flex flex-col h-full">
+                <Card className="flex flex-col h-full group-hover:scale-100">
                   <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-3">
                     SYSTEM_ALPHA
                   </div>
@@ -240,11 +240,11 @@ export default function Home() {
               </div>
 
               {/* System Bravo */}
-              <div className="relative">
+              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
                 <div className="absolute -top-2 -left-2 w-8 h-8 border-l-2 border-t-2 border-radar-grey-dark"></div>
                 <div className="absolute -bottom-2 -right-2 w-8 h-8 border-r-2 border-b-2 border-radar-grey-dark"></div>
 
-                <Card className="flex flex-col h-full opacity-75">
+                <Card className="flex flex-col h-full opacity-75 group-hover:scale-100">
                   <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-3">
                     SYSTEM_BRAVO
                   </div>
@@ -300,10 +300,10 @@ export default function Home() {
           <div className="max-w-4xl mx-auto">
             {/* Tactical frame */}
             <div className="relative border-2 border-radar-grey-dark p-8 sm:p-12">
-              <div className="absolute -top-1 -left-1 w-8 h-8 border-l-2 border-t-2 border-infrared"></div>
-              <div className="absolute -top-1 -right-1 w-8 h-8 border-r-2 border-t-2 border-infrared"></div>
-              <div className="absolute -bottom-1 -left-1 w-8 h-8 border-l-2 border-b-2 border-infrared"></div>
-              <div className="absolute -bottom-1 -right-1 w-8 h-8 border-r-2 border-b-2 border-infrared"></div>
+              <div className="absolute -top-2 -left-2 w-8 h-8 border-l-2 border-t-2 border-infrared"></div>
+              <div className="absolute -top-2 -right-2 w-8 h-8 border-r-2 border-t-2 border-infrared"></div>
+              <div className="absolute -bottom-2 -left-2 w-8 h-8 border-l-2 border-b-2 border-infrared"></div>
+              <div className="absolute -bottom-2 -right-2 w-8 h-8 border-r-2 border-b-2 border-infrared"></div>
 
               <div className="text-center">
                 <div className="mb-4">
