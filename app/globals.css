@@ -1,26 +1,96 @@
 @import "tailwindcss";
 
+/* StealthShield Brand Colors */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --stealth-black: #0A0A0A;
+  --stealth-black-light: #1A1A1A;
+  --radar-grey: #2B2B2D;
+  --radar-grey-light: #8B8B8D;
+  /* Lighter grey for readable subtext */
+  --radar-grey-dark: #0F0F0F;
+  --ghost-white: #F3F3F3;
+  --infrared: #D6422F;
+  --infrared-dark: #B8361F;
+  --infrared-light: #E65A42;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Brand Colors */
+  --color-stealth-black: var(--stealth-black);
+  --color-stealth-black-light: var(--stealth-black-light);
+  --color-radar-grey: var(--radar-grey);
+  --color-radar-grey-light: var(--radar-grey-light);
+  --color-radar-grey-dark: var(--radar-grey-dark);
+  --color-ghost-white: var(--ghost-white);
+  --color-infrared: var(--infrared);
+  --color-infrared-dark: var(--infrared-dark);
+  --color-infrared-light: var(--infrared-light);
+
+  /* Semantic Colors */
+  --color-background: var(--stealth-black);
+  --color-foreground: var(--ghost-white);
+  --color-muted: var(--radar-grey-light);
+  /* For readable secondary text */
+  --color-card: var(--radar-grey);
+  --color-accent: var(--infrared);
+  --color-border: var(--radar-grey-dark);
+
+  /* Typography */
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-sora);
+
+  /* Spacing - Angular/Wide Spacing */
+  --spacing-section: 6rem;
+  --spacing-card: 2rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-sora), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(45deg);
+  }
+
+  to {
+    transform: rotate(405deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
 }

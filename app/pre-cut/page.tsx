@@ -1,0 +1,573 @@
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
+import { PageLayout, Button } from '@/components';
+import { lookupVehicleByRegistration, coverageOptions, materialOptions, VehicleData, CoverageOption, MaterialOption } from '@/lib/api';
+
+type Step = 1 | 2 | 3 | 4;
+
+export default function PreCutPage() {
+  const [currentStep, setCurrentStep] = useState<Step>(1);
+  const [registration, setRegistration] = useState('');
+  const [vehicleData, setVehicleData] = useState<VehicleData | null>(null);
+  const [selectedCoverage, setSelectedCoverage] = useState<CoverageOption | null>(null);
+  const [selectedMaterial, setSelectedMaterial] = useState<MaterialOption | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  // Refs for each step section
+  const step1Ref = useRef<HTMLDivElement>(null);
+  const step2Ref = useRef<HTMLDivElement>(null);
+  const step3Ref = useRef<HTMLDivElement>(null);
+  const step4Ref = useRef<HTMLDivElement>(null);
+  const materialSectionRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to step when it changes
+  useEffect(() => {
+    const refs = [step1Ref, step2Ref, step3Ref, step4Ref];
+    const targetRef = refs[currentStep - 1];
+
+    if (targetRef.current) {
+      setTimeout(() => {
+        targetRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }, 100);
+    }
+  }, [currentStep]);
+
+  const steps = [
+    { label: 'SCAN', desc: 'Vehicle ID' },
+    { label: 'VERIFY', desc: 'Specifications' },
+    { label: 'CONFIGURE', desc: 'Protection' },
+    { label: 'DEPLOY', desc: 'Mission Brief' }
+  ];
+
+  const handleRegistrationSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    try {
+      const data = await lookupVehicleByRegistration(registration);
+      if (data) {
+        setVehicleData(data);
+        setCurrentStep(2);
+      } else {
+        setError('VEHICLE NOT FOUND');
+      }
+    } catch {
+      setError('SYSTEM ERROR');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleVehicleConfirm = () => {
+    setCurrentStep(3);
+  };
+
+  const handleCoverageSelect = (coverage: CoverageOption) => {
+    setSelectedCoverage(coverage);
+    // Scroll to material section after coverage is selected
+    setTimeout(() => {
+      materialSectionRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+    }, 300);
+  };
+
+  const handleMaterialSelect = (material: MaterialOption) => {
+    setSelectedMaterial(material);
+  };
+
+  const handleProceedToReview = () => {
+    if (selectedCoverage && selectedMaterial) {
+      setCurrentStep(4);
+    }
+  };
+
+  const handleBack = () => {
+    if (currentStep > 1) {
+      setCurrentStep((currentStep - 1) as Step);
+    }
+  };
+
+  return (
+    <PageLayout>
+      {/* Angular top accent */}
+      <div className="absolute top-20 left-0 right-0 h-px bg-gradient-to-r from-transparent via-infrared to-transparent"></div>
+
+      <div className="min-h-screen py-12 sm:py-16 relative">
+        {/* Background angular grid */}
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none overflow-hidden">
+          <div className="absolute top-0 left-1/4 w-48 h-48 md:w-96 md:h-96 border border-ghost-white transform rotate-45"></div>
+          <div className="absolute bottom-0 right-1/4 w-48 h-48 md:w-96 md:h-96 border border-ghost-white transform -rotate-12"></div>
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="max-w-6xl mx-auto">
+
+            {/* Header */}
+            <div className="text-center mb-8 sm:mb-12 px-4">
+              <div className="inline-block mb-4">
+                <div className="h-px w-8 sm:w-12 bg-infrared mb-3 sm:mb-4 mx-auto"></div>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading text-ghost-white tracking-wider">
+                  MISSION CONTROL
+                </h1>
+                <div className="h-px w-8 sm:w-12 bg-infrared mt-3 sm:mt-4 mx-auto"></div>
+              </div>
+              <p className="text-radar-grey-light uppercase text-xs sm:text-sm tracking-widest">
+                Precision Kit Configuration System
+              </p>
+            </div>
+
+            {/* Tactical Progress System */}
+            <div className="max-w-4xl mx-auto mb-8 sm:mb-12 md:mb-16 px-4">
+              {/* Progress bar */}
+              <div className="relative h-1 bg-radar-grey-dark mb-4 sm:mb-6 md:mb-8">
+                <div
+                  className="absolute top-0 left-0 h-full bg-infrared transition-all duration-500"
+                  style={{ width: `${(currentStep / steps.length) * 100}%` }}
+                ></div>
+                {/* Angular accent at current position */}
+                <div
+                  className="absolute w-2 h-2 bg-infrared transition-all duration-500"
+                  style={{
+                    left: `${(currentStep / steps.length) * 100}%`,
+                    top: '50%',
+                    transform: 'translateX(-50%) translateY(-50%) rotate(45deg)'
+                  }}
+                ></div>
+              </div>
+
+              {/* Step labels */}
+              <div className="flex justify-between gap-1 sm:gap-2">
+                {steps.map((step, index) => {
+                  const stepNum = index + 1;
+                  const isActive = currentStep === stepNum;
+                  const isComplete = currentStep > stepNum;
+
+                  return (
+                    <div
+                      key={index}
+                      className={`
+                        flex-1 text-center transition-all duration-300
+                        ${isActive ? 'scale-105' : ''}
+                      `}
+                    >
+                      <div className={`
+                        text-[10px] sm:text-xs md:text-sm font-heading tracking-wider sm:tracking-widest mb-0.5 sm:mb-1
+                        ${isActive
+                          ? 'text-infrared'
+                          : isComplete
+                            ? 'text-ghost-white'
+                            : 'text-radar-grey-light'
+                        }
+                      `}>
+                        {step.label}
+                      </div>
+                      <div className="text-[8px] sm:text-[9px] md:text-[10px] text-radar-grey-light uppercase tracking-wide sm:tracking-wider hidden sm:block">
+                        {step.desc}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Step 1: Registration Scan */}
+            {currentStep === 1 && (
+              <div ref={step1Ref} className="max-w-2xl mx-auto">
+                {/* Angular card wrapper */}
+                <div className="relative">
+                  {/* Top left corner accent */}
+                  <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-infrared"></div>
+                  <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-infrared"></div>
+
+                  <div className="bg-radar-grey border border-radar-grey-dark p-8 sm:p-12 relative">
+                    <div className="absolute top-0 right-0 text-infrared text-xs font-heading opacity-30 p-4">
+                      STEP_01
+                    </div>
+
+                    <h2 className="text-3xl sm:text-4xl font-heading mb-3 text-ghost-white">
+                      VEHICLE SCAN
+                    </h2>
+                    <p className="text-radar-grey-light mb-8 text-sm uppercase tracking-wider">
+                      Initiate registration lookup
+                    </p>
+
+                    <form onSubmit={handleRegistrationSubmit}>
+                      <div className="mb-6">
+                        <label htmlFor="registration" className="block text-ghost-white mb-3 font-heading text-sm tracking-wider uppercase">
+                          Registration Code
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            id="registration"
+                            value={registration}
+                            onChange={(e) => setRegistration(e.target.value.toUpperCase())}
+                            placeholder="AB12 CDE"
+                            className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-stealth-black border-2 border-radar-grey-dark text-ghost-white font-heading text-base sm:text-2xl tracking-widest focus:outline-none focus:border-infrared transition-colors uppercase"
+                            required
+                          />
+                          <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                            <div className="w-2 h-2 bg-infrared animate-pulse"></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {error && (
+                        <div className="mb-6 p-4 bg-infrared/10 border-l-4 border-infrared">
+                          <p className="text-infrared font-heading text-sm tracking-wider">⚠ {error}</p>
+                        </div>
+                      )}
+
+                      <Button
+                        type="submit"
+                        size="lg"
+                        className="w-full"
+                        disabled={isLoading || registration.length < 2}
+                      >
+                        {isLoading ? 'SCANNING...' : 'INITIATE SCAN'}
+                      </Button>
+                    </form>
+
+                    <div className="mt-8 pt-6 border-t border-radar-grey-dark">
+                      <div className="flex items-start gap-3">
+                        <div className="w-1 h-1 bg-infrared rotate-45 mt-2 flex-shrink-0"></div>
+                        <p className="text-xs text-radar-grey-light leading-relaxed">
+                          <span className="text-ghost-white font-heading">DEMO MODE:</span> Test with AB12CDE, XY34FGH, or CD56IJK
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Step 2: Verify Vehicle */}
+            {currentStep === 2 && vehicleData && (
+              <div ref={step2Ref} className="max-w-3xl mx-auto">
+                <div className="relative">
+                  <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-infrared"></div>
+                  <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-infrared"></div>
+
+                  <div className="bg-radar-grey border border-radar-grey-dark p-8 sm:p-12">
+                    <div className="absolute top-0 right-0 text-infrared text-xs font-heading opacity-30 p-4">
+                      STEP_02
+                    </div>
+
+                    <h2 className="text-3xl sm:text-4xl font-heading mb-3 text-ghost-white">
+                      VERIFY TARGET
+                    </h2>
+                    <p className="text-radar-grey-light mb-8 text-sm uppercase tracking-wider">
+                      Confirm vehicle specifications
+                    </p>
+
+                    {/* Technical spec display */}
+                    <div className="bg-stealth-black border-l-4 border-infrared p-4 sm:p-6 mb-6 sm:mb-8">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                        <div>
+                          <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-1">REG_ID</div>
+                          <div className="text-ghost-white font-heading text-xl sm:text-2xl tracking-wider">{vehicleData.registration}</div>
+                        </div>
+                        <div>
+                          <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-1">YEAR</div>
+                          <div className="text-ghost-white font-heading text-xl sm:text-2xl">{vehicleData.year}</div>
+                        </div>
+                        <div>
+                          <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-1">MAKE</div>
+                          <div className="text-ghost-white font-heading text-lg sm:text-xl">{vehicleData.make}</div>
+                        </div>
+                        <div>
+                          <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-1">MODEL</div>
+                          <div className="text-ghost-white font-heading text-lg sm:text-xl">{vehicleData.model}</div>
+                        </div>
+                        {vehicleData.variant && (
+                          <div className="sm:col-span-2">
+                            <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-1">VARIANT</div>
+                            <div className="text-ghost-white font-heading text-base sm:text-lg">{vehicleData.variant}</div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                      <Button variant="secondary" onClick={handleBack} className="w-full sm:flex-1">
+                        ← RESCAN
+                      </Button>
+                      <Button onClick={handleVehicleConfirm} className="w-full sm:flex-1">
+                        CONFIRM →
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Step 3: Configure Protection */}
+            {currentStep === 3 && (
+              <div ref={step3Ref} className="max-w-7xl mx-auto px-4 sm:px-0">
+                <div className="text-center mb-8 sm:mb-10 md:mb-12">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading text-ghost-white mb-2">
+                    SELECT ARMOR CONFIGURATION
+                  </h2>
+                  <p className="text-radar-grey-light text-xs sm:text-sm uppercase tracking-wider">
+                    Choose protection level + material spec
+                  </p>
+                </div>
+
+                {/* Coverage Options */}
+                <div className="mb-8 sm:mb-10 md:mb-12">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                    <div className="h-px flex-1 bg-radar-grey-dark"></div>
+                    <span className="text-[10px] sm:text-xs text-radar-grey-light font-heading tracking-widest">COVERAGE LEVEL</span>
+                    <div className="h-px flex-1 bg-radar-grey-dark"></div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                    {coverageOptions.map((option) => (
+                      <div
+                        key={option.id}
+                        onClick={() => handleCoverageSelect(option)}
+                        className={`
+                          relative cursor-pointer group transition-all duration-300
+                          ${selectedCoverage?.id === option.id ? 'scale-105' : 'hover:scale-102'}
+                        `}
+                      >
+                        {/* Angular corners */}
+                        {selectedCoverage?.id === option.id && (
+                          <>
+                            <div className="absolute -top-0.5 sm:-top-1 -left-0.5 sm:-left-1 w-4 h-4 sm:w-6 sm:h-6 border-l-2 border-t-2 border-infrared"></div>
+                            <div className="absolute -bottom-0.5 sm:-bottom-1 -right-0.5 sm:-right-1 w-4 h-4 sm:w-6 sm:h-6 border-r-2 border-b-2 border-infrared"></div>
+                          </>
+                        )}
+
+                        <div className={`
+                          bg-radar-grey border-2 p-4 sm:p-5 md:p-6 transition-all duration-300 flex flex-col h-full
+                          ${selectedCoverage?.id === option.id
+                            ? 'border-infrared shadow-lg shadow-infrared/20'
+                            : 'border-radar-grey-dark hover:border-infrared/50'
+                          }
+                        `}>
+                          {/* Header */}
+                          <div className="mb-3 sm:mb-4">
+                            <div className="text-[9px] sm:text-[10px] text-radar-grey-light uppercase tracking-widest mb-2">
+                              {option.id.replace('-', '_')}
+                            </div>
+                            <h3 className="text-lg sm:text-xl font-heading text-ghost-white mb-2 sm:mb-3 uppercase tracking-wide">
+                              {option.name}
+                            </h3>
+                            <div className="flex items-baseline gap-2">
+                              <span className="text-2xl sm:text-3xl font-heading text-infrared">£{option.price}</span>
+                              <span className="text-[10px] sm:text-xs text-radar-grey-light uppercase">GBP</span>
+                            </div>
+                          </div>
+
+                          {/* Description */}
+                          <p className="text-radar-grey-light text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed">
+                            {option.description}
+                          </p>
+
+                          {/* Specs */}
+                          <div className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6 flex-1">
+                            <div className="text-[9px] sm:text-[10px] text-radar-grey-light uppercase tracking-widest mb-2">
+                              COVERAGE_SPEC
+                            </div>
+                            {option.includes.map((item, idx) => (
+                              <div key={idx} className="flex items-start gap-2">
+                                <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
+                                <span className="text-[11px] sm:text-xs text-ghost-white leading-relaxed">{item}</span>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Selection indicator */}
+                          {selectedCoverage?.id === option.id && (
+                            <div className="bg-infrared/10 border-l-2 border-infrared py-1.5 sm:py-2 px-2 sm:px-3 mt-auto">
+                              <span className="text-infrared font-heading text-[10px] sm:text-xs tracking-wider">✓ SELECTED</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Material Selection */}
+                {selectedCoverage && (
+                  <div ref={materialSectionRef} className="max-w-4xl mx-auto animate-fadeIn">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="h-px flex-1 bg-radar-grey-dark"></div>
+                      <span className="text-xs text-radar-grey-light font-heading tracking-widest">MATERIAL SPEC</span>
+                      <div className="h-px flex-1 bg-radar-grey-dark"></div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                      {materialOptions.map((material) => (
+                        <div
+                          key={material.id}
+                          onClick={() => handleMaterialSelect(material)}
+                          className={`
+                            relative cursor-pointer group transition-all duration-300
+                            ${selectedMaterial?.id === material.id ? 'scale-105' : 'hover:scale-102'}
+                          `}
+                        >
+                          {selectedMaterial?.id === material.id && (
+                            <>
+                              <div className="absolute -top-1 -left-1 w-6 h-6 border-l-2 border-t-2 border-infrared"></div>
+                              <div className="absolute -bottom-1 -right-1 w-6 h-6 border-r-2 border-b-2 border-infrared"></div>
+                            </>
+                          )}
+
+                          <div className={`
+                            bg-radar-grey border-2 p-6 transition-all duration-300 flex flex-col h-full
+                            ${selectedMaterial?.id === material.id
+                              ? 'border-infrared shadow-lg shadow-infrared/20'
+                              : 'border-radar-grey-dark hover:border-infrared/50'
+                            }
+                          `}>
+                            <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-2">
+                              {material.id}_finish
+                            </div>
+                            <h3 className="text-2xl font-heading text-ghost-white mb-2 uppercase">
+                              {material.name}
+                            </h3>
+                            <div className="text-sm text-infrared font-heading uppercase tracking-wider mb-4">
+                              {material.finish}
+                            </div>
+                            <p className="text-radar-grey-light text-sm leading-relaxed flex-1">
+                              {material.description}
+                            </p>
+
+                            {selectedMaterial?.id === material.id && (
+                              <div className="mt-4 bg-infrared/10 border-l-2 border-infrared py-2 px-3">
+                                <span className="text-infrared font-heading text-xs tracking-wider">✓ SELECTED</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                      <Button variant="secondary" onClick={handleBack} className="w-full sm:w-auto">
+                        ← BACK
+                      </Button>
+                      <Button
+                        onClick={handleProceedToReview}
+                        disabled={!selectedCoverage || !selectedMaterial}
+                        className="w-full sm:w-auto"
+                      >
+                        PROCEED TO DEPLOY →
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Step 4: Mission Brief / Review */}
+            {currentStep === 4 && vehicleData && selectedCoverage && selectedMaterial && (
+              <div ref={step4Ref} className="max-w-4xl mx-auto">
+                <div className="relative">
+                  <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-infrared"></div>
+                  <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-infrared"></div>
+
+                  <div className="bg-radar-grey border border-radar-grey-dark p-8 sm:p-12">
+                    <div className="absolute top-0 right-0 text-infrared text-xs font-heading opacity-30 p-4">
+                      STEP_04
+                    </div>
+
+                    <h2 className="text-3xl sm:text-4xl font-heading mb-3 text-ghost-white">
+                      MISSION BRIEF
+                    </h2>
+                    <p className="text-radar-grey-light mb-8 text-sm uppercase tracking-wider">
+                      Final configuration review
+                    </p>
+
+                    {/* Mission specs */}
+                    <div className="space-y-4 mb-8">
+                      {/* Target vehicle */}
+                      <div className="bg-stealth-black border-l-4 border-infrared p-6">
+                        <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-3">TARGET_VEHICLE</div>
+                        <div className="text-ghost-white font-heading text-xl mb-1">
+                          {vehicleData.year} {vehicleData.make} {vehicleData.model}
+                          {vehicleData.variant && ` ${vehicleData.variant}`}
+                        </div>
+                        <div className="text-radar-grey-light text-sm tracking-wider">{vehicleData.registration}</div>
+                      </div>
+
+                      {/* Protection config */}
+                      <div className="bg-stealth-black border-l-4 border-infrared p-6">
+                        <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-3">PROTECTION_CONFIG</div>
+                        <div className="flex justify-between items-start mb-4">
+                          <div className="flex-1">
+                            <div className="text-ghost-white font-heading text-lg mb-3 uppercase">
+                              {selectedCoverage.name}
+                            </div>
+                            <div className="space-y-1.5">
+                              {selectedCoverage.includes.map((item, idx) => (
+                                <div key={idx} className="flex items-start gap-2">
+                                  <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
+                                  <span className="text-xs text-radar-grey-light">{item}</span>
+                                </div>
+                              ))}
+                            </div>
+                            <div className="mt-4 pt-4 border-t border-radar-grey-dark">
+                              <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-1">MATERIAL_SPEC</div>
+                              <div className="text-ghost-white font-heading">
+                                {selectedMaterial.name}
+                                <span className="text-infrared ml-2 text-sm">({selectedMaterial.finish})</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-right ml-6">
+                            <div className="text-infrared font-heading text-3xl">£{selectedCoverage.price}</div>
+                            <div className="text-[10px] text-radar-grey-light uppercase tracking-widest">TOTAL_GBP</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Post-deployment protocol */}
+                      <div className="bg-radar-grey/30 border-l-4 border-radar-grey-light p-6">
+                        <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-3">POST_DEPLOY_PROTOCOL</div>
+                        <p className="text-radar-grey-light text-sm leading-relaxed">
+                          Automated system will request vehicle imagery (front/rear bumpers) plus sensor configuration data.
+                          This ensures precision pattern matching for your specific vehicle configuration.
+                        </p>
+                      </div>
+
+                      {/* Integration note */}
+                      <div className="bg-stealth-black/50 border border-radar-grey-dark p-6 text-center">
+                        <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-2">SYSTEM_STATUS</div>
+                        <p className="text-sm text-radar-grey-light">
+                          <span className="text-infrared font-heading">⚠ INTEGRATION PENDING</span><br />
+                          Checkout system deployment in progress
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                      <Button variant="secondary" onClick={handleBack} className="w-full sm:flex-1">
+                        ← RECONFIGURE
+                      </Button>
+                      <Button className="w-full sm:flex-1" disabled>
+                        DEPLOY MISSION →
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+          </div>
+        </div>
+      </div>
+    </PageLayout>
+  );
+}
