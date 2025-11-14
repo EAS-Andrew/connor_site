@@ -8,7 +8,7 @@ export function Footer() {
         <div className="absolute top-4 left-4 w-8 h-8 border-l border-t border-infrared/30"></div>
         <div className="absolute top-4 right-4 w-8 h-8 border-r border-t border-infrared/30"></div>
         <div className="px-4 sm:px-6 pt-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">
             <div>
               <h3 className="font-heading text-lg sm:text-xl mb-3 sm:mb-4 text-ghost-white tracking-wider">STEALTHSHIELD</h3>
               <p className="text-radar-grey-light text-sm leading-relaxed">
@@ -18,15 +18,24 @@ export function Footer() {
             </div>
 
             <div>
-              <h4 className="font-heading text-[10px] sm:text-xs uppercase mb-3 sm:mb-4 text-infrared tracking-[0.3em]">System_Access</h4>
-              <ul className="space-y-2">
-                <li><Link href="/pre-cut" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">Mission Control</Link></li>
-                <li><Link href="/#products" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">Systems</Link></li>
-                <li><Link href="/#capabilities" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">Capabilities</Link></li>
-              </ul>
+                <h4 className="font-heading text-[10px] sm:text-xs uppercase mb-3 sm:mb-4 text-infrared tracking-[0.3em]">Product</h4>
+                <ul className="space-y-2">
+                  <li><Link href="/pre-cut" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">Configure Kit</Link></li>
+                  <li><Link href="/how-it-works" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">How It Works</Link></li>
+                  <li><Link href="/#products" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">Products</Link></li>
+                </ul>
             </div>
 
-            <div className="sm:col-span-2 md:col-span-1">
+            <div>
+                <h4 className="font-heading text-[10px] sm:text-xs uppercase mb-3 sm:mb-4 text-infrared tracking-[0.3em]">Company</h4>
+                <ul className="space-y-2">
+                  <li><Link href="/about" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">About</Link></li>
+                  <li><Link href="/faq" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">FAQ</Link></li>
+                  <li><Link href="/contact" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">Contact</Link></li>
+                </ul>
+            </div>
+
+            <div>
               <h4 className="font-heading text-[10px] sm:text-xs uppercase mb-3 sm:mb-4 text-infrared tracking-[0.3em]">Transmission</h4>
               <p className="text-radar-grey-light text-sm leading-relaxed">
                 <span className="text-[10px] uppercase tracking-wider block mb-1">Status: Standby</span>

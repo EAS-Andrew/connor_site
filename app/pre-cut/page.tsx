@@ -38,10 +38,10 @@ export default function PreCutPage() {
   }, [currentStep]);
 
   const steps = [
-    { label: 'SCAN', desc: 'Vehicle ID' },
-    { label: 'VERIFY', desc: 'Specifications' },
-    { label: 'CONFIGURE', desc: 'Protection' },
-    { label: 'DEPLOY', desc: 'Mission Brief' }
+    { label: 'SCAN', desc: 'Enter Registration' },
+    { label: 'VERIFY', desc: 'Confirm Vehicle' },
+    { label: 'CONFIGURE', desc: 'Select Coverage' },
+    { label: 'DEPLOY', desc: 'Review Order' }
   ];
 
   const handleRegistrationSubmit = async (e: React.FormEvent) => {
@@ -97,9 +97,6 @@ export default function PreCutPage() {
 
   return (
     <PageLayout>
-      {/* Angular top accent */}
-      <div className="absolute top-20 left-0 right-0 h-px bg-gradient-to-r from-transparent via-infrared to-transparent"></div>
-
       <div className="min-h-screen py-12 sm:py-16 relative">
         {/* Background angular grid */}
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none overflow-hidden">
@@ -115,12 +112,12 @@ export default function PreCutPage() {
               <div className="inline-block mb-4">
                 <div className="h-px w-8 sm:w-12 bg-infrared mb-3 sm:mb-4 mx-auto"></div>
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading text-ghost-white tracking-wider">
-                  MISSION CONTROL
+                  CONFIGURE YOUR KIT
                 </h1>
                 <div className="h-px w-8 sm:w-12 bg-infrared mt-3 sm:mt-4 mx-auto"></div>
               </div>
-              <p className="text-radar-grey-light uppercase text-xs sm:text-sm tracking-widest">
-                Precision Kit Configuration System
+              <p className="text-radar-grey-light text-xs sm:text-sm tracking-wide leading-relaxed max-w-2xl mx-auto">
+                Precision-matched PPF for your exact vehicle • Enter registration • Select coverage • We verify spec
               </p>
             </div>
 
@@ -193,10 +190,10 @@ export default function PreCutPage() {
                     </div>
 
                     <h2 className="text-3xl sm:text-4xl font-heading mb-3 text-ghost-white">
-                      VEHICLE SCAN
+                      ENTER YOUR REGISTRATION
                     </h2>
-                    <p className="text-radar-grey-light mb-8 text-sm uppercase tracking-wider">
-                      Initiate registration lookup
+                    <p className="text-radar-grey-light mb-8 text-sm leading-relaxed">
+                      We&apos;ll automatically look up your vehicle details to ensure perfect fitment
                     </p>
 
                     <form onSubmit={handleRegistrationSubmit}>
@@ -232,7 +229,7 @@ export default function PreCutPage() {
                         className="w-full"
                         disabled={isLoading || registration.length < 2}
                       >
-                        {isLoading ? 'SCANNING...' : 'INITIATE SCAN'}
+                        {isLoading ? 'Looking up vehicle...' : 'Find My Vehicle'}
                       </Button>
                     </form>
 
@@ -262,10 +259,10 @@ export default function PreCutPage() {
                     </div>
 
                     <h2 className="text-3xl sm:text-4xl font-heading mb-3 text-ghost-white">
-                      VERIFY TARGET
+                      CONFIRM YOUR VEHICLE
                     </h2>
-                    <p className="text-radar-grey-light mb-8 text-sm uppercase tracking-wider">
-                      Confirm vehicle specifications
+                    <p className="text-radar-grey-light mb-8 text-sm leading-relaxed">
+                      Please verify these details match your vehicle exactly
                     </p>
 
                     {/* Technical spec display */}
@@ -298,10 +295,10 @@ export default function PreCutPage() {
 
                     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                       <Button variant="secondary" onClick={handleBack} className="w-full sm:flex-1">
-                        ← RESCAN
+                        ← Go Back
                       </Button>
                       <Button onClick={handleVehicleConfirm} className="w-full sm:flex-1">
-                        CONFIRM →
+                        Confirm & Continue →
                       </Button>
                     </div>
                   </div>
@@ -314,10 +311,10 @@ export default function PreCutPage() {
               <div ref={step3Ref} className="max-w-7xl mx-auto px-4 sm:px-0">
                 <div className="text-center mb-8 sm:mb-10 md:mb-12">
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading text-ghost-white mb-2">
-                    SELECT ARMOR CONFIGURATION
+                    CHOOSE YOUR COVERAGE
                   </h2>
-                  <p className="text-radar-grey-light text-xs sm:text-sm uppercase tracking-wider">
-                    Choose protection level + material spec
+                  <p className="text-radar-grey-light text-xs sm:text-sm leading-relaxed max-w-xl mx-auto">
+                    Select your protection level and finish • All kits are precision-cut for your vehicle
                   </p>
                 </div>
 
@@ -336,7 +333,7 @@ export default function PreCutPage() {
                         onClick={() => handleCoverageSelect(option)}
                         className={`
                           relative cursor-pointer group transition-all duration-300
-                          ${selectedCoverage?.id === option.id ? 'scale-105' : 'hover:scale-102'}
+                          ${selectedCoverage?.id === option.id ? 'scale-105' : 'hover:scale-[1.02]'}
                         `}
                       >
                         {/* Angular corners */}
@@ -414,7 +411,7 @@ export default function PreCutPage() {
                           onClick={() => handleMaterialSelect(material)}
                           className={`
                             relative cursor-pointer group transition-all duration-300
-                            ${selectedMaterial?.id === material.id ? 'scale-105' : 'hover:scale-102'}
+                            ${selectedMaterial?.id === material.id ? 'scale-105' : 'hover:scale-[1.02]'}
                           `}
                         >
                           {selectedMaterial?.id === material.id && (
@@ -456,14 +453,14 @@ export default function PreCutPage() {
 
                     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                       <Button variant="secondary" onClick={handleBack} className="w-full sm:w-auto">
-                        ← BACK
+                        ← Go Back
                       </Button>
                       <Button
                         onClick={handleProceedToReview}
                         disabled={!selectedCoverage || !selectedMaterial}
                         className="w-full sm:w-auto"
                       >
-                        PROCEED TO DEPLOY →
+                        Review Order →
                       </Button>
                     </div>
                   </div>
@@ -484,10 +481,10 @@ export default function PreCutPage() {
                     </div>
 
                     <h2 className="text-3xl sm:text-4xl font-heading mb-3 text-ghost-white">
-                      MISSION BRIEF
+                      REVIEW YOUR ORDER
                     </h2>
-                    <p className="text-radar-grey-light mb-8 text-sm uppercase tracking-wider">
-                      Final configuration review
+                    <p className="text-radar-grey-light mb-8 text-sm leading-relaxed">
+                      Next step: We&apos;ll request photos to verify your exact vehicle spec before cutting
                     </p>
 
                     {/* Mission specs */}
@@ -554,10 +551,10 @@ export default function PreCutPage() {
 
                     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                       <Button variant="secondary" onClick={handleBack} className="w-full sm:flex-1">
-                        ← RECONFIGURE
+                        ← Edit Configuration
                       </Button>
                       <Button className="w-full sm:flex-1" disabled>
-                        DEPLOY MISSION →
+                        Place Order →
                       </Button>
                     </div>
                   </div>

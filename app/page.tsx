@@ -21,14 +21,14 @@ export default function Home() {
                 <div className="absolute -bottom-1 -right-1 w-4 h-4 border-r-2 border-b-2 border-infrared"></div>
                 <div className="px-6 py-2 border border-radar-grey-dark bg-radar-grey">
                   <span className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading">
-                    CLASSIFIED_PROTECTION_SYSTEM
+                    PRECISION_PPF_SYSTEMS
                   </span>
                 </div>
               </div>
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-heading mb-4 sm:mb-6 text-ghost-white leading-tight tracking-wider">
-              INVISIBLE STRENGTH
+              PERFECT FIT. EVERY TIME.
             </h1>
 
             {/* Horizontal accent */}
@@ -39,21 +39,21 @@ export default function Home() {
             </div>
 
             <p className="text-lg sm:text-xl md:text-2xl text-ghost-white mb-3 sm:mb-4 font-heading tracking-wide">
-              PRECISION-ENGINEERED PAINT PROTECTION
+              PRECISION-CUT PAINT PROTECTION FILM
             </p>
-            <p className="text-base sm:text-lg text-radar-grey-light mb-8 sm:mb-12 max-w-2xl mx-auto px-4 uppercase tracking-wider text-sm">
-              Stealth-grade protection • Performance-driven design • Engineered in the shadows
+            <p className="text-base sm:text-lg text-radar-grey-light mb-8 sm:mb-12 max-w-2xl mx-auto px-4 leading-relaxed">
+              Enter your registration • Choose your coverage • We verify and cut to your exact vehicle spec
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4">
               <Link href="/pre-cut" className="w-full sm:w-auto">
                 <Button size="lg" className="w-full sm:w-auto">
-                  Initiate Configuration
+                  Configure Your Kit
                 </Button>
               </Link>
-              <Link href="#capabilities" className="w-full sm:w-auto">
+              <Link href="#why-us" className="w-full sm:w-auto">
                 <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-                  View Capabilities
+                  How It Works
                 </Button>
               </Link>
             </div>
@@ -64,19 +64,19 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-stealth-black to-transparent"></div>
       </section>
 
-      {/* Capabilities Section */}
-      <section id="capabilities" className="py-12 sm:py-16 md:py-24 bg-stealth-black">
+      {/* Why Us Section */}
+      <section id="why-us" className="py-12 sm:py-16 md:py-24 bg-stealth-black">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
             {/* Section header with tactical styling */}
             <div className="text-center mb-12 sm:mb-16">
               <div className="inline-block mb-4">
                 <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
-                  SYSTEM_CAPABILITIES
+                  TACTICAL_ADVANTAGES
                 </span>
               </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading mb-3 sm:mb-4 text-ghost-white tracking-wider">
-                TACTICAL ADVANTAGES
+                WHY STEALTHSHIELD
               </h2>
 
               {/* Divider */}
@@ -104,9 +104,9 @@ export default function Home() {
                         <div className="absolute inset-x-0 bottom-0 w-0 h-0 mx-auto border-l-[16px] border-r-[16px] border-b-[28px] border-l-transparent border-r-transparent border-b-infrared opacity-30"></div>
                       </div>
                     </div>
-                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">STEALTH</h3>
+                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">CRYSTAL CLARITY</h3>
                     <p className="text-radar-grey-light text-sm leading-relaxed">
-                      Invisible armor that maintains your vehicle&apos;s aesthetic integrity. Undetectable protection engineered for discretion.
+                      Invisible protection that preserves your vehicle&apos;s finish. Optical clarity that maintains the original appearance with zero distortion.
                     </p>
                   </div>
                 </Card>
@@ -128,9 +128,9 @@ export default function Home() {
                         <div className="absolute inset-0 border-2 border-infrared transform rotate-45 opacity-30"></div>
                       </div>
                     </div>
-                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">PRECISION</h3>
+                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">PERFECT FIT</h3>
                     <p className="text-radar-grey-light text-sm leading-relaxed">
-                      Vehicle-specific patterns engineered to exact specifications. Zero-tolerance fitment for seamless installation.
+                      Registration-verified fitment for your exact vehicle. No guesswork, no wrong trim, just perfect-fit patterns cut to spec.
                     </p>
                   </div>
                 </Card>
@@ -156,9 +156,9 @@ export default function Home() {
                         </svg>
                       </div>
                     </div>
-                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">DURABILITY</h3>
+                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">BUILT TO LAST</h3>
                     <p className="text-radar-grey-light text-sm leading-relaxed">
-                      Military-grade protection technology. Self-healing properties engineered to perform in all conditions.
+                      Premium PPF with self-healing technology. Engineered for long-term protection that performs in all conditions.
                     </p>
                   </div>
                 </Card>
@@ -180,7 +180,7 @@ export default function Home() {
                 </span>
               </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading mb-3 sm:mb-4 text-ghost-white tracking-wider">
-                DEPLOYMENT OPTIONS
+                OUR PRODUCTS
               </h2>
 
               {/* Divider */}
@@ -201,9 +201,9 @@ export default function Home() {
                   <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-3">
                     SYSTEM_ALPHA
                   </div>
-                  <h3 className="text-3xl font-heading mb-4 text-ghost-white tracking-wide">PRE-CUT KITS</h3>
+                  <h3 className="text-3xl font-heading mb-4 text-ghost-white tracking-wide">PRECISION-CUT PPF KITS</h3>
                   <p className="text-radar-grey-light mb-6 leading-relaxed text-sm">
-                    Vehicle-specific protection patterns engineered for precision fitment. Registration-based configuration system delivers exact-match kits.
+                    Perfect-fit protection cut specifically for your vehicle. Enter your registration, choose your coverage, we verify and cut to your exact spec.
                   </p>
 
                   {/* Specs list */}
@@ -214,22 +214,26 @@ export default function Home() {
                     <ul className="space-y-2 text-ghost-white flex-1">
                       <li className="flex items-start gap-3">
                         <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                        <span className="text-sm">Multi-zone coverage configurations</span>
+                        <span className="text-sm">Registration-verified fitment accuracy</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                        <span className="text-sm">Vehicle-matched precision patterns</span>
+                        <span className="text-sm">Post-purchase spec confirmation</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                        <span className="text-sm">High-impact zone protection</span>
+                        <span className="text-sm">Gloss or matt finish options</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
+                        <span className="text-sm">Professional-grade clarity & durability</span>
                       </li>
                     </ul>
                   </div>
 
                   <Link href="/pre-cut" className="mt-auto">
                     <Button className="w-full">
-                      Access System
+                      Configure Your Kit
                     </Button>
                   </Link>
                 </Card>
@@ -244,9 +248,9 @@ export default function Home() {
                   <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-3">
                     SYSTEM_BRAVO
                   </div>
-                  <h3 className="text-3xl font-heading mb-4 text-ghost-white tracking-wide">PPF ROLLS</h3>
+                  <h3 className="text-3xl font-heading mb-4 text-ghost-white tracking-wide">PREMIUM PPF FILM ROLLS</h3>
                   <p className="text-radar-grey-light mb-6 leading-relaxed text-sm">
-                    Professional-grade film systems in multiple finish specifications. Custom application protocols for advanced installation requirements.
+                    Professional-grade protection film for custom applications. Premium quality with optical clarity and self-healing technology.
                   </p>
 
                   {/* Specs list */}
@@ -257,22 +261,26 @@ export default function Home() {
                     <ul className="space-y-2 text-ghost-white flex-1">
                       <li className="flex items-start gap-3">
                         <div className="w-1 h-1 bg-radar-grey-light rotate-45 mt-1.5 flex-shrink-0"></div>
-                        <span className="text-sm">Multi-finish material options</span>
+                        <span className="text-sm">Gloss & matt finish options</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <div className="w-1 h-1 bg-radar-grey-light rotate-45 mt-1.5 flex-shrink-0"></div>
-                        <span className="text-sm">Self-healing technology layer</span>
+                        <span className="text-sm">Crystal-clear optical quality</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <div className="w-1 h-1 bg-radar-grey-light rotate-45 mt-1.5 flex-shrink-0"></div>
-                        <span className="text-sm">Professional installer certification</span>
+                        <span className="text-sm">Self-healing technology</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <div className="w-1 h-1 bg-radar-grey-light rotate-45 mt-1.5 flex-shrink-0"></div>
+                        <span className="text-sm">Professional installer-ready</span>
                       </li>
                     </ul>
                   </div>
 
                   <div className="mt-auto">
                     <Button variant="secondary" className="w-full" disabled>
-                      Classified
+                      Coming Soon
                     </Button>
                   </div>
                 </Card>
@@ -300,12 +308,12 @@ export default function Home() {
               <div className="text-center">
                 <div className="mb-4">
                   <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
-                    MISSION_READY
+                    READY_TO_DEPLOY
                   </span>
                 </div>
 
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading mb-4 sm:mb-6 text-ghost-white tracking-wider">
-                  DEPLOY PROTECTION
+                  CONFIGURE YOUR KIT
                 </h2>
 
                 {/* Divider */}
@@ -321,7 +329,7 @@ export default function Home() {
 
                 <Link href="/pre-cut" className="inline-block w-full sm:w-auto px-4">
                   <Button size="lg" className="w-full sm:w-auto">
-                    Initiate Mission
+                    Get Started
                   </Button>
                 </Link>
               </div>

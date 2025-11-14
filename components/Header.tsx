@@ -16,24 +16,36 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6 lg:gap-8">
+            <Link 
+              href="/pre-cut" 
+              className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans text-sm uppercase tracking-wider"
+            >
+              Configure Kit
+            </Link>
           <Link
-            href="/pre-cut"
+            href="/how-it-works"
             className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans text-sm uppercase tracking-wider"
           >
-            Mission Control
+            How It Works
           </Link>
           <Link
-            href="/#products"
+            href="/about"
             className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans text-sm uppercase tracking-wider"
           >
-            Systems
+            About
           </Link>
           <Link
-            href="/#capabilities"
+            href="/faq"
             className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans text-sm uppercase tracking-wider"
           >
-            Capabilities
+            FAQ
+          </Link>
+          <Link
+            href="/contact"
+            className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans text-sm uppercase tracking-wider"
+          >
+            Contact
           </Link>
         </div>
 
@@ -55,26 +67,40 @@ export function Header() {
       {isMenuOpen && (
         <div className="md:hidden bg-radar-grey border-t border-stealth-black">
           <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
-            <Link
-              href="/pre-cut"
+            <Link 
+              href="/pre-cut" 
               className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wider"
               onClick={() => setIsMenuOpen(false)}
             >
-              Mission Control
+              Configure Kit
             </Link>
             <Link
-              href="/#products"
+              href="/how-it-works"
               className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wider"
               onClick={() => setIsMenuOpen(false)}
             >
-              Systems
+              How It Works
             </Link>
             <Link
-              href="/#capabilities"
+              href="/about"
               className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wider"
               onClick={() => setIsMenuOpen(false)}
             >
-              Capabilities
+              About
+            </Link>
+            <Link
+              href="/faq"
+              className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wider"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              FAQ
+            </Link>
+            <Link
+              href="/contact"
+              className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wider"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Contact
             </Link>
           </div>
         </div>
