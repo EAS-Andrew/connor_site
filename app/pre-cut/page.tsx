@@ -378,71 +378,87 @@ export default function PreCutPage() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-                    {coverageOptions.map((option) => (
-                      <div
-                        key={option.id}
-                        onClick={() => handleCoverageSelect(option)}
-                        className={`
-                          relative cursor-pointer group transition-all duration-300
-                          ${selectedCoverage?.id === option.id ? 'scale-105' : 'hover:scale-[1.02]'}
-                        `}
-                      >
-                        {/* Angular corners */}
-                        {selectedCoverage?.id === option.id && (
-                          <>
-                            <div className="absolute -top-1 sm:-top-2 -left-1 sm:-left-2 w-4 h-4 sm:w-6 sm:h-6 border-l-2 border-t-2 border-infrared"></div>
-                            <div className="absolute -bottom-1 sm:-bottom-2 -right-1 sm:-right-2 w-4 h-4 sm:w-6 sm:h-6 border-r-2 border-b-2 border-infrared"></div>
-                          </>
-                        )}
+                    {coverageOptions.map((option) => {
+                      // Get image from Shopify product
+                      const imageSrc = option.image || '';
 
-                        <div className={`
-                          bg-radar-grey border-2 p-4 sm:p-5 md:p-6 transition-all duration-300 flex flex-col h-full
-                          ${selectedCoverage?.id === option.id
-                            ? 'border-infrared shadow-lg shadow-infrared/20'
-                            : 'border-radar-grey-dark hover:border-infrared/50'
-                          }
-                        `}>
-                          {/* Header */}
-                          <div className="mb-3 sm:mb-4">
-                            <div className="text-[9px] sm:text-[10px] text-radar-grey-light uppercase tracking-widest mb-2">
-                              {option.id.replace('-', '_')}
-                            </div>
-                            <h3 className="text-lg sm:text-xl font-heading text-ghost-white mb-2 sm:mb-3 uppercase tracking-wide">
-                              {option.name}
-                            </h3>
-                            <div className="flex items-baseline gap-2">
-                              <span className="text-2xl sm:text-3xl font-heading text-infrared">£{option.price}</span>
-                              <span className="text-[10px] sm:text-xs text-radar-grey-light uppercase">GBP</span>
-                            </div>
-                          </div>
-
-                          {/* Description */}
-                          <p className="text-radar-grey-light text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed">
-                            {option.description}
-                          </p>
-
-                          {/* Specs */}
-                          <div className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6 flex-1">
-                            <div className="text-[9px] sm:text-[10px] text-radar-grey-light uppercase tracking-widest mb-2">
-                              COVERAGE_SPEC
-                            </div>
-                            {option.includes.map((item, idx) => (
-                              <div key={idx} className="flex items-start gap-2">
-                                <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                                <span className="text-[11px] sm:text-xs text-ghost-white leading-relaxed">{item}</span>
-                              </div>
-                            ))}
-                          </div>
-
-                          {/* Selection indicator */}
+                      return (
+                        <div
+                          key={option.id}
+                          onClick={() => handleCoverageSelect(option)}
+                          className={`
+                            relative cursor-pointer group transition-all duration-300
+                            ${selectedCoverage?.id === option.id ? 'scale-105' : 'hover:scale-[1.02]'}
+                          `}
+                        >
+                          {/* Angular corners */}
                           {selectedCoverage?.id === option.id && (
-                            <div className="bg-infrared/10 border-l-2 border-infrared py-1.5 sm:py-2 px-2 sm:px-3 mt-auto">
-                              <span className="text-infrared font-heading text-[10px] sm:text-xs tracking-wider">✓ SELECTED</span>
-                            </div>
+                            <>
+                              <div className="absolute -top-1 sm:-top-2 -left-1 sm:-left-2 w-4 h-4 sm:w-6 sm:h-6 border-l-2 border-t-2 border-infrared z-10"></div>
+                              <div className="absolute -bottom-1 sm:-bottom-2 -right-1 sm:-right-2 w-4 h-4 sm:w-6 sm:h-6 border-r-2 border-b-2 border-infrared z-10"></div>
+                            </>
                           )}
+
+                          <div className={`
+                            bg-radar-grey border-2 transition-all duration-300 flex flex-col h-full overflow-hidden
+                            ${selectedCoverage?.id === option.id
+                              ? 'border-infrared shadow-lg shadow-infrared/20'
+                              : 'border-radar-grey-dark hover:border-infrared/50'
+                            }
+                          `}>
+                            {/* Image Section */}
+                            {imageSrc && (
+                              <div className="relative w-full aspect-[4/3] bg-stealth-black overflow-hidden border-b-2 border-radar-grey-dark">
+                                <img
+                                  src={imageSrc}
+                                  alt={option.name}
+                                  className="w-full h-full object-contain p-4"
+                                />
+                                {/* Image overlay on hover */}
+                                <div className="absolute inset-0 bg-infrared/0 group-hover:bg-infrared/5 transition-all duration-300"></div>
+                              </div>
+                            )}
+
+                            {/* Content Section */}
+                            <div className="p-4 sm:p-5 md:p-6 flex flex-col flex-1">
+                              {/* Header */}
+                              <div className="mb-3 sm:mb-4">
+                                <div className="text-[9px] sm:text-[10px] text-radar-grey-light uppercase tracking-widest mb-2">
+                                  {option.id.replace('-', '_')}
+                                </div>
+                                <h3 className="text-lg sm:text-xl font-heading text-ghost-white mb-2 sm:mb-3 uppercase tracking-wide">
+                                  {option.name}
+                                </h3>
+                                <div className="flex items-baseline gap-2">
+                                  <span className="text-2xl sm:text-3xl font-heading text-infrared">£{option.price}</span>
+                                  <span className="text-[10px] sm:text-xs text-radar-grey-light uppercase">GBP</span>
+                                </div>
+                              </div>
+
+                              {/* Specs */}
+                              <div className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6 flex-1">
+                                <div className="text-[9px] sm:text-[10px] text-radar-grey-light uppercase tracking-widest mb-2">
+                                  COVERAGE_SPEC
+                                </div>
+                                {option.includes.map((item, idx) => (
+                                  <div key={idx} className="flex items-start gap-2">
+                                    <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
+                                    <span className="text-[11px] sm:text-xs text-ghost-white leading-relaxed">{item}</span>
+                                  </div>
+                                ))}
+                              </div>
+
+                              {/* Selection indicator */}
+                              {selectedCoverage?.id === option.id && (
+                                <div className="bg-infrared/10 border-l-2 border-infrared py-1.5 sm:py-2 px-2 sm:px-3 mt-auto">
+                                  <span className="text-infrared font-heading text-[10px] sm:text-xs tracking-wider">✓ SELECTED</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
 

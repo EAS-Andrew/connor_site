@@ -79,7 +79,7 @@ export const materialOptions: MaterialOption[] = [
   {
     id: 'gloss',
     name: 'Gloss PPF',
-    description: 'Clear, glossy protection with high durability. Manufactured right here in the UK, our Premium PPF stands among the nation\'s leading paint protection films, engineered for exceptional clarity and long-lasting anti-yellowing defence.',
+    description: 'Clear, glossy protection with exceptional clarity and durability',
     finish: 'Glossy'
   },
   {
@@ -99,6 +99,7 @@ export interface CoverageOption {
   description: string;
   price: number;
   includes: string[];
+  image?: string;
   variants: Array<{
     id: string;
     title: string;
@@ -114,7 +115,7 @@ function transformShopifyProductToCoverageOption(product: ShopifyProduct): Cover
   const coverageMetafield = product.metafields.find(
     (m) => m.key === 'coverage_includes'
   );
-  
+
   let includes: string[] = [];
   if (coverageMetafield && coverageMetafield.value) {
     try {
@@ -132,12 +133,16 @@ function transformShopifyProductToCoverageOption(product: ShopifyProduct): Cover
   // Generate simple ID from title
   const id = product.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 
+  // Get featured image URL
+  const image = product.featuredImage?.url;
+
   return {
     id,
     name: product.title,
     description: product.description,
     price: Math.round(price), // Round to whole number
     includes,
+    image,
     variants: product.variants.edges.map((edge) => ({
       id: edge.node.id,
       title: edge.node.title,
@@ -156,7 +161,7 @@ export async function getCoverageOptions(): Promise<CoverageOption[]> {
     return products.map(transformShopifyProductToCoverageOption);
   } catch (error) {
     console.error('Failed to fetch products from Shopify, using fallback data:', error);
-    
+
     // Fallback to mock data for development
     return [
       {

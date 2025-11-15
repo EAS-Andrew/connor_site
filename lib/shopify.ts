@@ -19,6 +19,10 @@ export interface ShopifyProduct {
   description: string;
   handle: string;
   tags: string[];
+  featuredImage?: {
+    url: string;
+    altText?: string;
+  };
   priceRange: {
     minVariantPrice: {
       amount: string;
@@ -111,6 +115,10 @@ export async function fetchPreCutKits(): Promise<ShopifyProduct[]> {
             description
             handle
             tags
+            featuredImage {
+              url
+              altText
+            }
             priceRange {
               minVariantPrice {
                 amount
