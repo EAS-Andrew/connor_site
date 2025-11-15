@@ -10,7 +10,12 @@ export function Footer() {
         <div className="px-4 sm:px-6 pt-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">
             <div>
-              <h3 className="font-heading text-lg sm:text-xl mb-3 sm:mb-4 text-ghost-white tracking-wider">STEALTHSHIELD</h3>
+              <div className="flex items-center gap-3 mb-3 sm:mb-4">
+                <div className="w-10 h-10 flex-shrink-0">
+                  <img src="/logo.svg" alt="StealthShield Logo" className="w-full h-full" />
+                </div>
+                <h3 className="font-heading text-lg sm:text-xl text-ghost-white tracking-wider">STEALTHSHIELD</h3>
+              </div>
               <p className="text-radar-grey-light text-sm leading-relaxed">
                 Invisible Strength.<br />
                 Precision-engineered PPF protection.
