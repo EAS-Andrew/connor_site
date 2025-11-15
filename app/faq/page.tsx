@@ -43,7 +43,7 @@ export default function FAQPage() {
         },
         {
           q: 'Why do you request photos after ordering?',
-          a: 'Photos allow us to verify your exact vehicle specification - parking sensors, radar systems, trim variations, and aftermarket modifications. This ensures your kit matches your car perfectly, not just the model.',
+          a: 'Photos of your front and rear bumpers allow us to verify your exact vehicle specification - parking sensors, radar systems, trim variations, and aftermarket modifications. This ensures your kit matches your car perfectly, not just the model.',
         },
         {
           q: 'How long does cutting and delivery take?',

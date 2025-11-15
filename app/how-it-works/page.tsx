@@ -42,7 +42,7 @@ export default function HowItWorksPage() {
     {
       number: '04',
       title: 'Photo Verification',
-      description: 'After ordering, we request photos of your front bumper. This ensures we account for any sensors, radar, or trim variations.',
+      description: 'After ordering, we request photos of your front and rear bumpers. This ensures we account for any sensors, radar, or trim variations.',
       tactical: 'PRECISION_VALIDATION',
       details: [
         'Expert visual inspection',

@@ -484,7 +484,7 @@ export default function PreCutPage() {
                       REVIEW YOUR ORDER
                     </h2>
                     <p className="text-radar-grey-light mb-8 text-sm leading-relaxed">
-                      Next step: We&apos;ll request photos to verify your exact vehicle spec before cutting
+                      Next step: We&apos;ll request photos of your front and rear bumpers to verify your exact vehicle spec before cutting
                     </p>
 
                     {/* Mission specs */}
