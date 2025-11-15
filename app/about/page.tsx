@@ -108,6 +108,10 @@ export default function AboutPage() {
                                     StealthShield serves enthusiasts, daily drivers, and professional installers who demand <span className="text-ghost-white font-semibold">clarity, quality, and confidence</span>. You don&apos;t have to be an expert. You just need to care about your car.
                                 </p>
 
+                                <p>
+                                    Manufactured right here in the UK, our Premium PPF stands among the nation&apos;s leading paint protection films. Engineered for exceptional clarity, unmatched durability and long-lasting anti-yellowing defence against everyday wear. Trusted by professionals across the country, our PPF delivers world-class protection with the reliability and quality that only UK manufacturing can provide.
+                                </p>
+
                                 <p className="text-ghost-white font-semibold text-lg sm:text-xl pt-4">
                                     Precision protection. Zero compromise.
                                 </p>

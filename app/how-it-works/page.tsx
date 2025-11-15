@@ -194,7 +194,7 @@ export default function HowItWorksPage() {
                     VERIFIED ACCURACY
                   </h3>
                   <p className="text-radar-grey-light leading-relaxed">
-                    Photo verification catches spec variations that databases miss—parking sensors, radar systems, aftermarket modifications. We ensure your kit matches your car, not just the model.
+                    Photo verification catches spec variations that databases miss - parking sensors, radar systems, aftermarket modifications. We ensure your kit matches your car, not just the model.
                   </p>
                 </div>
 

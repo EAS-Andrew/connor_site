@@ -43,11 +43,11 @@ export default function FAQPage() {
         },
         {
           q: 'Why do you request photos after ordering?',
-          a: 'Photos allow us to verify your exact vehicle specification—parking sensors, radar systems, trim variations, and aftermarket modifications. This ensures your kit matches your car perfectly, not just the model.',
+          a: 'Photos allow us to verify your exact vehicle specification - parking sensors, radar systems, trim variations, and aftermarket modifications. This ensures your kit matches your car perfectly, not just the model.',
         },
         {
           q: 'How long does cutting and delivery take?',
-          a: 'Once your vehicle is verified, kits are precision-cut within 3-5 business days. UK delivery typically takes 2-3 days. Rush orders may be available—contact us for details.',
+          a: 'Once your vehicle is verified, kits are precision-cut within 3-5 business days. UK delivery typically takes 2-3 days. Rush orders may be available - contact us for details.',
         },
       ],
     },
@@ -102,7 +102,7 @@ export default function FAQPage() {
         },
         {
           q: 'What warranty do you offer?',
-          a: 'Our premium PPF carries a manufacturer warranty against yellowing, cracking, peeling, and delamination. Warranty details vary by product—contact us for specific terms.',
+          a: 'Our premium PPF carries a manufacturer warranty against yellowing, cracking, peeling, and delamination. Warranty details vary by product - contact us for specific terms.',
         },
         {
           q: 'What if my kit doesn\'t fit correctly?',
@@ -110,7 +110,7 @@ export default function FAQPage() {
         },
         {
           q: 'Do you ship internationally?',
-          a: 'Currently we serve UK customers. International shipping may be available for specific regions—contact us to discuss your requirements.',
+          a: 'Currently we serve UK customers. International shipping may be available for specific regions - contact us to discuss your requirements.',
         },
       ],
     },

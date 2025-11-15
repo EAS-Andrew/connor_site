@@ -21,7 +21,7 @@ export interface VehicleData {
 export async function lookupVehicleByRegistration(registration: string): Promise<VehicleData | null> {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 1000));
-  
+
   // Mock data for demonstration
   const mockVehicles: Record<string, VehicleData> = {
     'AB12CDE': {
@@ -46,14 +46,14 @@ export async function lookupVehicleByRegistration(registration: string): Promise
       variant: 'AMG Line'
     }
   };
-  
+
   const normalizedReg = registration.toUpperCase().replace(/\s+/g, '');
-  
+
   // Return mock data if found, otherwise return generic data for demo purposes
   if (mockVehicles[normalizedReg]) {
     return mockVehicles[normalizedReg];
   }
-  
+
   // For any other registration, return a generic vehicle for demo
   return {
     registration: normalizedReg,
@@ -77,7 +77,7 @@ export const materialOptions: MaterialOption[] = [
   {
     id: 'gloss',
     name: 'Gloss PPF',
-    description: 'Clear, glossy protection with high durability',
+    description: 'Clear, glossy protection with high durability. Manufactured right here in the UK, our Premium PPF stands among the nation\'s leading paint protection films, engineered for exceptional clarity and long-lasting anti-yellowing defence.',
     finish: 'Glossy'
   },
   {

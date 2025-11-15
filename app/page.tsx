@@ -158,7 +158,7 @@ export default function Home() {
                     </div>
                     <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">BUILT TO LAST</h3>
                     <p className="text-radar-grey-light text-sm leading-relaxed">
-                      Premium PPF with self-healing technology. Engineered for long-term protection that performs in all conditions.
+                      Premium PPF with self-healing technology. Engineered for long-term protection that performs in all conditions. Manufactured right here in the UK, our Premium PPF stands among the nation's leading paint protection films, delivering world-class protection with the reliability and quality that only UK manufacturing can provide.
                     </p>
                   </div>
                 </Card>
