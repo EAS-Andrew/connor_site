@@ -1,3 +1,5 @@
+import { fetchPreCutKits, ShopifyProduct } from './shopify';
+
 /**
  * Stubbed Vehicle Smart API Integration
  * 
@@ -97,43 +99,105 @@ export interface CoverageOption {
   description: string;
   price: number;
   includes: string[];
+  variants: Array<{
+    id: string;
+    title: string;
+    price: number;
+  }>;
 }
 
-export const coverageOptions: CoverageOption[] = [
-  {
-    id: 'front-end',
-    name: 'Front End PPF',
-    description: 'Coverage for specific high-impact areas',
-    price: 599,
-    includes: [
-      'Front Bumper',
-      'Bonnet',
-      'Headlights',
-      'Mirror Caps',
-      'Front Wings',
-      'Front A Pillar & Edge Of Roof'
-    ]
-  },
-  {
-    id: 'extended-front',
-    name: 'Extended Front End PPF',
-    description: 'Comprehensive front and side protection',
-    price: 899,
-    includes: [
-      'Everything in Front End PPF',
-      'Front Doors',
-      'Skirts'
-    ]
-  },
-  {
-    id: 'premium-full',
-    name: 'Premium Full Car Cover',
-    description: 'Complete protection for your entire vehicle',
-    price: 1599,
-    includes: [
-      'All Panels Covered',
-      '(Excluding Glass)'
-    ]
+/**
+ * Transform Shopify product data to CoverageOption format
+ */
+function transformShopifyProductToCoverageOption(product: ShopifyProduct): CoverageOption {
+  // Parse the coverage_includes metafield
+  const coverageMetafield = product.metafields.find(
+    (m) => m.key === 'coverage_includes'
+  );
+  
+  let includes: string[] = [];
+  if (coverageMetafield && coverageMetafield.value) {
+    try {
+      // Shopify list metafields are returned as JSON array strings
+      includes = JSON.parse(coverageMetafield.value);
+    } catch {
+      // Fallback if parsing fails
+      includes = [coverageMetafield.value];
+    }
   }
-];
+
+  // Get price from the first variant or priceRange
+  const price = parseFloat(product.priceRange.minVariantPrice.amount);
+
+  // Generate simple ID from title
+  const id = product.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+  return {
+    id,
+    name: product.title,
+    description: product.description,
+    price: Math.round(price), // Round to whole number
+    includes,
+    variants: product.variants.edges.map((edge) => ({
+      id: edge.node.id,
+      title: edge.node.title,
+      price: Math.round(parseFloat(edge.node.price.amount)),
+    })),
+  };
+}
+
+/**
+ * Fetch coverage options from Shopify
+ * Falls back to mock data if Shopify fetch fails
+ */
+export async function getCoverageOptions(): Promise<CoverageOption[]> {
+  try {
+    const products = await fetchPreCutKits();
+    return products.map(transformShopifyProductToCoverageOption);
+  } catch (error) {
+    console.error('Failed to fetch products from Shopify, using fallback data:', error);
+    
+    // Fallback to mock data for development
+    return [
+      {
+        id: 'front-end',
+        name: 'Front End PPF',
+        description: 'Coverage for specific high-impact areas',
+        price: 599,
+        includes: [
+          'Front Bumper',
+          'Bonnet',
+          'Headlights',
+          'Mirror Caps',
+          'Front Wings',
+          'Front A Pillar & Edge Of Roof'
+        ],
+        variants: []
+      },
+      {
+        id: 'extended-front',
+        name: 'Extended Front End PPF',
+        description: 'Comprehensive front and side protection',
+        price: 899,
+        includes: [
+          'Everything in Front End PPF',
+          'Front Doors',
+          'Skirts'
+        ],
+        variants: []
+      },
+      {
+        id: 'premium-full',
+        name: 'Premium Full Car Cover',
+        description: 'Complete protection for your entire vehicle',
+        price: 1599,
+        includes: [
+          'All Panels Covered',
+          '(Excluding Glass)'
+        ],
+        variants: []
+      }
+    ];
+  }
+}
 

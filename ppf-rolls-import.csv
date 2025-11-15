@@ -1,0 +1,17 @@
+Handle,Title,Tags,Variant SKU,Variant Price,Option1 Name,Option1 Value
+gloss-ppf-roll,Gloss PPF Roll,ppf-roll,PPF-GLOSS-12X60,149.00,Size,12 x 60
+gloss-ppf-roll,,,PPF-GLOSS-24X60,279.00,,24 x 60
+gloss-ppf-roll,,,PPF-GLOSS-36X60,399.00,,36 x 60
+gloss-ppf-roll,,,PPF-GLOSS-48X60,519.00,,48 x 60
+gloss-ppf-roll,,,PPF-GLOSS-60X60,629.00,,60 x 60
+matte-ppf-roll,Matte PPF Roll,ppf-roll,PPF-MATTE-12X60,169.00,Size,12 x 60
+matte-ppf-roll,,,PPF-MATTE-24X60,299.00,,24 x 60
+matte-ppf-roll,,,PPF-MATTE-36X60,429.00,,36 x 60
+matte-ppf-roll,,,PPF-MATTE-48X60,559.00,,48 x 60
+matte-ppf-roll,,,PPF-MATTE-60X60,679.00,,60 x 60
+gloss-ppf-roll-extended,Gloss PPF Roll - Extended,ppf-roll,PPF-GLOSS-24X120,549.00,Size,24 x 120
+gloss-ppf-roll-extended,,,PPF-GLOSS-48X120,1029.00,,48 x 120
+gloss-ppf-roll-extended,,,PPF-GLOSS-60X120,1249.00,,60 x 120
+matte-ppf-roll-extended,Matte PPF Roll - Extended,ppf-roll,PPF-MATTE-24X120,589.00,Size,24 x 120
+matte-ppf-roll-extended,,,PPF-MATTE-48X120,1109.00,,48 x 120
+matte-ppf-roll-extended,,,PPF-MATTE-60X120,1349.00,,60 x 120

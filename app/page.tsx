@@ -241,10 +241,10 @@ export default function Home() {
 
               {/* System Bravo */}
               <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
-                <div className="absolute -top-2 -left-2 w-8 h-8 border-l-2 border-t-2 border-radar-grey-dark"></div>
-                <div className="absolute -bottom-2 -right-2 w-8 h-8 border-r-2 border-b-2 border-radar-grey-dark"></div>
+                <div className="absolute -top-2 -left-2 w-8 h-8 border-l-2 border-t-2 border-infrared"></div>
+                <div className="absolute -bottom-2 -right-2 w-8 h-8 border-r-2 border-b-2 border-infrared"></div>
 
-                <Card className="flex flex-col h-full opacity-75 group-hover:scale-100">
+                <Card className="flex flex-col h-full group-hover:scale-100">
                   <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-3">
                     SYSTEM_BRAVO
                   </div>
@@ -260,29 +260,29 @@ export default function Home() {
                     </div>
                     <ul className="space-y-2 text-ghost-white flex-1">
                       <li className="flex items-start gap-3">
-                        <div className="w-1 h-1 bg-radar-grey-light rotate-45 mt-1.5 flex-shrink-0"></div>
+                        <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
                         <span className="text-sm">Gloss & matt finish options</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <div className="w-1 h-1 bg-radar-grey-light rotate-45 mt-1.5 flex-shrink-0"></div>
+                        <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
                         <span className="text-sm">Crystal-clear optical quality</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <div className="w-1 h-1 bg-radar-grey-light rotate-45 mt-1.5 flex-shrink-0"></div>
+                        <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
                         <span className="text-sm">Self-healing technology</span>
                       </li>
                       <li className="flex items-start gap-3">
-                        <div className="w-1 h-1 bg-radar-grey-light rotate-45 mt-1.5 flex-shrink-0"></div>
+                        <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
                         <span className="text-sm">Professional installer-ready</span>
                       </li>
                     </ul>
                   </div>
 
-                  <div className="mt-auto">
-                    <Button variant="secondary" className="w-full" disabled>
-                      Coming Soon
+                  <Link href="/rolls" className="mt-auto">
+                    <Button className="w-full">
+                      View PPF Rolls
                     </Button>
-                  </div>
+                  </Link>
                 </Card>
               </div>
             </div>

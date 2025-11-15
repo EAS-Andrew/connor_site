@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { PageLayout, Button } from '@/components';
-import { lookupVehicleByRegistration, coverageOptions, materialOptions, VehicleData, CoverageOption, MaterialOption } from '@/lib/api';
+import { lookupVehicleByRegistration, getCoverageOptions, materialOptions, VehicleData, CoverageOption, MaterialOption } from '@/lib/api';
+import { createCartWithVehicle } from '@/lib/cart';
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -10,9 +11,11 @@ export default function PreCutPage() {
   const [currentStep, setCurrentStep] = useState<Step>(1);
   const [registration, setRegistration] = useState('');
   const [vehicleData, setVehicleData] = useState<VehicleData | null>(null);
+  const [coverageOptions, setCoverageOptions] = useState<CoverageOption[]>([]);
   const [selectedCoverage, setSelectedCoverage] = useState<CoverageOption | null>(null);
   const [selectedMaterial, setSelectedMaterial] = useState<MaterialOption | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [error, setError] = useState('');
 
   // Refs for each step section
@@ -21,6 +24,19 @@ export default function PreCutPage() {
   const step3Ref = useRef<HTMLDivElement>(null);
   const step4Ref = useRef<HTMLDivElement>(null);
   const materialSectionRef = useRef<HTMLDivElement>(null);
+
+  // Fetch coverage options from Shopify on mount
+  useEffect(() => {
+    async function loadCoverageOptions() {
+      try {
+        const options = await getCoverageOptions();
+        setCoverageOptions(options);
+      } catch (error) {
+        console.error('Failed to load coverage options:', error);
+      }
+    }
+    loadCoverageOptions();
+  }, []);
 
   // Scroll to step when it changes
   useEffect(() => {
@@ -92,6 +108,41 @@ export default function PreCutPage() {
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep((currentStep - 1) as Step);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    if (!vehicleData || !selectedCoverage || !selectedMaterial) {
+      setError('Missing required information');
+      return;
+    }
+
+    setIsCheckingOut(true);
+    setError('');
+
+    try {
+      // Find the selected variant (Gloss or Matte)
+      const selectedVariant = selectedCoverage.variants.find(
+        (v) => v.title.toLowerCase() === selectedMaterial.id.toLowerCase()
+      );
+
+      if (!selectedVariant) {
+        throw new Error('Selected variant not found');
+      }
+
+      // Create cart with vehicle metadata
+      await createCartWithVehicle(
+        selectedVariant.id,
+        vehicleData,
+        1
+      );
+
+      // Redirect to cart page
+      window.location.href = '/cart';
+    } catch (error) {
+      console.error('Add to cart error:', error);
+      setError('Failed to add to cart. Please try again.');
+      setIsCheckingOut(false);
     }
   };
 
@@ -539,22 +590,20 @@ export default function PreCutPage() {
                         </p>
                       </div>
 
-                      {/* Integration note */}
-                      <div className="bg-stealth-black/50 border border-radar-grey-dark p-6 text-center">
-                        <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-2">SYSTEM_STATUS</div>
-                        <p className="text-sm text-radar-grey-light">
-                          <span className="text-infrared font-heading">⚠ INTEGRATION PENDING</span><br />
-                          Checkout system deployment in progress
-                        </p>
-                      </div>
                     </div>
 
+                    {error && (
+                      <div className="mb-6 p-4 bg-infrared/10 border-l-4 border-infrared">
+                        <p className="text-infrared font-heading text-sm tracking-wider">⚠ {error}</p>
+                      </div>
+                    )}
+
                     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                      <Button variant="secondary" onClick={handleBack} className="w-full sm:flex-1">
+                      <Button variant="secondary" onClick={handleBack} className="w-full sm:flex-1" disabled={isCheckingOut}>
                         ← Edit Configuration
                       </Button>
-                      <Button className="w-full sm:flex-1" disabled>
-                        Place Order →
+                      <Button onClick={handleAddToCart} className="w-full sm:flex-1" disabled={isCheckingOut}>
+                        {isCheckingOut ? 'Adding to Cart...' : 'Add to Cart →'}
                       </Button>
                     </div>
                   </div>

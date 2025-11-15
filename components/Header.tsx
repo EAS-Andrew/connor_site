@@ -1,11 +1,32 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from './Button';
+import { getCurrentCart } from '@/lib/cart';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    async function loadCartCount() {
+      try {
+        const cart = await getCurrentCart();
+        if (cart) {
+          setCartCount(cart.totalQuantity);
+        }
+      } catch (error) {
+        console.error('Failed to load cart:', error);
+      }
+    }
+    
+    loadCartCount();
+    
+    // Poll for cart updates every 2 seconds when on the page
+    const interval = setInterval(loadCartCount, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-stealth-black/95 backdrop-blur-sm border-b border-radar-grey-dark">
@@ -60,6 +81,18 @@ export function Header() {
           
           {/* Tactical divider */}
           <div className="w-px h-6 bg-radar-grey-dark"></div>
+          
+          {/* Cart Icon */}
+          <Link href="/cart" className="relative text-ghost-white hover:text-infrared transition-colors duration-200 group">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 w-5 h-5 bg-infrared text-stealth-black text-xs font-heading flex items-center justify-center rounded-sm">
+                {cartCount}
+              </span>
+            )}
+          </Link>
           
           {/* CTA Button */}
           <Link href="/pre-cut">
@@ -122,6 +155,25 @@ export function Header() {
             
             {/* Divider */}
             <div className="h-px bg-radar-grey-dark my-2"></div>
+            
+            {/* Cart Link */}
+            <Link 
+              href="/cart"
+              className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wider flex items-center gap-3 group"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <div className="relative">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-infrared text-stealth-black text-[10px] font-heading flex items-center justify-center rounded-sm">
+                    {cartCount}
+                  </span>
+                )}
+              </div>
+              Cart {cartCount > 0 && `(${cartCount})`}
+            </Link>
             
             {/* CTA */}
             <Link href="/pre-cut" onClick={() => setIsMenuOpen(false)}>
