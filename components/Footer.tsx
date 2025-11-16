@@ -76,7 +76,7 @@ export function Footer() {
               <h4 className="font-heading text-[10px] sm:text-xs uppercase mb-3 sm:mb-4 text-infrared tracking-[0.3em]">Transmission</h4>
               <p className="text-radar-grey-light text-sm leading-relaxed">
                 <span className="text-[10px] uppercase tracking-wider block mb-1">Status: Standby</span>
-                info@stealthshield.com
+                info@stealthshieldppf.com
               </p>
             </div>
           </div>
