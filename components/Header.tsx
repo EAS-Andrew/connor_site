@@ -43,6 +43,15 @@ export function Header() {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6 lg:gap-8">
           <Link
+            href="/rolls"
+            className="relative text-ghost-white hover:text-infrared transition-colors duration-200 font-sans text-sm uppercase tracking-wider group"
+          >
+            <span className="relative">
+              PPF Rolls
+              <span className="absolute -bottom-1 left-0 w-0 h-px bg-infrared group-hover:w-full transition-all duration-300"></span>
+            </span>
+          </Link>
+          <Link
             href="/how-it-works"
             className="relative text-ghost-white hover:text-infrared transition-colors duration-200 font-sans text-sm uppercase tracking-wider group"
           >

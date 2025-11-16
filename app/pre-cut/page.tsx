@@ -167,9 +167,29 @@ export default function PreCutPage() {
                 </h1>
                 <div className="h-px w-8 sm:w-12 bg-infrared mt-3 sm:mt-4 mx-auto"></div>
               </div>
-              <p className="text-radar-grey-light text-xs sm:text-sm tracking-wide leading-relaxed max-w-2xl mx-auto">
-                Precision-matched PPF for your exact vehicle • Enter registration • Select coverage • We verify spec
+              <p className="text-radar-grey-light text-xs sm:text-sm tracking-wide leading-relaxed max-w-2xl mx-auto mb-6">
+                Precision-matched PPF for your exact vehicle • Enter registration • Instant pricing • We verify and cut to spec
               </p>
+
+              {/* Why Buy Direct? */}
+              <div className="max-w-3xl mx-auto mt-8 bg-radar-grey/50 border border-radar-grey-dark p-4 sm:p-6">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-10 h-10 bg-infrared/10 border border-infrared flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-infrared" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <div className="text-left">
+                    <h3 className="text-sm sm:text-base font-heading text-ghost-white mb-2 uppercase tracking-wide">
+                      Why Buy Direct?
+                    </h3>
+                    <p className="text-radar-grey-light text-xs sm:text-sm leading-relaxed">
+                      No installer markup. No middleman. Registration-verified patterns cut specifically for your vehicle.
+                      Get professional-grade PPF at direct-to-consumer pricing with guaranteed perfect fit.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Tactical Progress System */}
@@ -483,36 +503,64 @@ export default function PreCutPage() {
                         >
                           {selectedMaterial?.id === material.id && (
                             <>
-                              <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared"></div>
-                              <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared"></div>
+                              <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared z-10"></div>
+                              <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared z-10"></div>
                             </>
                           )}
 
                           <div className={`
-                            bg-radar-grey border-2 p-6 transition-all duration-300 flex flex-col h-full
+                            bg-radar-grey border-2 transition-all duration-300 flex flex-col h-full overflow-hidden
                             ${selectedMaterial?.id === material.id
                               ? 'border-infrared shadow-lg shadow-infrared/20'
                               : 'border-radar-grey-dark hover:border-infrared/50'
                             }
                           `}>
-                            <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-2">
-                              {material.id}_finish
+                            {/* Texture Visualization */}
+                            <div className="relative aspect-[16/9] bg-gradient-to-br from-stealth-black to-radar-grey-dark border-b-2 border-radar-grey-dark overflow-hidden">
+                              {material.id === 'matte' ? (
+                                // Matte texture pattern - more visible
+                                <div className="w-full h-full opacity-40">
+                                  <svg className="w-full h-full" viewBox="0 0 200 200" preserveAspectRatio="none">
+                                    <defs>
+                                      <pattern id={`matte-texture-${material.id}`} x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+                                        <circle cx="2" cy="2" r="1.5" fill="currentColor" className="text-ghost-white" opacity="0.6" />
+                                        <circle cx="7" cy="7" r="1.5" fill="currentColor" className="text-ghost-white" opacity="0.4" />
+                                      </pattern>
+                                    </defs>
+                                    <rect width="200" height="200" fill={`url(#matte-texture-${material.id})`} />
+                                  </svg>
+                                </div>
+                              ) : (
+                                // Glossy shine effect - more prominent
+                                <div className="w-full h-full relative">
+                                  <div className="absolute inset-0 bg-gradient-to-br from-ghost-white/20 via-transparent to-transparent"></div>
+                                  <div className="absolute top-0 right-0 w-2/3 h-2/3 bg-gradient-to-br from-ghost-white/30 via-ghost-white/10 to-transparent blur-2xl"></div>
+                                  <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-ghost-white/5 to-transparent blur-xl"></div>
+                                </div>
+                              )}
                             </div>
-                            <h3 className="text-2xl font-heading text-ghost-white mb-2 uppercase">
-                              {material.name}
-                            </h3>
-                            <div className="text-sm text-infrared font-heading uppercase tracking-wider mb-4">
-                              {material.finish}
-                            </div>
-                            <p className="text-radar-grey-light text-sm leading-relaxed flex-1">
-                              {material.description}
-                            </p>
 
-                            {selectedMaterial?.id === material.id && (
-                              <div className="mt-4 bg-infrared/10 border-l-2 border-infrared py-2 px-3">
-                                <span className="text-infrared font-heading text-xs tracking-wider">✓ SELECTED</span>
+                            {/* Content Section */}
+                            <div className="p-6 flex flex-col flex-1">
+                              <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-2">
+                                {material.id}_finish
                               </div>
-                            )}
+                              <h3 className="text-2xl font-heading text-ghost-white mb-2 uppercase">
+                                {material.name}
+                              </h3>
+                              <div className="text-sm text-infrared font-heading uppercase tracking-wider mb-4">
+                                {material.finish}
+                              </div>
+                              <p className="text-radar-grey-light text-sm leading-relaxed flex-1">
+                                {material.description}
+                              </p>
+
+                              {selectedMaterial?.id === material.id && (
+                                <div className="mt-4 bg-infrared/10 border-l-2 border-infrared py-2 px-3">
+                                  <span className="text-infrared font-heading text-xs tracking-wider">✓ SELECTED</span>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
                       ))}

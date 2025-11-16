@@ -1,5 +1,6 @@
 import { Header } from './Header';
 import { Footer } from './Footer';
+import { ExitIntentPopup } from './ExitIntentPopup';
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -13,6 +14,7 @@ export function PageLayout({ children }: PageLayoutProps) {
         {children}
       </main>
       <Footer />
+      <ExitIntentPopup />
     </div>
   );
 }

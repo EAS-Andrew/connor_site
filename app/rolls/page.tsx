@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { PageLayout, Button, Card } from '@/components';
+import Link from 'next/link';
 import { fetchPPFRolls, ShopifyProduct } from '@/lib/shopify';
 import { addToCart, createCart } from '@/lib/shopify';
 
@@ -144,9 +145,55 @@ export default function RollsPage() {
               <div className="w-1 h-1 bg-infrared rotate-45"></div>
               <div className="h-px w-16 bg-radar-grey-dark"></div>
             </div>
-            <p className="text-lg text-radar-grey-light max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg text-radar-grey-light max-w-3xl mx-auto leading-relaxed mb-4">
               Professional-grade protection film for custom applications. Premium quality with optical clarity and self-healing technology.
             </p>
+            <div className="inline-block px-4 py-2 bg-infrared/20 border border-infrared">
+              <span className="text-infrared text-xs font-heading uppercase tracking-wider">
+                ✓ Bulk Pricing for Professionals
+              </span>
+            </div>
+          </div>
+
+          {/* Explainer Sections */}
+          <div className="max-w-5xl mx-auto mb-12 sm:mb-16 grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Can I install this myself? */}
+            <div className="bg-radar-grey border border-radar-grey-dark p-6">
+              <div className="flex items-start gap-3 mb-4">
+                <div className="w-10 h-10 bg-infrared/10 border border-infrared flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 text-infrared" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-heading text-ghost-white mb-2 uppercase tracking-wide">
+                    Can I Install This Myself?
+                  </h3>
+                  <p className="text-radar-grey-light text-sm leading-relaxed">
+                    PPF rolls require professional installation. You'll need experience with film application, a plotter for cutting patterns, and specialized tools. We recommend these for professional installers or those with advanced DIY skills.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Will it fit my car? */}
+            <div className="bg-radar-grey border border-radar-grey-dark p-6">
+              <div className="flex items-start gap-3 mb-4">
+                <div className="w-10 h-10 bg-infrared/10 border border-infrared flex items-center justify-center flex-shrink-0">
+                  <svg className="w-5 h-5 text-infrared" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-heading text-ghost-white mb-2 uppercase tracking-wide">
+                    Will It Fit My Car?
+                  </h3>
+                  <p className="text-radar-grey-light text-sm leading-relaxed">
+                    Film rolls are universal - they work with any vehicle when cut to size. Perfect for custom coverage patterns, partial wraps, or multiple vehicles. Installers use plotters with vehicle-specific templates to achieve perfect fits.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Success/Error Message */}
@@ -164,10 +211,10 @@ export default function RollsPage() {
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {products.map((product) => {
-                const currentVariant = selectedProduct?.id === product.id && selectedVariant 
+                const currentVariant = selectedProduct?.id === product.id && selectedVariant
                   ? product.variants.edges.find(e => e.node.id === selectedVariant)?.node
                   : product.variants.edges[0].node;
-                
+
                 return (
                   <div key={product.id} className="bg-radar-grey border border-radar-grey-dark hover:border-infrared transition-all duration-300 group flex flex-col">
                     {/* Product Image - PPF Roll Visual */}
@@ -180,10 +227,10 @@ export default function RollsPage() {
                             <svg className="w-full h-full" viewBox="0 0 200 200">
                               <defs>
                                 <pattern id="matte-texture" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                                  <circle cx="2" cy="2" r="1" fill="currentColor" className="text-ghost-white" opacity="0.3"/>
+                                  <circle cx="2" cy="2" r="1" fill="currentColor" className="text-ghost-white" opacity="0.3" />
                                 </pattern>
                               </defs>
-                              <rect width="200" height="200" fill="url(#matte-texture)"/>
+                              <rect width="200" height="200" fill="url(#matte-texture)" />
                             </svg>
                           </div>
                         ) : (
@@ -194,16 +241,16 @@ export default function RollsPage() {
                           </div>
                         )}
                       </div>
-                      
+
                       {/* Roll icon */}
                       <div className="relative z-10">
                         <svg className="w-20 h-20 text-infrared/30" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                          <circle cx="12" cy="12" r="9" strokeWidth="2"/>
-                          <circle cx="12" cy="12" r="6" strokeWidth="2"/>
-                          <circle cx="12" cy="12" r="3" strokeWidth="2"/>
+                          <circle cx="12" cy="12" r="9" strokeWidth="2" />
+                          <circle cx="12" cy="12" r="6" strokeWidth="2" />
+                          <circle cx="12" cy="12" r="3" strokeWidth="2" />
                         </svg>
                       </div>
-                      
+
                       {/* Finish Badge */}
                       <div className="absolute top-2 right-2 px-2 py-1 bg-stealth-black/80 border border-infrared/50">
                         <span className="text-[10px] font-heading text-infrared uppercase tracking-wider">
@@ -217,7 +264,7 @@ export default function RollsPage() {
                       <h3 className="text-lg font-heading text-ghost-white mb-2 group-hover:text-infrared transition-colors">
                         {product.title}
                       </h3>
-                      
+
                       <p className="text-radar-grey-light text-xs mb-4 line-clamp-2 flex-shrink-0">
                         {product.description}
                       </p>
@@ -257,8 +304,8 @@ export default function RollsPage() {
                       {/* Add to Cart Button - Always at bottom */}
                       <Button
                         onClick={() => {
-                          const variantId = selectedProduct?.id === product.id && selectedVariant 
-                            ? selectedVariant 
+                          const variantId = selectedProduct?.id === product.id && selectedVariant
+                            ? selectedVariant
                             : product.variants.edges[0].node.id;
                           handleAddToCart(product, variantId);
                         }}
@@ -275,30 +322,89 @@ export default function RollsPage() {
             </div>
           </div>
 
-          {/* Info Section */}
-          <div className="max-w-4xl mx-auto mt-16">
-            <div className="bg-radar-grey border border-radar-grey-dark p-6 sm:p-8">
-              <h3 className="text-xl font-heading text-ghost-white mb-4 uppercase tracking-wider">
-                Professional Quality
-              </h3>
-              <ul className="space-y-2 text-radar-grey-light">
-                <li className="flex items-start gap-3">
-                  <div className="w-1 h-1 bg-infrared rotate-45 mt-2 flex-shrink-0"></div>
-                  <span className="text-sm">Premium PPF with self-healing technology</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-1 h-1 bg-infrared rotate-45 mt-2 flex-shrink-0"></div>
-                  <span className="text-sm">Crystal-clear optical quality</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-1 h-1 bg-infrared rotate-45 mt-2 flex-shrink-0"></div>
-                  <span className="text-sm">Available in gloss and matte finishes</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-1 h-1 bg-infrared rotate-45 mt-2 flex-shrink-0"></div>
-                  <span className="text-sm">Professional installer-ready</span>
-                </li>
-              </ul>
+          {/* Info Section - Enhanced */}
+          <div className="max-w-6xl mx-auto mt-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Key Benefits */}
+              <div className="bg-radar-grey border border-radar-grey-dark p-6 sm:p-8">
+                <div className="text-[10px] text-infrared uppercase tracking-widest font-heading mb-4">
+                  KEY_BENEFITS
+                </div>
+                <h3 className="text-xl font-heading text-ghost-white mb-4 uppercase tracking-wider">
+                  Professional Quality
+                </h3>
+                <ul className="space-y-3 text-radar-grey-light">
+                  <li className="flex items-start gap-3">
+                    <div className="w-1 h-1 bg-infrared rotate-45 mt-2 flex-shrink-0"></div>
+                    <div>
+                      <span className="text-sm text-ghost-white font-heading">Self-Healing Technology:</span>
+                      <span className="text-sm"> Minor scratches disappear with heat application</span>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-1 h-1 bg-infrared rotate-45 mt-2 flex-shrink-0"></div>
+                    <div>
+                      <span className="text-sm text-ghost-white font-heading">Crystal-Clear Optics:</span>
+                      <span className="text-sm"> Invisible protection with zero distortion</span>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-1 h-1 bg-infrared rotate-45 mt-2 flex-shrink-0"></div>
+                    <div>
+                      <span className="text-sm text-ghost-white font-heading">UV Resistance:</span>
+                      <span className="text-sm"> No yellowing or degradation over time</span>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-1 h-1 bg-infrared rotate-45 mt-2 flex-shrink-0"></div>
+                    <div>
+                      <span className="text-sm text-ghost-white font-heading">7-10 Year Lifespan:</span>
+                      <span className="text-sm"> Long-term protection with proper installation</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Best For */}
+              <div className="bg-radar-grey border border-radar-grey-dark p-6 sm:p-8">
+                <div className="text-[10px] text-infrared uppercase tracking-widest font-heading mb-4">
+                  IDEAL_USE_CASES
+                </div>
+                <h3 className="text-xl font-heading text-ghost-white mb-4 uppercase tracking-wider">
+                  Who Should Buy Rolls?
+                </h3>
+                <ul className="space-y-3 text-radar-grey-light">
+                  <li className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-infrared flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm">Professional detailers & installers</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-infrared flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm">Body shops offering PPF services</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-infrared flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm">Businesses with vehicle fleets</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-infrared flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-sm">Advanced DIYers with plotter access</span>
+                  </li>
+                </ul>
+                <div className="mt-6 pt-6 border-t border-radar-grey-dark">
+                  <p className="text-xs text-ghost-white">
+                    <span className="text-infrared font-heading">Looking for a pre-cut kit instead?</span> Check out our precision-cut options for your specific vehicle. <Link href="/pre-cut" className="text-infrared underline hover:no-underline">Start with your reg →</Link>
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

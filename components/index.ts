@@ -4,5 +4,6 @@ export { StepIndicator } from './StepIndicator';
 export { Header } from './Header';
 export { Footer } from './Footer';
 export { PageLayout } from './PageLayout';
+export { ExitIntentPopup } from './ExitIntentPopup';
 
 
