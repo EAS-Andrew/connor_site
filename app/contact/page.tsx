@@ -110,8 +110,8 @@ export default function ContactPage() {
                     Email
                   </h3>
                   <p className="text-radar-grey-light break-all">
-                    <a href="mailto:info@stealthshield.co.uk" className="hover:text-infrared transition-colors">
-                      info@stealthshield.co.uk
+                    <a href="mailto:info@stealthshieldppf.com" className="hover:text-infrared transition-colors">
+                      info@stealthshieldppf.com
                     </a>
                   </p>
                   <p className="text-radar-grey-light text-sm mt-2">

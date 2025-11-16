@@ -170,7 +170,7 @@ export default function RollsPage() {
                     Can I Install This Myself?
                   </h3>
                   <p className="text-radar-grey-light text-sm leading-relaxed">
-                    PPF rolls require professional installation. You'll need experience with film application, a plotter for cutting patterns, and specialized tools. We recommend these for professional installers or those with advanced DIY skills.
+                    PPF rolls require professional installation. You&apos;ll need experience with film application, a plotter for cutting patterns, and specialized tools. We recommend these for professional installers or those with advanced DIY skills.
                   </p>
                 </div>
               </div>
@@ -216,47 +216,30 @@ export default function RollsPage() {
                   : product.variants.edges[0].node;
 
                 return (
-                  <div key={product.id} className="bg-radar-grey border border-radar-grey-dark hover:border-infrared transition-all duration-300 group flex flex-col">
-                    {/* Product Image - PPF Roll Visual */}
-                    <div className="aspect-square bg-gradient-to-br from-stealth-black to-radar-grey-dark border-b border-radar-grey-dark flex items-center justify-center relative overflow-hidden">
-                      {/* Glossy/Matte effect visualization */}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        {product.title.toLowerCase().includes('matte') ? (
-                          // Matte texture pattern
-                          <div className="w-full h-full opacity-20">
-                            <svg className="w-full h-full" viewBox="0 0 200 200">
-                              <defs>
-                                <pattern id="matte-texture" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                                  <circle cx="2" cy="2" r="1" fill="currentColor" className="text-ghost-white" opacity="0.3" />
-                                </pattern>
-                              </defs>
-                              <rect width="200" height="200" fill="url(#matte-texture)" />
-                            </svg>
-                          </div>
-                        ) : (
-                          // Glossy shine effect
-                          <div className="w-full h-full relative">
-                            <div className="absolute inset-0 bg-gradient-to-br from-ghost-white/10 via-transparent to-transparent"></div>
-                            <div className="absolute top-1/4 left-1/4 w-1/3 h-1/3 bg-gradient-to-br from-ghost-white/20 to-transparent blur-xl rounded-full"></div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Roll icon */}
-                      <div className="relative z-10">
-                        <svg className="w-20 h-20 text-infrared/30" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                          <circle cx="12" cy="12" r="9" strokeWidth="2" />
-                          <circle cx="12" cy="12" r="6" strokeWidth="2" />
-                          <circle cx="12" cy="12" r="3" strokeWidth="2" />
-                        </svg>
-                      </div>
-
-                      {/* Finish Badge */}
-                      <div className="absolute top-2 right-2 px-2 py-1 bg-stealth-black/80 border border-infrared/50">
-                        <span className="text-[10px] font-heading text-infrared uppercase tracking-wider">
-                          {product.title.toLowerCase().includes('matte') ? 'MATTE' : 'GLOSS'}
-                        </span>
-                      </div>
+                  <div key={product.id} className="bg-radar-grey border-2 border-radar-grey-dark hover:border-infrared transition-all duration-300 group flex flex-col overflow-hidden">
+                    {/* Texture Visualization - Matching pre-cut flow style */}
+                    <div className="relative aspect-[16/9] bg-gradient-to-br from-stealth-black to-radar-grey-dark border-b-2 border-radar-grey-dark overflow-hidden">
+                      {product.title.toLowerCase().includes('matte') ? (
+                        // Matte texture pattern - more visible
+                        <div className="w-full h-full opacity-40">
+                          <svg className="w-full h-full" viewBox="0 0 200 200" preserveAspectRatio="none">
+                            <defs>
+                              <pattern id={`matte-texture-${product.id}`} x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+                                <circle cx="2" cy="2" r="1.5" fill="currentColor" className="text-ghost-white" opacity="0.6" />
+                                <circle cx="7" cy="7" r="1.5" fill="currentColor" className="text-ghost-white" opacity="0.4" />
+                              </pattern>
+                            </defs>
+                            <rect width="200" height="200" fill={`url(#matte-texture-${product.id})`} />
+                          </svg>
+                        </div>
+                      ) : (
+                        // Glossy shine effect - more prominent
+                        <div className="w-full h-full relative">
+                          <div className="absolute inset-0 bg-gradient-to-br from-ghost-white/20 via-transparent to-transparent"></div>
+                          <div className="absolute top-0 right-0 w-2/3 h-2/3 bg-gradient-to-br from-ghost-white/30 via-ghost-white/10 to-transparent blur-2xl"></div>
+                          <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-ghost-white/5 to-transparent blur-xl"></div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Product Info */}

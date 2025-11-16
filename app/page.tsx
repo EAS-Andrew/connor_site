@@ -19,7 +19,7 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             {/* Tactical classification label */}
-            <div className="mb-8">
+            <div className="mt-4 sm:mt-0 mb-6 sm:mb-8">
               <div className="inline-block relative">
                 <div className="absolute -top-1 -left-1 w-4 h-4 border-l-2 border-t-2 border-infrared"></div>
                 <div className="absolute -bottom-1 -right-1 w-4 h-4 border-r-2 border-b-2 border-infrared"></div>
@@ -32,7 +32,7 @@ export default function Home() {
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-heading mb-4 sm:mb-6 text-ghost-white leading-tight tracking-wider">
-              PERFECT FIT. EVERY TIME.
+              PERFECT FIT.<br />EVERY TIME.
             </h1>
 
             {/* Horizontal accent */}
@@ -48,7 +48,7 @@ export default function Home() {
 
             {/* 3-Step Visual Path */}
             <div className="mb-8 sm:mb-10 max-w-3xl mx-auto px-4">
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-center gap-4 sm:gap-8">
                 <div className="flex items-center gap-3">
                   <div className="flex-shrink-0 w-8 h-8 bg-infrared/20 border border-infrared flex items-center justify-center">
                     <span className="text-infrared font-heading text-sm">1</span>
@@ -71,7 +71,7 @@ export default function Home() {
                   <div className="flex-shrink-0 w-8 h-8 bg-infrared/20 border border-infrared flex items-center justify-center">
                     <span className="text-infrared font-heading text-sm">3</span>
                   </div>
-                  <span className="text-ghost-white text-sm tracking-wide">We cut & ship</span>
+                  <span className="text-ghost-white text-sm tracking-wide">Delivered to door</span>
                 </div>
               </div>
             </div>

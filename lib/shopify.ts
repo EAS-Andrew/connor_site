@@ -82,6 +82,10 @@ export interface ShopifyCart {
             amount: string;
             currencyCode: string;
           };
+          image?: {
+            url: string;
+            altText?: string;
+          };
           product: {
             title: string;
             priceRange: {
@@ -89,6 +93,14 @@ export interface ShopifyCart {
                 amount: string;
                 currencyCode: string;
               };
+            };
+            images?: {
+              edges: Array<{
+                node: {
+                  url: string;
+                  altText?: string;
+                };
+              }>;
             };
           };
         };
@@ -258,12 +270,24 @@ export async function createCart(
                       amount
                       currencyCode
                     }
+                    image {
+                      url
+                      altText
+                    }
                     product {
                       title
                       priceRange {
                         minVariantPrice {
                           amount
                           currencyCode
+                        }
+                      }
+                      images(first: 1) {
+                        edges {
+                          node {
+                            url
+                            altText
+                          }
                         }
                       }
                     }
@@ -346,12 +370,24 @@ export async function addToCart(
                       amount
                       currencyCode
                     }
+                    image {
+                      url
+                      altText
+                    }
                     product {
                       title
                       priceRange {
                         minVariantPrice {
                           amount
                           currencyCode
+                        }
+                      }
+                      images(first: 1) {
+                        edges {
+                          node {
+                            url
+                            altText
+                          }
                         }
                       }
                     }
@@ -427,12 +463,24 @@ export async function getCart(cartId: string): Promise<ShopifyCart> {
                     amount
                     currencyCode
                   }
+                  image {
+                    url
+                    altText
+                  }
                   product {
                     title
                     priceRange {
                       minVariantPrice {
                         amount
                         currencyCode
+                      }
+                    }
+                    images(first: 1) {
+                      edges {
+                        node {
+                          url
+                          altText
+                        }
                       }
                     }
                   }
@@ -499,12 +547,24 @@ export async function updateCartLine(
                       amount
                       currencyCode
                     }
+                    image {
+                      url
+                      altText
+                    }
                     product {
                       title
                       priceRange {
                         minVariantPrice {
                           amount
                           currencyCode
+                        }
+                      }
+                      images(first: 1) {
+                        edges {
+                          node {
+                            url
+                            altText
+                          }
                         }
                       }
                     }
@@ -578,12 +638,24 @@ export async function removeCartLine(
                       amount
                       currencyCode
                     }
+                    image {
+                      url
+                      altText
+                    }
                     product {
                       title
                       priceRange {
                         minVariantPrice {
                           amount
                           currencyCode
+                        }
+                      }
+                      images(first: 1) {
+                        edges {
+                          node {
+                            url
+                            altText
+                          }
                         }
                       }
                     }

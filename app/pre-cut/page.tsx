@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { PageLayout, Button } from '@/components';
 import { lookupVehicleByRegistration, getCoverageOptions, materialOptions, VehicleData, CoverageOption, MaterialOption } from '@/lib/api';
-import { createCartWithVehicle } from '@/lib/cart';
+import { addToCartWithVehicle } from '@/lib/cart';
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -24,6 +24,7 @@ export default function PreCutPage() {
   const step3Ref = useRef<HTMLDivElement>(null);
   const step4Ref = useRef<HTMLDivElement>(null);
   const materialSectionRef = useRef<HTMLDivElement>(null);
+  const actionButtonsRef = useRef<HTMLDivElement>(null);
 
   // Fetch coverage options from Shopify on mount
   useEffect(() => {
@@ -45,10 +46,16 @@ export default function PreCutPage() {
 
     if (targetRef.current) {
       setTimeout(() => {
-        targetRef.current?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center'
-        });
+        const element = targetRef.current;
+        if (element) {
+          const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+          const offsetPosition = elementPosition - 100; // Account for header + some spacing
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
       }, 100);
     }
   }, [currentStep]);
@@ -88,15 +95,34 @@ export default function PreCutPage() {
     setSelectedCoverage(coverage);
     // Scroll to material section after coverage is selected
     setTimeout(() => {
-      materialSectionRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-      });
+      const element = materialSectionRef.current;
+      if (element) {
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+        const offsetPosition = elementPosition - 100; // Account for header + some spacing
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
     }, 300);
   };
 
   const handleMaterialSelect = (material: MaterialOption) => {
     setSelectedMaterial(material);
+    // Scroll to action buttons after material is selected (mobile only)
+    setTimeout(() => {
+      const element = actionButtonsRef.current;
+      if (element && window.innerWidth < 640) { // Only scroll on mobile (< sm breakpoint)
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+        const offsetPosition = elementPosition - 100; // Account for header + some spacing
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 300);
   };
 
   const handleProceedToReview = () => {
@@ -130,8 +156,8 @@ export default function PreCutPage() {
         throw new Error('Selected variant not found');
       }
 
-      // Create cart with vehicle metadata
-      await createCartWithVehicle(
+      // Add to cart (or create new cart) with vehicle metadata
+      await addToCartWithVehicle(
         selectedVariant.id,
         vehicleData,
         1
@@ -566,7 +592,7 @@ export default function PreCutPage() {
                       ))}
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                    <div ref={actionButtonsRef} className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                       <Button variant="secondary" onClick={handleBack} className="w-full sm:w-auto">
                         ← Go Back
                       </Button>
@@ -617,31 +643,31 @@ export default function PreCutPage() {
                       {/* Protection config */}
                       <div className="bg-stealth-black border-l-4 border-infrared p-6">
                         <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-3">PROTECTION_CONFIG</div>
-                        <div className="flex justify-between items-start mb-4">
-                          <div className="flex-1">
-                            <div className="text-ghost-white font-heading text-lg mb-3 uppercase">
-                              {selectedCoverage.name}
-                            </div>
-                            <div className="space-y-1.5">
-                              {selectedCoverage.includes.map((item, idx) => (
-                                <div key={idx} className="flex items-start gap-2">
-                                  <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                                  <span className="text-xs text-radar-grey-light">{item}</span>
-                                </div>
-                              ))}
-                            </div>
-                            <div className="mt-4 pt-4 border-t border-radar-grey-dark">
-                              <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-1">MATERIAL_SPEC</div>
-                              <div className="text-ghost-white font-heading">
-                                {selectedMaterial.name}
-                                <span className="text-infrared ml-2 text-sm">({selectedMaterial.finish})</span>
+                        <div className="mb-4">
+                          <div className="text-ghost-white font-heading text-lg mb-3 uppercase">
+                            {selectedCoverage.name}
+                          </div>
+                          <div className="space-y-1.5">
+                            {selectedCoverage.includes.map((item, idx) => (
+                              <div key={idx} className="flex items-start gap-2">
+                                <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
+                                <span className="text-xs text-radar-grey-light">{item}</span>
                               </div>
+                            ))}
+                          </div>
+                          <div className="mt-4 pt-4 border-t border-radar-grey-dark">
+                            <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-1">MATERIAL_SPEC</div>
+                            <div className="text-ghost-white font-heading">
+                              {selectedMaterial.name}
+                              <span className="text-infrared ml-2 text-sm">({selectedMaterial.finish})</span>
                             </div>
                           </div>
-                          <div className="text-right ml-6">
-                            <div className="text-infrared font-heading text-3xl">£{selectedCoverage.price}</div>
-                            <div className="text-[10px] text-radar-grey-light uppercase tracking-widest">TOTAL_GBP</div>
-                          </div>
+                        </div>
+                        
+                        {/* Price - Separate section for mobile compatibility */}
+                        <div className="pt-4 border-t border-radar-grey-dark">
+                          <div className="text-infrared font-heading text-3xl">£{selectedCoverage.price}</div>
+                          <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mt-1">TOTAL_GBP</div>
                         </div>
                       </div>
 

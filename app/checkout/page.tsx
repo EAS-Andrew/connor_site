@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { PageLayout, Button } from '@/components';
-import { getCurrentCart, getVehicleDataFromCart } from '@/lib/cart';
-import { VehicleData } from '@/lib/api';
+import { getCurrentCart } from '@/lib/cart';
 import { ShopifyCart } from '@/lib/shopify';
 
 interface ShippingAddress {
@@ -20,7 +19,6 @@ interface ShippingAddress {
 
 export default function CheckoutPage() {
   const [cart, setCart] = useState<ShopifyCart | null>(null);
-  const [vehicleData, setVehicleData] = useState<VehicleData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>({
     firstName: '',
@@ -46,10 +44,6 @@ export default function CheckoutPage() {
           return;
         }
         setCart(currentCart);
-        
-        // Extract vehicle data from cart
-        const vehicle = getVehicleDataFromCart(currentCart);
-        setVehicleData(vehicle);
       } catch (error) {
         console.error('Failed to load cart:', error);
       } finally {
@@ -303,39 +297,51 @@ export default function CheckoutPage() {
                     Order Summary
                   </h2>
 
-                  {/* Vehicle Details */}
-                  {vehicleData && (
-                    <div className="bg-stealth-black border-l-4 border-infrared p-4 mb-6">
-                      <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-2">
-                        TARGET_VEHICLE
-                      </div>
-                      <div className="text-ghost-white font-heading">
-                        {vehicleData.year} {vehicleData.make} {vehicleData.model}
-                      </div>
-                      {vehicleData.variant && (
-                        <div className="text-radar-grey-light text-sm">{vehicleData.variant}</div>
-                      )}
-                      <div className="text-infrared text-sm mt-1">{vehicleData.registration}</div>
-                    </div>
-                  )}
-
                   {/* Cart Items */}
                   <div className="space-y-4 mb-6">
-                    {cart.lines.edges.map((edge) => (
-                      <div key={edge.node.id} className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <div className="text-ghost-white font-heading text-sm">
-                            {edge.node.merchandise.product.title}
+                    {cart.lines.edges.map((edge) => {
+                      // Extract vehicle data from this line item's attributes
+                      const lineVehicleData = {
+                        registration: edge.node.attributes.find((a: any) => a.key === 'registration')?.value,
+                        make: edge.node.attributes.find((a: any) => a.key === 'make')?.value,
+                        model: edge.node.attributes.find((a: any) => a.key === 'model')?.value,
+                        year: edge.node.attributes.find((a: any) => a.key === 'year')?.value,
+                        variant: edge.node.attributes.find((a: any) => a.key === 'variant')?.value,
+                      };
+                      const hasVehicleData = lineVehicleData.registration && lineVehicleData.make;
+
+                      return (
+                        <div key={edge.node.id} className="border-b border-radar-grey-dark pb-4 last:border-b-0">
+                          <div className="flex justify-between items-start mb-2">
+                            <div className="flex-1">
+                              <div className="text-ghost-white font-heading text-sm">
+                                {edge.node.merchandise.product.title}
+                              </div>
+                              <div className="text-radar-grey-light text-xs">
+                                {edge.node.merchandise.title} × {edge.node.quantity}
+                              </div>
+                            </div>
+                            <div className="text-ghost-white font-heading">
+                              £{(parseFloat(edge.node.merchandise.price.amount) * edge.node.quantity).toFixed(2)}
+                            </div>
                           </div>
-                          <div className="text-radar-grey-light text-xs">
-                            {edge.node.merchandise.title} × {edge.node.quantity}
-                          </div>
+                          
+                          {/* Vehicle Info - if this item has vehicle data */}
+                          {hasVehicleData && (
+                            <div className="mt-2 bg-stealth-black/50 border-l-2 border-infrared/50 p-2">
+                              <div className="text-[9px] text-radar-grey-light uppercase tracking-widest mb-1">
+                                VEHICLE
+                              </div>
+                              <div className="text-ghost-white text-xs">
+                                {lineVehicleData.year} {lineVehicleData.make} {lineVehicleData.model}
+                                {lineVehicleData.variant && ` · ${lineVehicleData.variant}`}
+                                <span className="text-infrared ml-1">· {lineVehicleData.registration}</span>
+                              </div>
+                            </div>
+                          )}
                         </div>
-                        <div className="text-ghost-white font-heading">
-                          £{(parseFloat(edge.node.merchandise.price.amount) * edge.node.quantity).toFixed(2)}
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
 
                   {/* Totals */}

@@ -8,6 +8,8 @@ import { getCurrentCart } from '@/lib/cart';
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [productsOpen, setProductsOpen] = useState(false);
+  const [learnOpen, setLearnOpen] = useState(false);
 
   useEffect(() => {
     async function loadCartCount() {
@@ -42,42 +44,76 @@ export function Header() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6 lg:gap-8">
-          <Link
-            href="/rolls"
-            className="relative text-ghost-white hover:text-infrared transition-colors duration-200 font-sans text-sm uppercase tracking-wider group"
+          {/* Products Dropdown */}
+          <div 
+            className="relative"
+            onMouseEnter={() => setProductsOpen(true)}
+            onMouseLeave={() => setProductsOpen(false)}
           >
-            <span className="relative">
-              PPF Rolls
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-infrared group-hover:w-full transition-all duration-300"></span>
-            </span>
-          </Link>
-          <Link
-            href="/how-it-works"
-            className="relative text-ghost-white hover:text-infrared transition-colors duration-200 font-sans text-sm uppercase tracking-wider group"
+            <button className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans text-sm uppercase tracking-wider flex items-center gap-1">
+              Products
+              <svg className={`w-3 h-3 transition-transform duration-200 ${productsOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            {productsOpen && (
+              <div className="absolute top-full left-0 pt-2 w-48">
+                <div className="bg-radar-grey border border-radar-grey-dark shadow-xl">
+                  <Link
+                    href="/pre-cut"
+                    className="block px-4 py-3 text-ghost-white hover:bg-stealth-black hover:text-infrared transition-colors text-sm uppercase tracking-wide border-b border-radar-grey-dark"
+                  >
+                    Pre-Cut Kits
+                  </Link>
+                  <Link
+                    href="/rolls"
+                    className="block px-4 py-3 text-ghost-white hover:bg-stealth-black hover:text-infrared transition-colors text-sm uppercase tracking-wide"
+                  >
+                    PPF Rolls
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Learn Dropdown */}
+          <div 
+            className="relative"
+            onMouseEnter={() => setLearnOpen(true)}
+            onMouseLeave={() => setLearnOpen(false)}
           >
-            <span className="relative">
-              How It Works
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-infrared group-hover:w-full transition-all duration-300"></span>
-            </span>
-          </Link>
-          <Link
-            href="/about"
-            className="relative text-ghost-white hover:text-infrared transition-colors duration-200 font-sans text-sm uppercase tracking-wider group"
-          >
-            <span className="relative">
-              About
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-infrared group-hover:w-full transition-all duration-300"></span>
-            </span>
-          </Link>
-          <Link
-            href="/faq"
-            className="relative text-ghost-white hover:text-infrared transition-colors duration-200 font-sans text-sm uppercase tracking-wider group"
-          >
-            <span className="relative">
-              FAQ
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-infrared group-hover:w-full transition-all duration-300"></span>
-            </span>
-          </Link>
+            <button className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans text-sm uppercase tracking-wider flex items-center gap-1">
+              Learn
+              <svg className={`w-3 h-3 transition-transform duration-200 ${learnOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            {learnOpen && (
+              <div className="absolute top-full left-0 pt-2 w-48">
+                <div className="bg-radar-grey border border-radar-grey-dark shadow-xl">
+                  <Link
+                    href="/how-it-works"
+                    className="block px-4 py-3 text-ghost-white hover:bg-stealth-black hover:text-infrared transition-colors text-sm uppercase tracking-wide border-b border-radar-grey-dark"
+                  >
+                    How It Works
+                  </Link>
+                  <Link
+                    href="/faq"
+                    className="block px-4 py-3 text-ghost-white hover:bg-stealth-black hover:text-infrared transition-colors text-sm uppercase tracking-wide border-b border-radar-grey-dark"
+                  >
+                    FAQ
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="block px-4 py-3 text-ghost-white hover:bg-stealth-black hover:text-infrared transition-colors text-sm uppercase tracking-wide"
+                  >
+                    About
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+
           <Link
             href="/contact"
             className="relative text-ghost-white hover:text-infrared transition-colors duration-200 font-sans text-sm uppercase tracking-wider group"
@@ -128,31 +164,63 @@ export function Header() {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-radar-grey border-t border-radar-grey-dark">
-          <div className="container mx-auto px-4 py-6 flex flex-col gap-4">
-            <Link
-              href="/how-it-works"
-              className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wider flex items-center gap-2 group"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <div className="w-1 h-1 bg-infrared rotate-45 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-              How It Works
-            </Link>
-            <Link
-              href="/about"
-              className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wider flex items-center gap-2 group"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <div className="w-1 h-1 bg-infrared rotate-45 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-              About
-            </Link>
-            <Link
-              href="/faq"
-              className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wider flex items-center gap-2 group"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <div className="w-1 h-1 bg-infrared rotate-45 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-              FAQ
-            </Link>
+          <div className="container mx-auto px-4 py-6 flex flex-col gap-3">
+            {/* Products Section */}
+            <div>
+              <div className="text-[10px] text-infrared uppercase tracking-widest font-heading mb-2">Products</div>
+              <Link
+                href="/pre-cut"
+                className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wide flex items-center gap-2 group pl-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <div className="w-1 h-1 bg-infrared rotate-45 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                Pre-Cut Kits
+              </Link>
+              <Link
+                href="/rolls"
+                className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wide flex items-center gap-2 group pl-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <div className="w-1 h-1 bg-infrared rotate-45 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                PPF Rolls
+              </Link>
+            </div>
+
+            {/* Divider */}
+            <div className="h-px bg-radar-grey-dark"></div>
+
+            {/* Learn Section */}
+            <div>
+              <div className="text-[10px] text-infrared uppercase tracking-widest font-heading mb-2">Learn</div>
+              <Link
+                href="/how-it-works"
+                className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wide flex items-center gap-2 group pl-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <div className="w-1 h-1 bg-infrared rotate-45 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                How It Works
+              </Link>
+              <Link
+                href="/faq"
+                className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wide flex items-center gap-2 group pl-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <div className="w-1 h-1 bg-infrared rotate-45 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                FAQ
+              </Link>
+              <Link
+                href="/about"
+                className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wide flex items-center gap-2 group pl-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <div className="w-1 h-1 bg-infrared rotate-45 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                About
+              </Link>
+            </div>
+
+            {/* Divider */}
+            <div className="h-px bg-radar-grey-dark"></div>
+
             <Link
               href="/contact"
               className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wider flex items-center gap-2 group"
@@ -163,7 +231,7 @@ export function Header() {
             </Link>
             
             {/* Divider */}
-            <div className="h-px bg-radar-grey-dark my-2"></div>
+            <div className="h-px bg-radar-grey-dark"></div>
             
             {/* Cart Link */}
             <Link 
