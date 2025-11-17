@@ -19,16 +19,42 @@ function verifyWebhook(body: string, hmacHeader: string): boolean {
   return hash === hmacHeader;
 }
 
-// Extract vehicle data from order attributes
+// Extract vehicle data from order line item properties
 function getVehicleDataFromOrder(order: any) {
-  const attributes = order.note_attributes || [];
-  
+  // Check note_attributes first (cart-level attributes)
+  const noteAttributes = order.note_attributes || [];
+  if (noteAttributes.length > 0) {
+    const registration = noteAttributes.find((a: any) => a.name === 'registration')?.value;
+    if (registration) {
+      return {
+        registration,
+        make: noteAttributes.find((a: any) => a.name === 'make')?.value,
+        model: noteAttributes.find((a: any) => a.name === 'model')?.value,
+        year: noteAttributes.find((a: any) => a.name === 'year')?.value,
+        variant: noteAttributes.find((a: any) => a.name === 'variant')?.value,
+      };
+    }
+  }
+
+  // Fallback: check line item properties (where cart attributes actually go)
+  const lineItems = order.line_items || [];
+  if (lineItems.length > 0) {
+    const properties = lineItems[0].properties || [];
+    return {
+      registration: properties.find((p: any) => p.name === 'registration')?.value,
+      make: properties.find((p: any) => p.name === 'make')?.value,
+      model: properties.find((p: any) => p.name === 'model')?.value,
+      year: properties.find((p: any) => p.name === 'year')?.value,
+      variant: properties.find((p: any) => p.name === 'variant')?.value,
+    };
+  }
+
   return {
-    registration: attributes.find((a: any) => a.name === 'registration')?.value,
-    make: attributes.find((a: any) => a.name === 'make')?.value,
-    model: attributes.find((a: any) => a.name === 'model')?.value,
-    year: attributes.find((a: any) => a.name === 'year')?.value,
-    variant: attributes.find((a: any) => a.name === 'variant')?.value,
+    registration: undefined,
+    make: undefined,
+    model: undefined,
+    year: undefined,
+    variant: undefined,
   };
 }
 
@@ -86,7 +112,14 @@ export async function POST(request: NextRequest) {
       orderId: order.id,
       orderName: order.name,
       email: order.email,
+      lineItemsCount: order.line_items?.length || 0,
+      noteAttributesCount: order.note_attributes?.length || 0,
     });
+
+    // Debug: Log first line item properties if they exist
+    if (order.line_items && order.line_items.length > 0) {
+      console.log('First line item properties:', order.line_items[0].properties);
+    }
 
     // Check if this is a pre-cut kit order with vehicle data
     if (hasVehicleData(order)) {
