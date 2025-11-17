@@ -41,7 +41,7 @@ interface VehicleData {
 // Verify the webhook came from Shopify
 function verifyWebhook(body: string, hmacHeader: string): boolean {
   const secret = process.env.SHOPIFY_WEBHOOK_SECRET;
-  
+
   if (!secret) {
     console.error('SHOPIFY_WEBHOOK_SECRET not configured');
     return false;
@@ -103,12 +103,12 @@ function hasVehicleData(order: ShopifyOrder): boolean {
 // Send follow-up email
 async function sendFollowUpEmail(order: ShopifyOrder) {
   const vehicleData = getVehicleDataFromOrder(order);
-  
+
   // Ensure required fields exist (already validated by hasVehicleData)
   if (!vehicleData.registration || !vehicleData.make || !vehicleData.model || !vehicleData.year) {
     throw new Error('Missing required vehicle data');
   }
-  
+
   // Generate and store photo upload token
   const photoToken = generatePhotoToken();
   const tokenData: PhotoTokenData = {
@@ -143,14 +143,14 @@ async function sendFollowUpEmail(order: ShopifyOrder) {
   };
 
   console.log('Sending follow-up email with photo token:', { orderNumber: order.name, token: photoToken });
-  
+
   const result = await sendVehicleFollowUpEmail(emailData);
-  
+
   if (result.error) {
     console.error('Failed to send email:', result.error);
     throw new Error(`Email send failed: ${result.error}`);
   }
-  
+
   return result;
 }
 
@@ -159,7 +159,7 @@ export async function POST(request: NextRequest) {
     // Get the raw body for webhook verification
     const body = await request.text();
     const hmacHeader = request.headers.get('x-shopify-hmac-sha256');
-    
+
     // Verify webhook authenticity
     if (!hmacHeader || !verifyWebhook(body, hmacHeader)) {
       console.error('Webhook verification failed');
@@ -171,7 +171,7 @@ export async function POST(request: NextRequest) {
 
     // Parse the order data
     const order = JSON.parse(body);
-    
+
     console.log('Received order webhook:', {
       orderId: order.id,
       orderName: order.name,
@@ -195,7 +195,7 @@ export async function POST(request: NextRequest) {
 
     // Return success response to Shopify
     return NextResponse.json({ success: true });
-    
+
   } catch (error) {
     console.error('Webhook processing error:', error);
     return NextResponse.json(

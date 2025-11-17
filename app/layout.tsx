@@ -19,12 +19,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "StealthShield | Premium Paint Protection Film",
   description: "Invisible Strength. Precision-engineered PPF for your vehicle.",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
