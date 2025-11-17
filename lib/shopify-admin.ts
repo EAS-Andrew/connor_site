@@ -46,8 +46,34 @@ export async function updateOrderWithPhotos(
     const existingNote = currentOrder.order?.note || '';
     const existingTags = currentOrder.order?.tags || '';
 
-    // Prepare new note with photo URLs
-    const photoNote = `\n\n--- BUMPER PHOTOS ---\nFront: ${frontPhotoUrl}\nRear: ${rearPhotoUrl}\nUploaded: ${new Date().toISOString()}`;
+    // Prepare new note with photo URLs - formatted for easy viewing
+    const uploadDate = new Date().toLocaleString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+    
+    const photoNote = `
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚗 BUMPER ANALYSIS PHOTOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📸 FRONT BUMPER
+   ${frontPhotoUrl}
+
+📸 REAR BUMPER
+   ${rearPhotoUrl}
+
+⏰ Uploaded: ${uploadDate}
+✅ Ready for precision cutting
+
+💡 Click URLs above to view high-resolution images
+   Use images to identify sensors, cameras, and modifications
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
     const newNote = existingNote + photoNote;
 
     // Add "photos-uploaded" tag if not already present
