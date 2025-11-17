@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { BumperOverlay } from '@/components';
 
@@ -19,7 +19,7 @@ interface OrderData {
 type CaptureMode = 'camera' | 'upload';
 type CaptureStep = 'front' | 'rear' | 'preview' | 'success';
 
-export default function UploadPhotosPage() {
+function UploadPhotosContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
 
@@ -456,6 +456,27 @@ export default function UploadPhotosPage() {
         )}
       </div>
     </div>
+  );
+}
+
+// Loading fallback component
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-void-black flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-16 h-16 border-4 border-stealthshield-red border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <p className="text-radar-grey-light font-heading tracking-wider">LOADING...</p>
+      </div>
+    </div>
+  );
+}
+
+// Default export with Suspense boundary
+export default function UploadPhotosPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <UploadPhotosContent />
+    </Suspense>
   );
 }
 
