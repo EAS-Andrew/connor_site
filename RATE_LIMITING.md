@@ -12,9 +12,11 @@ Rate limiting is implemented on the vehicle lookup API to:
 
 ### Current Limits
 
-- **20 requests per hour** per IP address
+- **10 requests per hour** per IP address
 - Uses **sliding window** algorithm for fair distribution
 - Tracked using Redis for accuracy across all servers
+
+**Why so tight?** Limited API credits (400 total = £60). This protects your budget while allowing legitimate use.
 
 ### Rate Limit Headers
 
@@ -53,17 +55,18 @@ When limit is reached:
 
 ## Why These Limits?
 
-### 20 Requests/Hour is Generous
+### 10 Requests/Hour - Balanced Protection
 
 **Typical User Journey:**
 - Looks up their vehicle: 1-2 attempts (typos, etc.)
 - Maybe checks a second vehicle: 1-2 attempts
 - **Total:** 2-4 requests
 
-20 requests/hour allows:
-- 5+ complete vehicle searches
+10 requests/hour allows:
+- 2-3 complete vehicle searches
 - Room for mistakes/typos
-- Testing different vehicles
+- Occasional extra lookups
+- **Protects 400 API credits from abuse**
 
 ### Who Hits the Limit?
 
@@ -320,25 +323,30 @@ Rate limiting uses IP addresses:
 Theoretical abuse scenario:
 - Bot hits API 1,000 times/hour
 - Runs for 24 hours = 24,000 requests
-- Cost: 24,000 × £0.10 = **£2,400/day**
+- Your 400 credits exhausted in: **24 minutes** ⚠️
+- Cost: £60 wasted on bot traffic
 
-### With Rate Limiting
+### With Rate Limiting (10/hour)
 
 Same scenario:
-- Bot limited to 20 requests/hour
-- 24 hours = 480 requests max
-- Cost: 480 × £0.10 = **£48/day**
+- Bot limited to 10 requests/hour
+- 24 hours = 240 requests max per IP
+- Your 400 credits last: **~40 hours minimum** ✓
+- Even with multiple attacking IPs, credits protected
 
-**Savings: £2,352/day (98% reduction)**
+**With Caching + Rate Limiting:**
+- 70-90% cache hit rate after first month
+- 400 credits can last **2-4 months** 🎯
+- Real users get instant cached responses
 
 ## Summary
 
 ✅ **Implemented**: IP-based rate limiting with sliding window
-✅ **Configured**: 20 requests/hour (adjustable)
+✅ **Configured**: 10 requests/hour per IP (adjustable)
 ✅ **User-Friendly**: Clear error messages with retry times
-✅ **Cost-Effective**: Prevents API abuse and excessive costs
+✅ **Cost-Effective**: Protects 400 API credits (£60) from abuse
 ✅ **Monitored**: Full logging and Redis analytics
 ✅ **Cached-Aware**: Cached responses don't count toward limit
 
-Rate limiting protects your API costs while maintaining excellent UX for legitimate users! 🛡️
+**Your 400 credits are now protected!** With rate limiting + caching, they should last 2-4 months with normal traffic. 🛡️
 

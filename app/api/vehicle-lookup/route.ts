@@ -1,18 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { lookupVehicleByVRM, extractVehicleYear, UKVDVehicleResponse } from '@/lib/ukvehicledata';
 import Redis from 'ioredis';
-import { Ratelimit } from '@upstash/ratelimit';
 
 // Cache TTL: 30 days (vehicle data doesn't change often)
 const CACHE_TTL_SECONDS = 30 * 24 * 60 * 60;
 
 // Rate limiting configuration
-const RATE_LIMIT_REQUESTS = 3; // requests
-const RATE_LIMIT_WINDOW = '1 h'; // per hour
+// IMPORTANT: With 400 API credits (£60), protect them carefully!
+// Cached requests don't use credits, but first-time lookups do
+const RATE_LIMIT_REQUESTS = 5; // requests per window
+const RATE_LIMIT_WINDOW_SECONDS = 60 * 60; // 1 hour in seconds
 
 // Initialize Redis client (reused across requests)
 let redis: Redis | null = null;
-let ratelimit: Ratelimit | null = null;
 
 function getRedisClient(): Redis | null {
   if (!process.env.REDIS_URL) {
@@ -43,28 +43,73 @@ function getRedisClient(): Redis | null {
   return redis;
 }
 
-function getRateLimiter(): Ratelimit | null {
+/**
+ * Simple sliding window rate limiter using Redis
+ * Returns { success, limit, remaining, reset }
+ */
+async function checkRateLimit(identifier: string): Promise<{
+  success: boolean;
+  limit: number;
+  remaining: number;
+  reset: number;
+}> {
   const redisClient = getRedisClient();
   if (!redisClient) {
-    return null;
+    // No Redis = no rate limiting
+    return {
+      success: true,
+      limit: RATE_LIMIT_REQUESTS,
+      remaining: RATE_LIMIT_REQUESTS,
+      reset: Date.now() + RATE_LIMIT_WINDOW_SECONDS * 1000,
+    };
   }
 
-  if (!ratelimit) {
-    try {
-      ratelimit = new Ratelimit({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        redis: redisClient as any, // ioredis is compatible but types differ slightly
-        limiter: Ratelimit.slidingWindow(RATE_LIMIT_REQUESTS, RATE_LIMIT_WINDOW),
-        analytics: true,
-        prefix: 'ratelimit:vehicle-lookup',
-      });
-    } catch (error) {
-      console.error('Failed to initialize rate limiter:', error);
-      return null;
+  const key = `ratelimit:vehicle-lookup:${identifier}`;
+  const now = Date.now();
+  const windowStart = now - (RATE_LIMIT_WINDOW_SECONDS * 1000);
+
+  try {
+    // Remove old entries outside the window
+    await redisClient.zremrangebyscore(key, 0, windowStart);
+
+    // Count requests in current window
+    const count = await redisClient.zcard(key);
+
+    if (count >= RATE_LIMIT_REQUESTS) {
+      // Rate limit exceeded
+      const oldestEntry = await redisClient.zrange(key, 0, 0, 'WITHSCORES');
+      const resetTime = oldestEntry[1]
+        ? parseInt(oldestEntry[1]) + (RATE_LIMIT_WINDOW_SECONDS * 1000)
+        : now + (RATE_LIMIT_WINDOW_SECONDS * 1000);
+
+      return {
+        success: false,
+        limit: RATE_LIMIT_REQUESTS,
+        remaining: 0,
+        reset: resetTime,
+      };
     }
-  }
 
-  return ratelimit;
+    // Add current request
+    await redisClient.zadd(key, now, `${now}-${Math.random()}`);
+    await redisClient.expire(key, RATE_LIMIT_WINDOW_SECONDS);
+
+    return {
+      success: true,
+      limit: RATE_LIMIT_REQUESTS,
+      remaining: RATE_LIMIT_REQUESTS - count - 1,
+      reset: now + (RATE_LIMIT_WINDOW_SECONDS * 1000),
+    };
+  } catch (error) {
+    console.error('Rate limit check error:', error);
+    // On error, allow the request
+    return {
+      success: true,
+      limit: RATE_LIMIT_REQUESTS,
+      remaining: RATE_LIMIT_REQUESTS,
+      reset: now + (RATE_LIMIT_WINDOW_SECONDS * 1000),
+    };
+  }
 }
 
 /**
@@ -76,49 +121,41 @@ function getRateLimiter(): Ratelimit | null {
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting check
-    const rateLimiter = getRateLimiter();
-    if (rateLimiter) {
-      // Get identifier (IP address or fallback)
-      const ip = request.headers.get('x-forwarded-for') ?? 
-                 request.headers.get('x-real-ip') ?? 
-                 'anonymous';
-      const identifier = `ip:${ip}`;
+    // Get identifier (IP address or fallback)
+    const ip = request.headers.get('x-forwarded-for') ??
+      request.headers.get('x-real-ip') ??
+      'anonymous';
+    const identifier = `ip:${ip}`;
 
-      try {
-        const { success, limit, remaining, reset } = await rateLimiter.limit(identifier);
+    const { success, limit, remaining, reset } = await checkRateLimit(identifier);
 
-        // Add rate limit headers to response
-        const headers = {
-          'X-RateLimit-Limit': limit.toString(),
-          'X-RateLimit-Remaining': remaining.toString(),
-          'X-RateLimit-Reset': new Date(reset).toISOString(),
-        };
+    // Add rate limit headers to response
+    const rateLimitHeaders = {
+      'X-RateLimit-Limit': limit.toString(),
+      'X-RateLimit-Remaining': remaining.toString(),
+      'X-RateLimit-Reset': new Date(reset).toISOString(),
+    };
 
-        if (!success) {
-          return NextResponse.json(
-            {
-              error: 'Rate limit exceeded',
-              message: `Too many requests. Please try again after ${new Date(reset).toLocaleTimeString()}`,
-              limit,
-              remaining: 0,
-              reset: new Date(reset).toISOString(),
-            },
-            {
-              status: 429,
-              headers,
-            }
-          );
+    if (!success) {
+      return NextResponse.json(
+        {
+          error: 'Rate limit exceeded',
+          message: `Too many requests. Please try again after ${new Date(reset).toLocaleTimeString()}`,
+          limit,
+          remaining: 0,
+          reset: new Date(reset).toISOString(),
+        },
+        {
+          status: 429,
+          headers: rateLimitHeaders,
         }
-
-        // Store headers to add to successful response later
-        request.headers.set('x-ratelimit-limit', limit.toString());
-        request.headers.set('x-ratelimit-remaining', remaining.toString());
-        request.headers.set('x-ratelimit-reset', new Date(reset).toISOString());
-      } catch (rateLimitError) {
-        // Rate limit check failed - continue without rate limiting
-        console.warn('Rate limit check failed:', rateLimitError);
-      }
+      );
     }
+
+    // Store headers to add to successful response later
+    request.headers.set('x-ratelimit-limit', limit.toString());
+    request.headers.set('x-ratelimit-remaining', remaining.toString());
+    request.headers.set('x-ratelimit-reset', new Date(reset).toISOString());
 
     const body = await request.json();
     const { registration } = body;
@@ -285,7 +322,7 @@ export async function GET() {
     rateLimit: isRedisConfigured ? {
       enabled: true,
       limit: RATE_LIMIT_REQUESTS,
-      window: RATE_LIMIT_WINDOW,
+      window: `${RATE_LIMIT_WINDOW_SECONDS / 3600} hour(s)`,
     } : {
       enabled: false,
     },
