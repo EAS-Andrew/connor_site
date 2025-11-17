@@ -12,6 +12,96 @@ interface UpdateOrderResult {
   error?: string;
 }
 
+interface ShopifyFile {
+  id: string;
+  url: string;
+  alt: string;
+}
+
+/**
+ * Upload image to Shopify Files from URL
+ * This allows images to be stored in Shopify and displayed as thumbnails
+ */
+async function uploadImageToShopifyFiles(
+  imageUrl: string,
+  alt: string
+): Promise<ShopifyFile | null> {
+  if (!SHOPIFY_STORE || !ADMIN_TOKEN) {
+    console.error('Shopify Admin API credentials not configured');
+    return null;
+  }
+
+  try {
+    const mutation = `
+      mutation fileCreate($files: [FileCreateInput!]!) {
+        fileCreate(files: $files) {
+          files {
+            id
+            ... on MediaImage {
+              image {
+                url
+                altText
+              }
+            }
+          }
+          userErrors {
+            field
+            message
+          }
+        }
+      }
+    `;
+
+    const variables = {
+      files: [
+        {
+          alt: alt,
+          contentType: 'IMAGE',
+          originalSource: imageUrl,
+        },
+      ],
+    };
+
+    const response = await fetch(
+      `https://${SHOPIFY_STORE}/admin/api/${API_VERSION}/graphql.json`,
+      {
+        method: 'POST',
+        headers: {
+          'X-Shopify-Access-Token': ADMIN_TOKEN,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: mutation, variables }),
+      }
+    );
+
+    if (!response.ok) {
+      console.error('Shopify file upload failed:', await response.text());
+      return null;
+    }
+
+    const result = await response.json();
+    
+    if (result.data?.fileCreate?.userErrors?.length > 0) {
+      console.error('Shopify file upload errors:', result.data.fileCreate.userErrors);
+      return null;
+    }
+
+    const file = result.data?.fileCreate?.files?.[0];
+    if (file && file.image) {
+      return {
+        id: file.id,
+        url: file.image.url,
+        alt: file.image.altText || alt,
+      };
+    }
+
+    return null;
+  } catch (error) {
+    console.error('Error uploading to Shopify Files:', error);
+    return null;
+  }
+}
+
 /**
  * Update Shopify order with bumper photo URLs
  * Adds a note with the photo URLs and tags the order as "photos-uploaded"
@@ -27,9 +117,19 @@ export async function updateOrderWithPhotos(
   }
 
   try {
+    console.log('Step 1: Uploading images to Shopify Files...');
+    
+    // Upload images to Shopify Files for thumbnail display
+    const [frontFile, rearFile] = await Promise.all([
+      uploadImageToShopifyFiles(frontPhotoUrl, 'Front Bumper Photo'),
+      uploadImageToShopifyFiles(rearPhotoUrl, 'Rear Bumper Photo'),
+    ]);
+
     const endpoint = `https://${SHOPIFY_STORE}/admin/api/${API_VERSION}/orders/${orderId}.json`;
 
-    // First, get the current order to preserve existing notes and tags
+    console.log('Step 2: Fetching current order...');
+    
+    // Get the current order to preserve existing notes and tags
     const getResponse = await fetch(endpoint, {
       method: 'GET',
       headers: {
@@ -105,7 +205,75 @@ export async function updateOrderWithPhotos(
       throw new Error(`Failed to update order: ${updateResponse.statusText}`);
     }
 
-    console.log(`Successfully updated Shopify order ${orderId} with photo URLs`);
+    console.log('Step 3: Creating metafields for image thumbnails...');
+    
+    // Add metafields with Shopify File references for thumbnail display
+    // This makes images show up as thumbnails in the Shopify admin order view
+    if (frontFile && rearFile) {
+      try {
+        const metafieldMutation = `
+          mutation orderUpdate($input: OrderInput!) {
+            orderUpdate(input: $input) {
+              order {
+                id
+              }
+              userErrors {
+                field
+                message
+              }
+            }
+          }
+        `;
+
+        const metafieldVariables = {
+          input: {
+            id: `gid://shopify/Order/${orderId}`,
+            metafields: [
+              {
+                namespace: 'custom',
+                key: 'front_bumper_photo',
+                type: 'file_reference',
+                value: frontFile.id,
+              },
+              {
+                namespace: 'custom',
+                key: 'rear_bumper_photo',
+                type: 'file_reference',
+                value: rearFile.id,
+              },
+            ],
+          },
+        };
+
+        const metafieldResponse = await fetch(
+          `https://${SHOPIFY_STORE}/admin/api/${API_VERSION}/graphql.json`,
+          {
+            method: 'POST',
+            headers: {
+              'X-Shopify-Access-Token': ADMIN_TOKEN,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query: metafieldMutation, variables: metafieldVariables }),
+          }
+        );
+
+        if (metafieldResponse.ok) {
+          const metafieldResult = await metafieldResponse.json();
+          if (metafieldResult.data?.orderUpdate?.userErrors?.length > 0) {
+            console.warn('Metafield creation warnings:', metafieldResult.data.orderUpdate.userErrors);
+          } else {
+            console.log('✅ Image thumbnails added to order');
+          }
+        }
+      } catch (metafieldError) {
+        // Don't fail the whole operation if metafields fail
+        console.warn('Failed to create metafields (thumbnails), but order updated:', metafieldError);
+      }
+    } else {
+      console.warn('Shopify Files upload failed - thumbnails not available, but URLs saved in notes');
+    }
+
+    console.log(`✅ Successfully updated Shopify order ${orderId} with photo URLs and thumbnails`);
     return { success: true };
   } catch (error) {
     console.error('Error updating Shopify order:', error);

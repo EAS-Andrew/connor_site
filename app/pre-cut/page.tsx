@@ -25,6 +25,7 @@ export default function PreCutPage() {
   const step4Ref = useRef<HTMLDivElement>(null);
   const materialSectionRef = useRef<HTMLDivElement>(null);
   const actionButtonsRef = useRef<HTMLDivElement>(null);
+  const errorRef = useRef<HTMLDivElement>(null);
 
   // Fetch coverage options from Shopify on mount
   useEffect(() => {
@@ -59,6 +60,24 @@ export default function PreCutPage() {
       }, 100);
     }
   }, [currentStep]);
+
+  // Scroll to error when validation fails
+  useEffect(() => {
+    if (error && errorRef.current) {
+      setTimeout(() => {
+        const element = errorRef.current;
+        if (element) {
+          const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+          const offsetPosition = elementPosition - 120; // Account for header + more spacing for visibility
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
+    }
+  }, [error]);
 
   const steps = [
     { label: 'SCAN', desc: 'Enter Registration' },
@@ -333,7 +352,7 @@ export default function PreCutPage() {
                       </div>
 
                       {error && (
-                        <div className="mb-6 p-4 bg-infrared/10 border-l-4 border-infrared">
+                        <div ref={errorRef} className="mb-6 p-4 bg-infrared/10 border-l-4 border-infrared">
                           <p className="text-infrared font-heading text-sm tracking-wider">⚠ {error}</p>
                         </div>
                       )}
