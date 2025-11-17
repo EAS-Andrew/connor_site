@@ -91,9 +91,22 @@ export async function lookupVehicleByVRM(
 
   // Check if the API returned a successful status
   if (!data.ResponseInformation?.IsSuccessStatusCode) {
-    throw new Error(
-      `Vehicle lookup failed: ${data.ResponseInformation?.StatusMessage || 'Unknown error'}`
-    );
+    const statusCode = data.ResponseInformation?.StatusCode;
+    const statusMessage = data.ResponseInformation?.StatusMessage || 'Unknown error';
+    
+    // Handle sandbox validation failures with helpful message
+    if (statusCode === 6 || statusMessage.includes('SandboxValidationFailure')) {
+      throw new Error(
+        'Sandbox API key detected. Please use test registrations (e.g., AB12CDE) or upgrade to a production API key for real lookups.'
+      );
+    }
+    
+    // Handle other common errors
+    if (statusCode === 2 || statusMessage.includes('NoResultsFound')) {
+      throw new Error('Vehicle not found');
+    }
+    
+    throw new Error(`Vehicle lookup failed: ${statusMessage}`);
   }
 
   return data;

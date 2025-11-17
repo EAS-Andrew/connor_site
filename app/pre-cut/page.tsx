@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { PageLayout, Button } from '@/components';
-import { lookupVehicleByRegistration, getCoverageOptions, materialOptions, VehicleData, CoverageOption, MaterialOption } from '@/lib/api';
+import { lookupVehicleByRegistration, getCoverageOptions, materialOptions, VehicleData, CoverageOption, MaterialOption, VehicleLookupError } from '@/lib/api';
 import { addToCartWithVehicle } from '@/lib/cart';
 
 type Step = 1 | 2 | 3 | 4;
@@ -78,10 +78,28 @@ export default function PreCutPage() {
         setVehicleData(data);
         setCurrentStep(2);
       } else {
-        setError('VEHICLE NOT FOUND');
+        setError('VEHICLE NOT FOUND - Please check the registration and try again');
       }
-    } catch {
-      setError('SYSTEM ERROR');
+    } catch (err) {
+      // Handle specific error types
+      if (err instanceof VehicleLookupError) {
+        if (err.statusCode === 429) {
+          // Rate limit error - show specific message with reset time
+          const resetTime = err.details?.reset 
+            ? new Date(err.details.reset).toLocaleTimeString('en-GB', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+              })
+            : 'a few minutes';
+          setError(`RATE LIMIT EXCEEDED - Too many lookups. Please try again after ${resetTime}`);
+        } else {
+          // Other API errors
+          setError(err.message.toUpperCase());
+        }
+      } else {
+        // Unknown errors
+        setError('SYSTEM ERROR - Unable to process request');
+      }
     } finally {
       setIsLoading(false);
     }

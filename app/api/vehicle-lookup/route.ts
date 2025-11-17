@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { lookupVehicleByVRM, extractVehicleYear, UKVDVehicleResponse } from '@/lib/ukvehicledata';
 import Redis from 'ioredis';
+import { Ratelimit } from '@upstash/ratelimit';
 
 // Cache TTL: 30 days (vehicle data doesn't change often)
 const CACHE_TTL_SECONDS = 30 * 24 * 60 * 60;
 
+// Rate limiting configuration
+const RATE_LIMIT_REQUESTS = 3; // requests
+const RATE_LIMIT_WINDOW = '1 h'; // per hour
+
 // Initialize Redis client (reused across requests)
 let redis: Redis | null = null;
+let ratelimit: Ratelimit | null = null;
 
 function getRedisClient(): Redis | null {
   if (!process.env.REDIS_URL) {
@@ -37,14 +43,83 @@ function getRedisClient(): Redis | null {
   return redis;
 }
 
+function getRateLimiter(): Ratelimit | null {
+  const redisClient = getRedisClient();
+  if (!redisClient) {
+    return null;
+  }
+
+  if (!ratelimit) {
+    try {
+      ratelimit = new Ratelimit({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        redis: redisClient as any, // ioredis is compatible but types differ slightly
+        limiter: Ratelimit.slidingWindow(RATE_LIMIT_REQUESTS, RATE_LIMIT_WINDOW),
+        analytics: true,
+        prefix: 'ratelimit:vehicle-lookup',
+      });
+    } catch (error) {
+      console.error('Failed to initialize rate limiter:', error);
+      return null;
+    }
+  }
+
+  return ratelimit;
+}
+
 /**
  * POST /api/vehicle-lookup
  * 
- * Lookup vehicle details by UK registration plate with caching
+ * Lookup vehicle details by UK registration plate with caching and rate limiting
  * Body: { registration: string }
  */
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting check
+    const rateLimiter = getRateLimiter();
+    if (rateLimiter) {
+      // Get identifier (IP address or fallback)
+      const ip = request.headers.get('x-forwarded-for') ?? 
+                 request.headers.get('x-real-ip') ?? 
+                 'anonymous';
+      const identifier = `ip:${ip}`;
+
+      try {
+        const { success, limit, remaining, reset } = await rateLimiter.limit(identifier);
+
+        // Add rate limit headers to response
+        const headers = {
+          'X-RateLimit-Limit': limit.toString(),
+          'X-RateLimit-Remaining': remaining.toString(),
+          'X-RateLimit-Reset': new Date(reset).toISOString(),
+        };
+
+        if (!success) {
+          return NextResponse.json(
+            {
+              error: 'Rate limit exceeded',
+              message: `Too many requests. Please try again after ${new Date(reset).toLocaleTimeString()}`,
+              limit,
+              remaining: 0,
+              reset: new Date(reset).toISOString(),
+            },
+            {
+              status: 429,
+              headers,
+            }
+          );
+        }
+
+        // Store headers to add to successful response later
+        request.headers.set('x-ratelimit-limit', limit.toString());
+        request.headers.set('x-ratelimit-remaining', remaining.toString());
+        request.headers.set('x-ratelimit-reset', new Date(reset).toISOString());
+      } catch (rateLimitError) {
+        // Rate limit check failed - continue without rate limiting
+        console.warn('Rate limit check failed:', rateLimitError);
+      }
+    }
+
     const body = await request.json();
     const { registration } = body;
 
@@ -67,11 +142,25 @@ export async function POST(request: NextRequest) {
         if (cached) {
           console.log(`Cache HIT for ${normalizedReg}`);
           const vehicleData = JSON.parse(cached);
-          return NextResponse.json({
-            success: true,
-            vehicle: vehicleData,
-            cached: true,
-          });
+
+          // Build response with rate limit headers if available
+          const responseHeaders: Record<string, string> = {};
+          const rateLimitLimit = request.headers.get('x-ratelimit-limit');
+          const rateLimitRemaining = request.headers.get('x-ratelimit-remaining');
+          const rateLimitReset = request.headers.get('x-ratelimit-reset');
+
+          if (rateLimitLimit) responseHeaders['X-RateLimit-Limit'] = rateLimitLimit;
+          if (rateLimitRemaining) responseHeaders['X-RateLimit-Remaining'] = rateLimitRemaining;
+          if (rateLimitReset) responseHeaders['X-RateLimit-Reset'] = rateLimitReset;
+
+          return NextResponse.json(
+            {
+              success: true,
+              vehicle: vehicleData,
+              cached: true,
+            },
+            { headers: responseHeaders }
+          );
         }
         console.log(`Cache MISS for ${normalizedReg}`);
       } catch (cacheError) {
@@ -134,11 +223,24 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({
-      success: true,
-      vehicle: vehicleData,
-      cached: false,
-    });
+    // Build response with rate limit headers if available
+    const responseHeaders: Record<string, string> = {};
+    const rateLimitLimit = request.headers.get('x-ratelimit-limit');
+    const rateLimitRemaining = request.headers.get('x-ratelimit-remaining');
+    const rateLimitReset = request.headers.get('x-ratelimit-reset');
+
+    if (rateLimitLimit) responseHeaders['X-RateLimit-Limit'] = rateLimitLimit;
+    if (rateLimitRemaining) responseHeaders['X-RateLimit-Remaining'] = rateLimitRemaining;
+    if (rateLimitReset) responseHeaders['X-RateLimit-Reset'] = rateLimitReset;
+
+    return NextResponse.json(
+      {
+        success: true,
+        vehicle: vehicleData,
+        cached: false,
+      },
+      { headers: responseHeaders }
+    );
 
   } catch (error) {
     console.error('Vehicle lookup error:', error);
@@ -180,6 +282,13 @@ export async function GET() {
     service: 'UK Vehicle Data Lookup',
     api: isApiConfigured ? 'configured' : 'not configured',
     cache: isRedisConfigured ? 'configured' : 'not configured',
+    rateLimit: isRedisConfigured ? {
+      enabled: true,
+      limit: RATE_LIMIT_REQUESTS,
+      window: RATE_LIMIT_WINDOW,
+    } : {
+      enabled: false,
+    },
   });
 }
 

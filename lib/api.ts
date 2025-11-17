@@ -19,6 +19,24 @@ export interface VehicleData {
 }
 
 /**
+ * Custom error class for vehicle lookup errors with detailed information
+ */
+export class VehicleLookupError extends Error {
+  constructor(
+    message: string,
+    public statusCode: number,
+    public details?: {
+      limit?: number;
+      remaining?: number;
+      reset?: string;
+    }
+  ) {
+    super(message);
+    this.name = 'VehicleLookupError';
+  }
+}
+
+/**
  * Lookup vehicle by UK registration plate
  * Calls our API route which securely communicates with UK Vehicle Data API
  */
@@ -35,51 +53,47 @@ export async function lookupVehicleByRegistration(registration: string): Promise
     if (!response.ok) {
       const errorData = await response.json();
       console.error('Vehicle lookup failed:', errorData.error);
-
+      
       // Return null for 404 (vehicle not found)
       if (response.status === 404) {
         return null;
       }
 
-      // For other errors, throw to trigger error handling
-      throw new Error(errorData.error || 'Vehicle lookup failed');
+      // Handle rate limit errors specifically
+      if (response.status === 429) {
+        throw new VehicleLookupError(
+          errorData.message || 'Too many requests. Please try again later.',
+          429,
+          {
+            limit: errorData.limit,
+            remaining: errorData.remaining,
+            reset: errorData.reset,
+          }
+        );
+      }
+      
+      // For other errors, throw with the specific error message
+      throw new VehicleLookupError(
+        errorData.error || 'Vehicle lookup failed',
+        response.status
+      );
     }
 
     const data = await response.json();
     return data.vehicle as VehicleData;
 
   } catch (error) {
+    // Re-throw VehicleLookupError so the caller can handle it properly
+    if (error instanceof VehicleLookupError) {
+      throw error;
+    }
+
+    // For network errors or other issues, throw a generic error
     console.error('Error looking up vehicle:', error);
-
-    // If the API is unavailable, fall back to mock data for demo purposes
-    console.warn('Falling back to mock data due to API error');
-
-    const mockVehicles: Record<string, VehicleData> = {
-      'AB12CDE': {
-        registration: 'AB12CDE',
-        make: 'BMW',
-        model: '3 Series',
-        year: 2022,
-        variant: '320i M Sport'
-      },
-      'XY34FGH': {
-        registration: 'XY34FGH',
-        make: 'Audi',
-        model: 'A4',
-        year: 2021,
-        variant: 'S Line'
-      },
-      'CD56IJK': {
-        registration: 'CD56IJK',
-        make: 'Mercedes-Benz',
-        model: 'C-Class',
-        year: 2023,
-        variant: 'AMG Line'
-      }
-    };
-
-    const normalizedReg = registration.toUpperCase().replace(/\s+/g, '');
-    return mockVehicles[normalizedReg] || null;
+    throw new VehicleLookupError(
+      'Unable to connect to vehicle lookup service. Please try again.',
+      500
+    );
   }
 }
 
