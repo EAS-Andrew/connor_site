@@ -461,7 +461,7 @@ function UploadPhotosContent() {
               </div>
             ) : null}
 
-            {frontImage && rearImage && step !== 'preview' && (
+            {frontImage && rearImage && (
               <button
                 onClick={() => setStep('preview')}
                 className="w-full bg-infrared text-ghost-white py-4 font-heading tracking-widest text-sm uppercase hover:bg-red-700 transition"
