@@ -9,10 +9,13 @@ interface VehicleFollowUpEmailData {
   vehicle: string;
   variant?: string;
   registration: string;
+  photoToken: string;
 }
 
 export async function sendVehicleFollowUpEmail(data: VehicleFollowUpEmailData) {
   const apiKey = process.env.RESEND_API_KEY;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://stealthshieldppf.com';
+  const uploadUrl = `${siteUrl}/upload-photos?token=${data.photoToken}`;
 
   if (!apiKey) {
     console.error('RESEND_API_KEY not configured');
@@ -46,7 +49,7 @@ export async function sendVehicleFollowUpEmail(data: VehicleFollowUpEmailData) {
             </h2>
             
             <p style="margin: 0 0 20px 0; color: #b0b0b0; line-height: 1.6;">
-              We're preparing your custom PPF kit. To ensure perfect fitment, please confirm the details below:
+              To ensure perfect fitment for your custom PPF kit, we need photos of your vehicle's bumpers.
             </p>
             
             <!-- Order Details Box -->
@@ -89,15 +92,42 @@ export async function sendVehicleFollowUpEmail(data: VehicleFollowUpEmailData) {
             
             <div style="background-color: #ff3333/10; border: 1px solid #ff3333/30; padding: 20px; margin: 30px 0;">
               <p style="margin: 0 0 15px 0; color: #ffffff; font-weight: 600;">
-                ⚠️ Important: Vehicle Verification
+                📸 Required: Bumper Photos
               </p>
+              <p style="margin: 0 0 15px 0; color: #b0b0b0; line-height: 1.6; font-size: 14px;">
+                We need clear photos of your bumpers to identify:
+              </p>
+              <ul style="margin: 0 0 15px 0; padding-left: 20px; color: #b0b0b0; line-height: 1.8; font-size: 14px;">
+                <li>Parking sensors and cameras</li>
+                <li>Washer jets and tow hooks</li>
+                <li>Any aftermarket modifications</li>
+              </ul>
               <p style="margin: 0; color: #b0b0b0; line-height: 1.6; font-size: 14px;">
-                If any of the above details are incorrect, or if your vehicle has aftermarket modifications (body kit, spoiler, custom bumpers), please reply to this email immediately.
+                This ensures your kit is precision-cut with perfect cutouts for all features.
               </p>
+            </div>
+
+            <!-- Upload CTA Button -->
+            <div style="text-align: center; margin: 40px 0;">
+              <a href="${uploadUrl}" style="display: inline-block; background-color: #ff3333; color: #ffffff; text-decoration: none; padding: 16px 40px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; border-radius: 0;">
+                Upload Photos Now
+              </a>
+            </div>
+
+            <div style="background-color: #0f0f0f; border: 1px solid #2a2a2a; padding: 20px; margin: 30px 0;">
+              <p style="margin: 0 0 10px 0; color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 2px;">
+                What You'll Need
+              </p>
+              <ul style="margin: 0; padding-left: 20px; color: #b0b0b0; line-height: 1.8; font-size: 14px;">
+                <li><strong style="color: #ffffff;">Front bumper</strong> - Straight-on photo</li>
+                <li><strong style="color: #ffffff;">Rear bumper</strong> - Straight-on photo</li>
+                <li>Good lighting and clear view</li>
+                <li>Takes less than 2 minutes</li>
+              </ul>
             </div>
             
             <p style="margin: 30px 0 0 0; color: #b0b0b0; line-height: 1.6;">
-              Your kit will be precision-cut and shipped within 2-3 business days. You'll receive a shipping confirmation with tracking details.
+              Once we receive your photos, your kit will be precision-cut and shipped within 2-3 business days. You'll receive a shipping confirmation with tracking details.
             </p>
           </div>
           
@@ -133,7 +163,7 @@ export async function sendVehicleFollowUpEmail(data: VehicleFollowUpEmailData) {
       body: JSON.stringify({
         from: 'StealthShield <noreply@orders.stealthshieldppf.com>',
         to: [data.to],
-        subject: `Order Confirmation: ${data.orderNumber} - Please Verify Vehicle Details`,
+        subject: `Upload Bumper Photos - Order ${data.orderNumber}`,
         html: emailHtml,
       }),
     });

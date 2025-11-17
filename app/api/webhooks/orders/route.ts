@@ -1,6 +1,42 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { sendVehicleFollowUpEmail } from '@/lib/email';
+import { generatePhotoToken, storePhotoToken, PhotoTokenData } from '@/lib/photoToken';
+
+// Shopify order types
+interface ShopifyOrderAttribute {
+  name: string;
+  value: string;
+}
+
+interface ShopifyLineItemProperty {
+  name: string;
+  value: string;
+}
+
+interface ShopifyLineItem {
+  properties?: ShopifyLineItemProperty[];
+}
+
+interface ShopifyOrder {
+  id: number;
+  name: string;
+  email: string;
+  created_at: string;
+  customer?: {
+    first_name?: string;
+  };
+  note_attributes?: ShopifyOrderAttribute[];
+  line_items?: ShopifyLineItem[];
+}
+
+interface VehicleData {
+  registration?: string;
+  make?: string;
+  model?: string;
+  year?: string;
+  variant?: string;
+}
 
 // Verify the webhook came from Shopify
 function verifyWebhook(body: string, hmacHeader: string): boolean {
@@ -20,18 +56,18 @@ function verifyWebhook(body: string, hmacHeader: string): boolean {
 }
 
 // Extract vehicle data from order line item properties
-function getVehicleDataFromOrder(order: any) {
+function getVehicleDataFromOrder(order: ShopifyOrder): VehicleData {
   // Check note_attributes first (cart-level attributes)
   const noteAttributes = order.note_attributes || [];
   if (noteAttributes.length > 0) {
-    const registration = noteAttributes.find((a: any) => a.name === 'registration')?.value;
+    const registration = noteAttributes.find(a => a.name === 'registration')?.value;
     if (registration) {
       return {
         registration,
-        make: noteAttributes.find((a: any) => a.name === 'make')?.value,
-        model: noteAttributes.find((a: any) => a.name === 'model')?.value,
-        year: noteAttributes.find((a: any) => a.name === 'year')?.value,
-        variant: noteAttributes.find((a: any) => a.name === 'variant')?.value,
+        make: noteAttributes.find(a => a.name === 'make')?.value,
+        model: noteAttributes.find(a => a.name === 'model')?.value,
+        year: noteAttributes.find(a => a.name === 'year')?.value,
+        variant: noteAttributes.find(a => a.name === 'variant')?.value,
       };
     }
   }
@@ -41,11 +77,11 @@ function getVehicleDataFromOrder(order: any) {
   if (lineItems.length > 0) {
     const properties = lineItems[0].properties || [];
     return {
-      registration: properties.find((p: any) => p.name === 'registration')?.value,
-      make: properties.find((p: any) => p.name === 'make')?.value,
-      model: properties.find((p: any) => p.name === 'model')?.value,
-      year: properties.find((p: any) => p.name === 'year')?.value,
-      variant: properties.find((p: any) => p.name === 'variant')?.value,
+      registration: properties.find(p => p.name === 'registration')?.value,
+      make: properties.find(p => p.name === 'make')?.value,
+      model: properties.find(p => p.name === 'model')?.value,
+      year: properties.find(p => p.name === 'year')?.value,
+      variant: properties.find(p => p.name === 'variant')?.value,
     };
   }
 
@@ -59,15 +95,42 @@ function getVehicleDataFromOrder(order: any) {
 }
 
 // Check if order has vehicle data (pre-cut kit)
-function hasVehicleData(order: any): boolean {
+function hasVehicleData(order: ShopifyOrder): boolean {
   const vehicleData = getVehicleDataFromOrder(order);
   return !!(vehicleData.registration && vehicleData.make);
 }
 
 // Send follow-up email
-async function sendFollowUpEmail(order: any) {
+async function sendFollowUpEmail(order: ShopifyOrder) {
   const vehicleData = getVehicleDataFromOrder(order);
   
+  // Ensure required fields exist (already validated by hasVehicleData)
+  if (!vehicleData.registration || !vehicleData.make || !vehicleData.model || !vehicleData.year) {
+    throw new Error('Missing required vehicle data');
+  }
+  
+  // Generate and store photo upload token
+  const photoToken = generatePhotoToken();
+  const tokenData: PhotoTokenData = {
+    shopifyOrderId: order.id.toString(),
+    shopifyOrderName: order.name,
+    email: order.email,
+    vehicleData: {
+      registration: vehicleData.registration,
+      make: vehicleData.make,
+      model: vehicleData.model,
+      year: vehicleData.year,
+      variant: vehicleData.variant,
+    },
+    createdAt: new Date().toISOString(),
+  };
+
+  const tokenStored = await storePhotoToken(photoToken, tokenData);
+  if (!tokenStored) {
+    console.error('Failed to store photo token');
+    throw new Error('Failed to generate photo upload link');
+  }
+
   const emailData = {
     to: order.email,
     customerName: order.customer?.first_name || 'Customer',
@@ -76,9 +139,10 @@ async function sendFollowUpEmail(order: any) {
     vehicle: `${vehicleData.year} ${vehicleData.make} ${vehicleData.model}`,
     variant: vehicleData.variant,
     registration: vehicleData.registration,
+    photoToken,
   };
 
-  console.log('Sending follow-up email:', emailData);
+  console.log('Sending follow-up email with photo token:', { orderNumber: order.name, token: photoToken });
   
   const result = await sendVehicleFollowUpEmail(emailData);
   

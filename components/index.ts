@@ -5,5 +5,6 @@ export { Header } from './Header';
 export { Footer } from './Footer';
 export { PageLayout } from './PageLayout';
 export { ExitIntentPopup } from './ExitIntentPopup';
+export { default as BumperOverlay } from './BumperOverlay';
 
 
