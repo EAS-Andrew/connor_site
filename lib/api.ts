@@ -86,7 +86,7 @@ export async function lookupVehicleByRegistration(registration: string): Promise
     // Re-throw VehicleLookupError so the caller can handle it properly
     if (error instanceof VehicleLookupError) {
       throw error;
-    }
+  }
 
     // For network errors or other issues, throw a generic error
     console.error('Error looking up vehicle:', error);

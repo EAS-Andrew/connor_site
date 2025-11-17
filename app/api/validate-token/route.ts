@@ -4,7 +4,7 @@ import { validatePhotoToken } from '@/lib/photoToken';
 export async function GET(request: NextRequest) {
   try {
     const token = request.nextUrl.searchParams.get('token');
-    
+
     if (!token) {
       return NextResponse.json(
         { error: 'Token parameter is required' },
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     }
 
     const tokenData = await validatePhotoToken(token);
-    
+
     if (!tokenData) {
       return NextResponse.json(
         { error: 'Invalid or expired token' },

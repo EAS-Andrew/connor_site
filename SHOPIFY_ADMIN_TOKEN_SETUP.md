@@ -19,9 +19,8 @@ The photo upload works, but updating the Shopify order fails with "Forbidden" er
 1. Click on **"Configuration"** tab
 2. Under **"Admin API access scopes"**, click **"Configure"**
 3. **Required scopes** - Search and enable these:
-   - ✅ `write_orders` - Update orders (add notes, tags, timeline comments)
+   - ✅ `write_orders` - Update orders (add notes, tags)
    - ✅ `read_orders` - Read order details
-   - ✅ `write_files` - Upload images to Shopify Files (for timeline attachments)
 
 4. Click **"Save"**
 
@@ -92,12 +91,14 @@ SHOPIFY_ADMIN_ACCESS_TOKEN=shpat_your_new_token_here
 
 When photos are successfully uploaded:
 
-**Order Timeline Comment (with image attachments):**
-- A timeline comment is added with the message: "Customer uploaded bumper photos for precision cutting analysis."
-- Front and rear bumper images are attached as **viewable thumbnails** in the timeline
-- Click thumbnails to view full-size images
+**1. Order Metafields (Clickable URLs):**
+- `custom.front_bumper_photo` - Front bumper image URL (clickable link)
+- `custom.rear_bumper_photo` - Rear bumper image URL (clickable link)
+- `custom.photos_uploaded_at` - Upload timestamp
+- **Location**: Scroll down in order details → "Metafields" section
+- **URLs are clickable** - just click to view images in new tab
 
-**Order Note (backup URLs):**
+**2. Order Note (Formatted Reference):**
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🚗 BUMPER ANALYSIS PHOTOS
@@ -113,17 +114,17 @@ When photos are successfully uploaded:
 ✅ Ready for precision cutting
 ```
 
-**Order Tag:**
+**3. Order Tag:**
 ```
 photos-uploaded
 ```
 
-**To View:**
+**To View Photos:**
 1. Shopify Admin → Orders
 2. Click order number
-3. Check **"Timeline"** - images appear as thumbnails in a comment
-4. Scroll to **"Notes"** section for backup URLs
-5. Filter orders by `photos-uploaded` tag
+3. Scroll down to **"Metafields"** section
+4. Click the image URLs (they're clickable links!)
+5. **Or** filter by `photos-uploaded` tag to see all orders with photos
 
 ---
 
@@ -140,23 +141,21 @@ photos-uploaded
 
 ## Current Status
 
-⚠️ **Token needs update** - Missing `write_files` scope!
+✅ **Token configured correctly!**
 - Current token has `read_orders` and `write_orders`
-- **Need to add `write_files`** for uploading images to Shopify Files
+- These are the only scopes needed
 
-**Required scopes:**
-- ✅ `read_orders` - Read order details
-- ✅ `write_orders` - Update orders (notes, tags, timeline)
-- ⚠️ `write_files` - **MISSING** - Upload images to Shopify Files
+**What happens when photos are uploaded:**
+1. ✅ Images stored in Cloudinary (fast, reliable, cheap)
+2. ✅ Order note updated with formatted photo details
+3. ✅ Order tagged with `photos-uploaded` for easy filtering
+4. ✅ **Metafields added with clickable image URLs** - scroll to "Metafields" section in order admin
+5. ✅ All automatic via webhook when customer uploads photos
 
-**Next steps:**
-1. Go to Shopify Admin → Settings → Apps → StealthShield Photo Upload
-2. Configuration tab → Admin API access scopes → Configure
-3. Enable `write_files` scope
-4. Save and reinstall the app
-5. Get new admin token (starts with `shpat_`)
-6. Update `.env.local` and Vercel environment variables
-7. Redeploy and test
+**To view photos:**
+- Open order in Shopify admin
+- Scroll down to **"Metafields"** section
+- Click the URLs (they're clickable!) to open images in new tab
 
-Once updated with all three scopes, photos will upload to Cloudinary, appear as thumbnails in order timeline, AND update Shopify orders automatically!
+Ready to use! 🚀
 
