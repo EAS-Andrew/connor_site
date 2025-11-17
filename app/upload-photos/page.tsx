@@ -83,6 +83,8 @@ function UploadPhotosContent() {
 
   const startCamera = async () => {
     setCameraLoading(true);
+    setCameraActive(true);
+    
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: { 
@@ -92,25 +94,35 @@ function UploadPhotosContent() {
         }
       });
       
+      setStream(mediaStream);
+      
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
-        // Ensure video plays once metadata is loaded
-        await new Promise<void>((resolve) => {
-          if (videoRef.current) {
-            videoRef.current.onloadedmetadata = () => {
-              videoRef.current?.play().then(() => {
-                setCameraLoading(false);
-                resolve();
-              });
-            };
+        
+        // Wait for video to be ready and playing
+        videoRef.current.onloadedmetadata = async () => {
+          try {
+            await videoRef.current?.play();
+            // Give it a moment to render first frame
+            setTimeout(() => {
+              setCameraLoading(false);
+            }, 300);
+          } catch (err) {
+            console.error('Video play error:', err);
+            setCameraLoading(false);
           }
-        });
+        };
+        
+        // Fallback: clear loading after 3 seconds even if metadata doesn't fire
+        setTimeout(() => {
+          console.log('Camera fallback timeout, ensuring loading state is cleared');
+          setCameraLoading(false);
+        }, 3000);
       }
-      setStream(mediaStream);
-      setCameraActive(true);
     } catch (err) {
       console.error('Camera access error:', err);
       setCameraLoading(false);
+      setCameraActive(false);
       alert('Unable to access camera. Please grant camera permissions.');
     }
   };
