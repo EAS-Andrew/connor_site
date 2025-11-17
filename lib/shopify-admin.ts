@@ -80,7 +80,7 @@ async function uploadImageToShopifyFiles(
     }
 
     const result = await response.json();
-    
+
     if (result.data?.fileCreate?.userErrors?.length > 0) {
       console.error('Shopify file upload errors:', result.data.fileCreate.userErrors);
       return null;
@@ -118,7 +118,7 @@ export async function updateOrderWithPhotos(
 
   try {
     console.log('Step 1: Uploading images to Shopify Files...');
-    
+
     // Upload images to Shopify Files for thumbnail display
     const [frontFile, rearFile] = await Promise.all([
       uploadImageToShopifyFiles(frontPhotoUrl, 'Front Bumper Photo'),
@@ -128,7 +128,7 @@ export async function updateOrderWithPhotos(
     const endpoint = `https://${SHOPIFY_STORE}/admin/api/${API_VERSION}/orders/${orderId}.json`;
 
     console.log('Step 2: Fetching current order...');
-    
+
     // Get the current order to preserve existing notes and tags
     const getResponse = await fetch(endpoint, {
       method: 'GET',
@@ -155,7 +155,7 @@ export async function updateOrderWithPhotos(
       minute: '2-digit',
       hour12: false
     });
-    
+
     const photoNote = `
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -205,13 +205,27 @@ export async function updateOrderWithPhotos(
       throw new Error(`Failed to update order: ${updateResponse.statusText}`);
     }
 
-    console.log('Step 3: Creating metafields for image thumbnails...');
-    
-    // Add metafields with Shopify File references for thumbnail display
-    // This makes images show up as thumbnails in the Shopify admin order view
-    if (frontFile && rearFile) {
+    console.log('Step 3: Adding images to order timeline as comment attachments...');
+
+    // Add images as comment attachments on the order timeline
+    // This shows them directly in the timeline like manual uploads in admin UI
+    if (frontFile || rearFile) {
       try {
-        const metafieldMutation = `
+        // Prepare attachments array with uploaded files
+        const attachments = [];
+        if (frontFile) {
+          attachments.push({
+            fileId: frontFile.id,
+          });
+        }
+        if (rearFile) {
+          attachments.push({
+            fileId: rearFile.id,
+          });
+        }
+
+        // Create a comment event with image attachments on the order timeline
+        const commentMutation = `
           mutation orderUpdate($input: OrderInput!) {
             orderUpdate(input: $input) {
               order {
@@ -225,27 +239,19 @@ export async function updateOrderWithPhotos(
           }
         `;
 
-        const metafieldVariables = {
+        const commentVariables = {
           input: {
             id: `gid://shopify/Order/${orderId}`,
-            metafields: [
-              {
-                namespace: 'custom',
-                key: 'front_bumper_photo',
-                type: 'file_reference',
-                value: frontFile.id,
+            timeline: {
+              comment: {
+                message: "Customer uploaded bumper photos for precision cutting analysis.",
+                attachments: attachments,
               },
-              {
-                namespace: 'custom',
-                key: 'rear_bumper_photo',
-                type: 'file_reference',
-                value: rearFile.id,
-              },
-            ],
+            },
           },
         };
 
-        const metafieldResponse = await fetch(
+        const commentResponse = await fetch(
           `https://${SHOPIFY_STORE}/admin/api/${API_VERSION}/graphql.json`,
           {
             method: 'POST',
@@ -253,24 +259,24 @@ export async function updateOrderWithPhotos(
               'X-Shopify-Access-Token': ADMIN_TOKEN,
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ query: metafieldMutation, variables: metafieldVariables }),
+            body: JSON.stringify({ query: commentMutation, variables: commentVariables }),
           }
         );
 
-        if (metafieldResponse.ok) {
-          const metafieldResult = await metafieldResponse.json();
-          if (metafieldResult.data?.orderUpdate?.userErrors?.length > 0) {
-            console.warn('Metafield creation warnings:', metafieldResult.data.orderUpdate.userErrors);
+        if (commentResponse.ok) {
+          const commentResult = await commentResponse.json();
+          if (commentResult.data?.orderUpdate?.userErrors?.length > 0) {
+            console.warn('Timeline comment warnings:', commentResult.data.orderUpdate.userErrors);
           } else {
-            console.log('✅ Image thumbnails added to order');
+            console.log('✅ Images attached to order timeline');
           }
         }
-      } catch (metafieldError) {
-        // Don't fail the whole operation if metafields fail
-        console.warn('Failed to create metafields (thumbnails), but order updated:', metafieldError);
+      } catch (commentError) {
+        // Don't fail the whole operation if timeline attachment fails
+        console.warn('Failed to attach images to timeline, but order updated:', commentError);
       }
     } else {
-      console.warn('Shopify Files upload failed - thumbnails not available, but URLs saved in notes');
+      console.warn('Shopify Files upload failed - images not attached to timeline, but URLs saved in notes');
     }
 
     console.log(`✅ Successfully updated Shopify order ${orderId} with photo URLs and thumbnails`);
