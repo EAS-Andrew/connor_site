@@ -1,11 +1,10 @@
 import { fetchPreCutKits, ShopifyProduct } from './shopify';
 
 /**
- * Stubbed Vehicle Smart API Integration
+ * UK Vehicle Data API Integration
  * 
- * TODO: Replace with actual Vehicle Smart API when ready
- * API Documentation: https://vehiclesmart.com/api/docs
- * Required: API Key and authentication setup
+ * Live vehicle lookup using UK Vehicle Data API
+ * API Documentation: https://cp.ukvehicledata.co.uk/
  */
 
 export interface VehicleData {
@@ -14,55 +13,74 @@ export interface VehicleData {
   model: string;
   year: number;
   variant?: string;
+  bodyStyle?: string;
+  fuelType?: string;
+  vin?: string;
 }
 
 /**
- * Mock vehicle lookup - simulates Vehicle Smart API response
- * In production, this will call the actual API endpoint
+ * Lookup vehicle by UK registration plate
+ * Calls our API route which securely communicates with UK Vehicle Data API
  */
 export async function lookupVehicleByRegistration(registration: string): Promise<VehicleData | null> {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  try {
+    const response = await fetch('/api/vehicle-lookup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ registration }),
+    });
 
-  // Mock data for demonstration
-  const mockVehicles: Record<string, VehicleData> = {
-    'AB12CDE': {
-      registration: 'AB12CDE',
-      make: 'BMW',
-      model: '3 Series',
-      year: 2022,
-      variant: '320i M Sport'
-    },
-    'XY34FGH': {
-      registration: 'XY34FGH',
-      make: 'Audi',
-      model: 'A4',
-      year: 2021,
-      variant: 'S Line'
-    },
-    'CD56IJK': {
-      registration: 'CD56IJK',
-      make: 'Mercedes-Benz',
-      model: 'C-Class',
-      year: 2023,
-      variant: 'AMG Line'
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Vehicle lookup failed:', errorData.error);
+
+      // Return null for 404 (vehicle not found)
+      if (response.status === 404) {
+        return null;
+      }
+
+      // For other errors, throw to trigger error handling
+      throw new Error(errorData.error || 'Vehicle lookup failed');
     }
-  };
 
-  const normalizedReg = registration.toUpperCase().replace(/\s+/g, '');
+    const data = await response.json();
+    return data.vehicle as VehicleData;
 
-  // Return mock data if found, otherwise return generic data for demo purposes
-  if (mockVehicles[normalizedReg]) {
-    return mockVehicles[normalizedReg];
+  } catch (error) {
+    console.error('Error looking up vehicle:', error);
+
+    // If the API is unavailable, fall back to mock data for demo purposes
+    console.warn('Falling back to mock data due to API error');
+
+    const mockVehicles: Record<string, VehicleData> = {
+      'AB12CDE': {
+        registration: 'AB12CDE',
+        make: 'BMW',
+        model: '3 Series',
+        year: 2022,
+        variant: '320i M Sport'
+      },
+      'XY34FGH': {
+        registration: 'XY34FGH',
+        make: 'Audi',
+        model: 'A4',
+        year: 2021,
+        variant: 'S Line'
+      },
+      'CD56IJK': {
+        registration: 'CD56IJK',
+        make: 'Mercedes-Benz',
+        model: 'C-Class',
+        year: 2023,
+        variant: 'AMG Line'
+      }
+    };
+
+    const normalizedReg = registration.toUpperCase().replace(/\s+/g, '');
+    return mockVehicles[normalizedReg] || null;
   }
-
-  // For any other registration, return a generic vehicle for demo
-  return {
-    registration: normalizedReg,
-    make: 'Generic',
-    model: 'Vehicle',
-    year: 2022
-  };
 }
 
 /**

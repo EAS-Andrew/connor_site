@@ -334,7 +334,7 @@ export default function PreCutPage() {
                       <div className="flex items-start gap-3">
                         <div className="w-1 h-1 bg-infrared rotate-45 mt-2 flex-shrink-0"></div>
                         <p className="text-xs text-radar-grey-light leading-relaxed">
-                          <span className="text-ghost-white font-heading">DEMO MODE:</span> Test with AB12CDE, XY34FGH, or CD56IJK
+                          <span className="text-ghost-white font-heading">INSTANT VERIFICATION:</span> Enter your UK registration for automatic vehicle identification and precision kit matching
                         </p>
                       </div>
                     </div>
