@@ -1,12 +1,46 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { lookupVehicleByVRM, extractVehicleYear, UKVDVehicleResponse } from '@/lib/ukvehicledata';
+import Redis from 'ioredis';
 
-export const runtime = 'edge';
+// Cache TTL: 30 days (vehicle data doesn't change often)
+const CACHE_TTL_SECONDS = 30 * 24 * 60 * 60;
+
+// Initialize Redis client (reused across requests)
+let redis: Redis | null = null;
+
+function getRedisClient(): Redis | null {
+  if (!process.env.REDIS_URL) {
+    return null;
+  }
+
+  if (!redis) {
+    try {
+      redis = new Redis(process.env.REDIS_URL, {
+        maxRetriesPerRequest: 3,
+        retryStrategy(times) {
+          if (times > 3) {
+            return null; // Stop retrying
+          }
+          return Math.min(times * 200, 1000); // Exponential backoff
+        },
+      });
+
+      redis.on('error', (err) => {
+        console.error('Redis error:', err);
+      });
+    } catch (error) {
+      console.error('Failed to initialize Redis client:', error);
+      return null;
+    }
+  }
+
+  return redis;
+}
 
 /**
  * POST /api/vehicle-lookup
  * 
- * Lookup vehicle details by UK registration plate
+ * Lookup vehicle details by UK registration plate with caching
  * Body: { registration: string }
  */
 export async function POST(request: NextRequest) {
@@ -19,6 +53,31 @@ export async function POST(request: NextRequest) {
         { error: 'Registration plate is required' },
         { status: 400 }
       );
+    }
+
+    // Normalize registration for cache key
+    const normalizedReg = registration.toUpperCase().replace(/\s+/g, '');
+    const cacheKey = `vehicle:${normalizedReg}`;
+
+    // Try to get from cache first
+    const redisClient = getRedisClient();
+    if (redisClient) {
+      try {
+        const cached = await redisClient.get(cacheKey);
+        if (cached) {
+          console.log(`Cache HIT for ${normalizedReg}`);
+          const vehicleData = JSON.parse(cached);
+          return NextResponse.json({
+            success: true,
+            vehicle: vehicleData,
+            cached: true,
+          });
+        }
+        console.log(`Cache MISS for ${normalizedReg}`);
+      } catch (cacheError) {
+        // Cache error - continue without cache
+        console.warn('Cache read error:', cacheError);
+      }
     }
 
     // Get API credentials from environment
@@ -53,7 +112,7 @@ export async function POST(request: NextRequest) {
 
     // Construct the response in the format our app expects
     const vehicleData = {
-      registration: registration.toUpperCase().replace(/\s+/g, ''),
+      registration: normalizedReg,
       make: modelDetails?.Make || vehicleDetails?.DvlaMake || 'Unknown',
       model: modelDetails?.Model || vehicleDetails?.DvlaModel || 'Unknown',
       year: extractVehicleYear(data),
@@ -64,9 +123,21 @@ export async function POST(request: NextRequest) {
       vin: vehicleDetails?.Vin,
     };
 
+    // Store in cache for future requests
+    if (redisClient) {
+      try {
+        await redisClient.setex(cacheKey, CACHE_TTL_SECONDS, JSON.stringify(vehicleData));
+        console.log(`Cached vehicle data for ${normalizedReg} (TTL: ${CACHE_TTL_SECONDS}s)`);
+      } catch (cacheError) {
+        // Cache write failed - not critical, just log it
+        console.warn('Failed to cache vehicle data:', cacheError);
+      }
+    }
+
     return NextResponse.json({
       success: true,
       vehicle: vehicleData,
+      cached: false,
     });
 
   } catch (error) {
@@ -102,11 +173,13 @@ export async function POST(request: NextRequest) {
  * Health check endpoint
  */
 export async function GET() {
-  const isConfigured = !!process.env.UK_VEHICLE_DATA_API_KEY;
+  const isApiConfigured = !!process.env.UK_VEHICLE_DATA_API_KEY;
+  const isRedisConfigured = !!process.env.REDIS_URL;
 
   return NextResponse.json({
     service: 'UK Vehicle Data Lookup',
-    status: isConfigured ? 'configured' : 'not configured',
+    api: isApiConfigured ? 'configured' : 'not configured',
+    cache: isRedisConfigured ? 'configured' : 'not configured',
   });
 }
 
