@@ -36,6 +36,7 @@ function UploadPhotosContent() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [cameraActive, setCameraActive] = useState(false);
+  const [cameraLoading, setCameraLoading] = useState(false);
 
   // Detect if user is on mobile
   useEffect(() => {
@@ -81,6 +82,7 @@ function UploadPhotosContent() {
   }, [token]);
 
   const startCamera = async () => {
+    setCameraLoading(true);
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: { 
@@ -92,11 +94,23 @@ function UploadPhotosContent() {
       
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
+        // Ensure video plays once metadata is loaded
+        await new Promise<void>((resolve) => {
+          if (videoRef.current) {
+            videoRef.current.onloadedmetadata = () => {
+              videoRef.current?.play().then(() => {
+                setCameraLoading(false);
+                resolve();
+              });
+            };
+          }
+        });
       }
       setStream(mediaStream);
       setCameraActive(true);
     } catch (err) {
       console.error('Camera access error:', err);
+      setCameraLoading(false);
       alert('Unable to access camera. Please grant camera permissions.');
     }
   };
@@ -322,7 +336,7 @@ function UploadPhotosContent() {
         )}
 
         {/* Mobile: Camera Mode */}
-        {isMobile && step !== 'preview' && (
+        {isMobile && step !== 'preview' && !cameraActive && (
           <div className="space-y-6">
             {/* Instructions */}
             <div className="bg-radar-grey border-l-2 border-infrared p-6">
@@ -343,40 +357,71 @@ function UploadPhotosContent() {
               </ul>
             </div>
 
-            {/* Camera View */}
-            {cameraActive ? (
-              <div className="relative aspect-[4/3] bg-black border border-radar-grey-dark overflow-hidden">
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  playsInline
-                  muted
-                  className="w-full h-full object-cover"
-                />
-                <BumperOverlay type={step === 'front' ? 'front' : 'rear'} />
-                
-                {/* Capture Button */}
-                <div className="absolute bottom-6 left-0 right-0 flex justify-center">
-                  <button
-                    onClick={capturePhoto}
-                    className="relative w-20 h-20"
-                  >
-                    <div className="absolute inset-0 border-4 border-ghost-white rounded-full"></div>
-                    <div className="absolute inset-2 bg-infrared rounded-full hover:bg-red-700 transition"></div>
-                  </button>
+            {/* Activate Camera Button */}
+            <button
+              onClick={startCamera}
+              disabled={cameraLoading}
+              className="w-full bg-infrared text-ghost-white py-6 font-heading tracking-widest text-sm uppercase hover:bg-red-700 transition flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {cameraLoading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-ghost-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Initializing Camera...</span>
+                </>
+              ) : (
+                <>
+                  <span className="text-2xl">📸</span>
+                  <span>Activate Camera</span>
+                </>
+              )}
+            </button>
+          </div>
+        )}
+
+        {/* Fullscreen Camera View (Mobile) */}
+        {isMobile && cameraActive && step !== 'preview' && (
+          <div className="fixed inset-0 z-50 bg-black">
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
+              className="w-full h-full object-cover"
+            />
+            
+            {/* Loading overlay while camera initializes */}
+            {cameraLoading && (
+              <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-20">
+                <div className="text-center">
+                  <div className="w-12 h-12 border-4 border-infrared border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                  <p className="text-ghost-white font-heading tracking-wider text-sm">INITIALIZING_CAMERA</p>
                 </div>
-                
-                <canvas ref={canvasRef} className="hidden" />
               </div>
-            ) : (
-              <button
-                onClick={startCamera}
-                className="w-full bg-infrared text-ghost-white py-6 font-heading tracking-widest text-sm uppercase hover:bg-red-700 transition flex items-center justify-center gap-3"
-              >
-                <span className="text-2xl">📸</span>
-                <span>Activate Camera</span>
-              </button>
             )}
+            
+            <BumperOverlay type={step === 'front' ? 'front' : 'rear'} />
+            
+            {/* Close Button */}
+            <button
+              onClick={stopCamera}
+              className="absolute top-4 left-4 z-10 bg-black/70 text-white px-4 py-2 font-heading tracking-wider uppercase text-xs border border-white/30"
+            >
+              ✕ Close
+            </button>
+            
+            {/* Capture Button */}
+            <div className="absolute bottom-8 left-0 right-0 flex justify-center z-10">
+              <button
+                onClick={capturePhoto}
+                disabled={cameraLoading}
+                className="relative w-20 h-20 disabled:opacity-50"
+              >
+                <div className="absolute inset-0 border-4 border-ghost-white rounded-full"></div>
+                <div className="absolute inset-2 bg-infrared rounded-full active:scale-95 transition"></div>
+              </button>
+            </div>
+            
+            <canvas ref={canvasRef} className="hidden" />
           </div>
         )}
 
