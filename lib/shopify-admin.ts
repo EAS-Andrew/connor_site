@@ -51,7 +51,7 @@ export async function updateOrderWithPhotos(
     const newNote = existingNote + photoNote;
 
     // Add "photos-uploaded" tag if not already present
-    const tags = existingTags.split(',').map(t => t.trim()).filter(Boolean);
+    const tags = existingTags.split(',').map((t: string) => t.trim()).filter(Boolean);
     if (!tags.includes('photos-uploaded')) {
       tags.push('photos-uploaded');
     }
