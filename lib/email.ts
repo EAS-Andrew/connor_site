@@ -13,7 +13,7 @@ interface VehicleFollowUpEmailData {
 
 export async function sendVehicleFollowUpEmail(data: VehicleFollowUpEmailData) {
   const apiKey = process.env.RESEND_API_KEY;
-  
+
   if (!apiKey) {
     console.error('RESEND_API_KEY not configured');
     return { error: 'Email service not configured' };
@@ -104,11 +104,11 @@ export async function sendVehicleFollowUpEmail(data: VehicleFollowUpEmailData) {
           <!-- Footer -->
           <div style="background-color: #0f0f0f; padding: 30px; border-top: 1px solid #2a2a2a;">
             <p style="margin: 0 0 15px 0; color: #888; font-size: 14px;">
-              Need help? We're here for you.
+              Need help? Reply to this email or contact us:
             </p>
             <p style="margin: 0; color: #ff3333; font-size: 14px;">
-              <a href="mailto:info@stealthshieldppf.com" style="color: #ff3333; text-decoration: none;">
-                info@stealthshieldppf.com
+              <a href="mailto:hello@orders.stealthshieldppf.com" style="color: #ff3333; text-decoration: none;">
+                hello@orders.stealthshieldppf.com
               </a>
             </p>
             
@@ -131,7 +131,7 @@ export async function sendVehicleFollowUpEmail(data: VehicleFollowUpEmailData) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'StealthShield <info@stealthshieldppf.com>',
+        from: 'StealthShield <noreply@orders.stealthshieldppf.com>',
         to: [data.to],
         subject: `Order Confirmation: ${data.orderNumber} - Please Verify Vehicle Details`,
         html: emailHtml,
@@ -147,7 +147,7 @@ export async function sendVehicleFollowUpEmail(data: VehicleFollowUpEmailData) {
     const result = await response.json();
     console.log('Email sent successfully:', result);
     return { success: true, id: result.id };
-    
+
   } catch (error) {
     console.error('Email error:', error);
     return { error: 'Email sending failed', details: error };
