@@ -82,7 +82,7 @@ export default function Home() {
                   Start with your reg
                 </Button>
               </Link>
-              <Link href="#why-us" className="w-full sm:w-auto">
+              <Link href="#products" className="w-full sm:w-auto">
                 <Button variant="secondary" size="lg" className="w-full sm:w-auto">
                   How It Works
                 </Button>
@@ -104,8 +104,112 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-stealth-black to-transparent"></div>
       </section>
 
-      {/* FAQ Accordion - Quick Answers */}
-      <section className="py-12 sm:py-16 bg-stealth-black border-b border-radar-grey-dark">
+      {/* Why StealthShield Section */}
+      <section className="py-12 sm:py-16 md:py-24 bg-stealth-black border-b border-radar-grey-dark">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto">
+            {/* Section header with tactical styling */}
+            <div className="text-center mb-12 sm:mb-16">
+              <div className="inline-block mb-4">
+                <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
+                  WHY_STEALTHSHIELD
+                </span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading mb-3 sm:mb-4 text-ghost-white tracking-wider">
+                TACTICAL ADVANTAGES
+              </h2>
+
+              {/* Divider */}
+              <div className="flex items-center justify-center gap-3">
+                <div className="h-px w-16 bg-radar-grey-dark"></div>
+                <div className="w-1 h-1 bg-infrared rotate-45"></div>
+                <div className="h-px w-16 bg-radar-grey-dark"></div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Capability 01 */}
+              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
+                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                <Card className="h-full group-hover:scale-100">
+                  <div className="text-center">
+                    <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-4">
+                      CAPABILITY_01
+                    </div>
+                    <div className="w-16 h-16 mx-auto mb-6 bg-infrared/10 flex items-center justify-center">
+                      <div className="relative w-8 h-8">
+                        <div className="absolute inset-x-0 bottom-0 w-0 h-0 mx-auto border-l-[16px] border-r-[16px] border-b-[28px] border-l-transparent border-r-transparent border-b-infrared animate-pulse"></div>
+                        <div className="absolute inset-x-0 bottom-0 w-0 h-0 mx-auto border-l-[16px] border-r-[16px] border-b-[28px] border-l-transparent border-r-transparent border-b-infrared opacity-30"></div>
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">CRYSTAL CLARITY</h3>
+                    <p className="text-radar-grey-light text-sm leading-relaxed">
+                      Invisible protection that preserves your vehicle&apos;s finish. Optical clarity that maintains the original appearance with zero distortion.
+                    </p>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Capability 02 */}
+              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
+                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                <Card className="h-full group-hover:scale-100">
+                  <div className="text-center">
+                    <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-4">
+                      CAPABILITY_02
+                    </div>
+                    <div className="w-16 h-16 mx-auto mb-6 bg-infrared/10 flex items-center justify-center">
+                      <div className="relative w-8 h-8">
+                        <div className="absolute inset-0 border-2 border-infrared transform rotate-45 animate-spin-slow"></div>
+                        <div className="absolute inset-0 border-2 border-infrared transform rotate-45 opacity-30"></div>
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">PERFECT FIT</h3>
+                    <p className="text-radar-grey-light text-sm leading-relaxed">
+                      Registration-verified fitment for your exact vehicle. No guesswork, no wrong trim, just perfect-fit patterns cut to spec.
+                    </p>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Capability 03 */}
+              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
+                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                <Card className="h-full group-hover:scale-100">
+                  <div className="text-center">
+                    <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-4">
+                      CAPABILITY_03
+                    </div>
+                    <div className="w-16 h-16 mx-auto mb-6 bg-infrared/10 flex items-center justify-center">
+                      <div className="relative w-10 h-10">
+                        <svg className="absolute inset-0 animate-ping opacity-75" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <polygon points="20,2 35,12 35,28 20,38 5,28 5,12" stroke="#D6422F" strokeWidth="2" fill="none" />
+                        </svg>
+                        <svg className="absolute inset-0" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <polygon points="20,2 35,12 35,28 20,38 5,28 5,12" stroke="#D6422F" strokeWidth="2" fill="none" />
+                        </svg>
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">BUILT TO LAST</h3>
+                    <p className="text-radar-grey-light text-sm leading-relaxed">
+                      Premium PPF with self-healing technology. Manufactured in the UK, engineered for exceptional clarity and long-term protection that performs in all conditions.
+                    </p>
+                  </div>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Accordion - Moved Lower */}
+      <section className="py-12 sm:py-16 bg-radar-grey/10 border-b border-radar-grey-dark">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
@@ -305,110 +409,6 @@ export default function Home() {
                     <div className="text-radar-grey-light text-xs">2023 Porsche 911</div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Us Section */}
-      <section id="why-us" className="py-12 sm:py-16 md:py-24 bg-stealth-black">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            {/* Section header with tactical styling */}
-            <div className="text-center mb-12 sm:mb-16">
-              <div className="inline-block mb-4">
-                <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
-                  TACTICAL_ADVANTAGES
-                </span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading mb-3 sm:mb-4 text-ghost-white tracking-wider">
-                WHY STEALTHSHIELD
-              </h2>
-
-              {/* Divider */}
-              <div className="flex items-center justify-center gap-3">
-                <div className="h-px w-16 bg-radar-grey-dark"></div>
-                <div className="w-1 h-1 bg-infrared rotate-45"></div>
-                <div className="h-px w-16 bg-radar-grey-dark"></div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Capability 01 */}
-              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
-                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                <Card className="h-full group-hover:scale-100">
-                  <div className="text-center">
-                    <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-4">
-                      CAPABILITY_01
-                    </div>
-                    <div className="w-16 h-16 mx-auto mb-6 bg-infrared/10 flex items-center justify-center">
-                      <div className="relative w-8 h-8">
-                        <div className="absolute inset-x-0 bottom-0 w-0 h-0 mx-auto border-l-[16px] border-r-[16px] border-b-[28px] border-l-transparent border-r-transparent border-b-infrared animate-pulse"></div>
-                        <div className="absolute inset-x-0 bottom-0 w-0 h-0 mx-auto border-l-[16px] border-r-[16px] border-b-[28px] border-l-transparent border-r-transparent border-b-infrared opacity-30"></div>
-                      </div>
-                    </div>
-                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">CRYSTAL CLARITY</h3>
-                    <p className="text-radar-grey-light text-sm leading-relaxed">
-                      Invisible protection that preserves your vehicle&apos;s finish. Optical clarity that maintains the original appearance with zero distortion.
-                    </p>
-                  </div>
-                </Card>
-              </div>
-
-              {/* Capability 02 */}
-              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
-                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                <Card className="h-full group-hover:scale-100">
-                  <div className="text-center">
-                    <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-4">
-                      CAPABILITY_02
-                    </div>
-                    <div className="w-16 h-16 mx-auto mb-6 bg-infrared/10 flex items-center justify-center">
-                      <div className="relative w-8 h-8">
-                        <div className="absolute inset-0 border-2 border-infrared transform rotate-45 animate-spin-slow"></div>
-                        <div className="absolute inset-0 border-2 border-infrared transform rotate-45 opacity-30"></div>
-                      </div>
-                    </div>
-                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">PERFECT FIT</h3>
-                    <p className="text-radar-grey-light text-sm leading-relaxed">
-                      Registration-verified fitment for your exact vehicle. No guesswork, no wrong trim, just perfect-fit patterns cut to spec.
-                    </p>
-                  </div>
-                </Card>
-              </div>
-
-              {/* Capability 03 */}
-              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
-                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                <Card className="h-full group-hover:scale-100">
-                  <div className="text-center">
-                    <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-4">
-                      CAPABILITY_03
-                    </div>
-                    <div className="w-16 h-16 mx-auto mb-6 bg-infrared/10 flex items-center justify-center">
-                      <div className="relative w-10 h-10">
-                        <svg className="absolute inset-0 animate-ping opacity-75" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <polygon points="20,2 35,12 35,28 20,38 5,28 5,12" stroke="#D6422F" strokeWidth="2" fill="none" />
-                        </svg>
-                        <svg className="absolute inset-0" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <polygon points="20,2 35,12 35,28 20,38 5,28 5,12" stroke="#D6422F" strokeWidth="2" fill="none" />
-                        </svg>
-                      </div>
-                    </div>
-                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">BUILT TO LAST</h3>
-                    <p className="text-radar-grey-light text-sm leading-relaxed">
-                      Premium PPF with self-healing technology. Manufactured in the UK, engineered for exceptional clarity and long-term protection that performs in all conditions.
-                    </p>
-                  </div>
-                </Card>
               </div>
             </div>
           </div>
