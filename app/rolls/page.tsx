@@ -217,27 +217,19 @@ export default function RollsPage() {
 
                 return (
                   <div key={product.id} className="bg-radar-grey border-2 border-radar-grey-dark hover:border-infrared transition-all duration-300 group flex flex-col overflow-hidden">
-                    {/* Texture Visualization - Matching pre-cut flow style */}
+                    {/* Product Image */}
                     <div className="relative aspect-[16/9] bg-gradient-to-br from-stealth-black to-radar-grey-dark border-b-2 border-radar-grey-dark overflow-hidden">
-                      {product.title.toLowerCase().includes('matte') ? (
-                        // Matte texture pattern - more visible
-                        <div className="w-full h-full opacity-40">
-                          <svg className="w-full h-full" viewBox="0 0 200 200" preserveAspectRatio="none">
-                            <defs>
-                              <pattern id={`matte-texture-${product.id}`} x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-                                <circle cx="2" cy="2" r="1.5" fill="currentColor" className="text-ghost-white" opacity="0.6" />
-                                <circle cx="7" cy="7" r="1.5" fill="currentColor" className="text-ghost-white" opacity="0.4" />
-                              </pattern>
-                            </defs>
-                            <rect width="200" height="200" fill={`url(#matte-texture-${product.id})`} />
-                          </svg>
-                        </div>
+                      {product.featuredImage ? (
+                        <img 
+                          src={product.featuredImage.url} 
+                          alt={product.featuredImage.altText || product.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
                       ) : (
-                        // Glossy shine effect - more prominent
+                        // Fallback texture if no image
                         <div className="w-full h-full relative">
                           <div className="absolute inset-0 bg-gradient-to-br from-ghost-white/20 via-transparent to-transparent"></div>
                           <div className="absolute top-0 right-0 w-2/3 h-2/3 bg-gradient-to-br from-ghost-white/30 via-ghost-white/10 to-transparent blur-2xl"></div>
-                          <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-ghost-white/5 to-transparent blur-xl"></div>
                         </div>
                       )}
                     </div>

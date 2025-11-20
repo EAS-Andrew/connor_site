@@ -192,6 +192,10 @@ export async function fetchPPFRolls(): Promise<ShopifyProduct[]> {
             description
             handle
             tags
+            featuredImage {
+              url
+              altText
+            }
             priceRange {
               minVariantPrice {
                 amount
