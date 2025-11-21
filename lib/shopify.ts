@@ -114,12 +114,12 @@ export interface ShopifyCart {
 }
 
 /**
- * Fetch all pre-cut kit products from Shopify
+ * Fetch all pre-cut kit products from Shopify (cars)
  */
 export async function fetchPreCutKits(): Promise<ShopifyProduct[]> {
   const query = `
     query FetchPreCutKits {
-      products(first: 10, query: "tag:pre-cut-kit") {
+      products(first: 10, query: "tag:pre-cut-kit AND tag:car") {
         edges {
           node {
             id
@@ -176,6 +176,73 @@ export async function fetchPreCutKits(): Promise<ShopifyProduct[]> {
   }
 
   return data.products.edges.map((edge: any) => edge.node);
+}
+
+/**
+ * Fetch all motorcycle PPF kit products from Shopify
+ */
+export async function fetchMotorcycleKits(): Promise<ShopifyProduct[]> {
+  const query = `
+    query FetchMotorcycleKits {
+      products(first: 10, query: "tag:pre-cut-kit AND tag:motorcycle") {
+        edges {
+          node {
+            id
+            title
+            description
+            handle
+            tags
+            featuredImage {
+              url
+              altText
+            }
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+              maxVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+            variants(first: 10) {
+              edges {
+                node {
+                  id
+                  title
+                  price {
+                    amount
+                    currencyCode
+                  }
+                  availableForSale
+                  sku
+                }
+              }
+            }
+            metafields(identifiers: [
+              {namespace: "custom", key: "coverage_includes"}
+            ]) {
+              key
+              value
+              type
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const { data, errors } = await client.request(query);
+
+  if (errors) {
+    console.error('Shopify API errors:', errors);
+    throw new Error('Failed to fetch motorcycle products from Shopify');
+  }
+
+  const products = data.products.edges.map((edge: any) => edge.node);
+  console.log(`fetchMotorcycleKits: Retrieved ${products.length} motorcycle products from Shopify`);
+  return products;
 }
 
 /**

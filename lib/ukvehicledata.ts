@@ -45,6 +45,11 @@ export interface UKVDVehicleResponse {
         ModelVariant?: string;
         Series?: string;
       };
+      ModelClassification?: {
+        VehicleClass?: string;
+        TypeApprovalCategory?: string;
+        TaxationClass?: string;
+      };
       BodyDetails?: {
         BodyStyle?: string;
         NumberOfDoors?: number;

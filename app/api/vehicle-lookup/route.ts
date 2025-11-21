@@ -228,12 +228,37 @@ export async function POST(request: NextRequest) {
     // Extract the relevant vehicle information
     const vehicleDetails = data.Results?.VehicleDetails?.VehicleIdentification;
     const modelDetails = data.Results?.ModelDetails?.ModelIdentification;
+    const modelClassification = data.Results?.ModelDetails?.ModelClassification;
 
     if (!vehicleDetails && !modelDetails) {
       return NextResponse.json(
         { error: 'No vehicle data found for this registration' },
         { status: 404 }
       );
+    }
+
+    // Determine vehicle class
+    let vehicleClass: 'Car' | 'Motorcycle' | 'Van' | 'Other' = 'Other';
+    const apiVehicleClass = modelClassification?.VehicleClass;
+    
+    if (apiVehicleClass) {
+      if (apiVehicleClass.toLowerCase().includes('car')) {
+        vehicleClass = 'Car';
+      } else if (apiVehicleClass.toLowerCase().includes('motorcycle')) {
+        vehicleClass = 'Motorcycle';
+      } else if (apiVehicleClass.toLowerCase().includes('van')) {
+        vehicleClass = 'Van';
+      }
+    } else if (vehicleDetails?.DvlaBodyType) {
+      // Fallback to DVLA body type
+      const bodyType = vehicleDetails.DvlaBodyType.toLowerCase();
+      if (bodyType.includes('motorcycle') || bodyType.includes('motorbike')) {
+        vehicleClass = 'Motorcycle';
+      } else if (bodyType.includes('van')) {
+        vehicleClass = 'Van';
+      } else if (bodyType.includes('mpv') || bodyType.includes('saloon') || bodyType.includes('hatchback')) {
+        vehicleClass = 'Car';
+      }
     }
 
     // Construct the response in the format our app expects
@@ -247,6 +272,7 @@ export async function POST(request: NextRequest) {
       bodyStyle: data.Results?.ModelDetails?.BodyDetails?.BodyStyle,
       fuelType: vehicleDetails?.DvlaFuelType,
       vin: vehicleDetails?.Vin,
+      vehicleClass,
     };
 
     // Store in cache for future requests

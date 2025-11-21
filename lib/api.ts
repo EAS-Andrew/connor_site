@@ -1,4 +1,4 @@
-import { fetchPreCutKits, ShopifyProduct } from './shopify';
+import { fetchPreCutKits, fetchMotorcycleKits, ShopifyProduct } from './shopify';
 
 /**
  * UK Vehicle Data API Integration
@@ -16,6 +16,7 @@ export interface VehicleData {
   bodyStyle?: string;
   fuelType?: string;
   vin?: string;
+  vehicleClass?: 'Car' | 'Motorcycle' | 'Van' | 'Other';
 }
 
 /**
@@ -187,14 +188,50 @@ function transformShopifyProductToCoverageOption(product: ShopifyProduct): Cover
  * Fetch coverage options from Shopify
  * Falls back to mock data if Shopify fetch fails
  */
-export async function getCoverageOptions(): Promise<CoverageOption[]> {
+export async function getCoverageOptions(vehicleType: 'Car' | 'Motorcycle' = 'Car'): Promise<CoverageOption[]> {
   try {
-    const products = await fetchPreCutKits();
+    console.log(`Fetching coverage options for vehicle type: ${vehicleType}`);
+    const products = vehicleType === 'Motorcycle' 
+      ? await fetchMotorcycleKits() 
+      : await fetchPreCutKits();
+    console.log(`Found ${products.length} products for ${vehicleType}`);
     return products.map(transformShopifyProductToCoverageOption);
   } catch (error) {
-    console.error('Failed to fetch products from Shopify, using fallback data:', error);
+    console.error(`Failed to fetch ${vehicleType} products from Shopify, using fallback data:`, error);
 
     // Fallback to mock data for development
+    if (vehicleType === 'Motorcycle') {
+      return [
+        {
+          id: 'tank-kit',
+          name: 'Tank & Fairing Kit',
+          description: 'Essential protection for high-impact areas',
+          price: 299,
+          includes: [
+            'Fuel Tank',
+            'Side Fairings',
+            'Front Fender'
+          ],
+          variants: []
+        },
+        {
+          id: 'full-bike',
+          name: 'Full Bike Protection',
+          description: 'Complete coverage for your motorcycle',
+          price: 499,
+          includes: [
+            'Fuel Tank',
+            'All Fairings',
+            'Front & Rear Fenders',
+            'Swingarm',
+            'Frame Protection'
+          ],
+          variants: []
+        }
+      ];
+    }
+
+    // Car fallback data
     return [
       {
         id: 'front-end',

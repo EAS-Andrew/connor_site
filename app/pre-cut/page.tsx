@@ -27,18 +27,22 @@ export default function PreCutPage() {
   const actionButtonsRef = useRef<HTMLDivElement>(null);
   const errorRef = useRef<HTMLDivElement>(null);
 
-  // Fetch coverage options from Shopify on mount
+  // Fetch coverage options from Shopify - load cars initially, then reload based on vehicle type
   useEffect(() => {
     async function loadCoverageOptions() {
       try {
-        const options = await getCoverageOptions();
+        // Default to 'Car' on initial load, then use actual vehicle type once known
+        const vehicleType = vehicleData?.vehicleClass === 'Motorcycle' ? 'Motorcycle' : 'Car';
+        const options = await getCoverageOptions(vehicleType);
         setCoverageOptions(options);
       } catch (error) {
         console.error('Failed to load coverage options:', error);
       }
     }
+    
+    // Load on mount (defaults to car), and reload when vehicle data changes
     loadCoverageOptions();
-  }, []);
+  }, [vehicleData]);
 
   // Scroll to step when it changes
   useEffect(() => {
@@ -231,7 +235,7 @@ export default function PreCutPage() {
                 <div className="h-px w-8 sm:w-12 bg-infrared mt-3 sm:mt-4 mx-auto"></div>
               </div>
               <p className="text-radar-grey-light text-xs sm:text-sm tracking-wide leading-relaxed max-w-2xl mx-auto mb-6">
-                Precision-matched PPF for your exact vehicle • Enter registration • Instant pricing • We verify and cut to spec
+                Precision-matched PPF for your car or motorcycle • Enter registration • Instant pricing • We verify and cut to spec
               </p>
 
               {/* Why Buy Direct? */}
@@ -418,8 +422,14 @@ export default function PreCutPage() {
                           <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-1">MODEL</div>
                           <div className="text-ghost-white font-heading text-lg sm:text-xl">{vehicleData.model}</div>
                         </div>
+                        {vehicleData.vehicleClass && (
+                          <div>
+                            <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-1">TYPE</div>
+                            <div className="text-infrared font-heading text-lg sm:text-xl uppercase tracking-wider">{vehicleData.vehicleClass}</div>
+                          </div>
+                        )}
                         {vehicleData.variant && (
-                          <div className="sm:col-span-2">
+                          <div className={vehicleData.vehicleClass ? '' : 'sm:col-span-2'}>
                             <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-1">VARIANT</div>
                             <div className="text-ghost-white font-heading text-base sm:text-lg">{vehicleData.variant}</div>
                           </div>
@@ -448,7 +458,7 @@ export default function PreCutPage() {
                     CHOOSE YOUR COVERAGE
                   </h2>
                   <p className="text-radar-grey-light text-xs sm:text-sm leading-relaxed max-w-xl mx-auto">
-                    Select your protection level and finish • All kits are precision-cut for your vehicle
+                    Select your protection level and finish • All kits are precision-cut for your {vehicleData?.vehicleClass?.toLowerCase() || 'vehicle'}
                   </p>
                 </div>
 
@@ -460,7 +470,25 @@ export default function PreCutPage() {
                     <div className="h-px flex-1 bg-radar-grey-dark"></div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                  {coverageOptions.length === 0 && (
+                    <div className="bg-radar-grey border border-radar-grey-dark p-8 text-center">
+                      <p className="text-radar-grey-light text-sm">
+                        Loading coverage options for your {vehicleData?.vehicleClass?.toLowerCase() || 'vehicle'}...
+                      </p>
+                    </div>
+                  )}
+
+                  <div className={`
+                    grid gap-4 sm:gap-6
+                    ${coverageOptions.length === 1 
+                      ? 'grid-cols-1 max-w-md mx-auto' 
+                      : coverageOptions.length === 2 
+                        ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto'
+                        : coverageOptions.length === 4
+                          ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2 max-w-5xl mx-auto'
+                          : 'grid-cols-1 md:grid-cols-3'
+                    }
+                  `}>
                     {coverageOptions.map((option) => {
                       // Get image from Shopify product
                       const imageSrc = option.image || '';
@@ -471,7 +499,11 @@ export default function PreCutPage() {
                           onClick={() => handleCoverageSelect(option)}
                           className={`
                             relative cursor-pointer group transition-all duration-300
-                            ${selectedCoverage?.id === option.id ? 'scale-105' : 'hover:scale-[1.02]'}
+                            ${selectedCoverage?.id === option.id 
+                              ? 'scale-105' 
+                              : coverageOptions.length === 1 
+                                ? 'hover:scale-[1.01]' 
+                                : 'hover:scale-[1.02]'}
                           `}
                         >
                           {/* Angular corners */}
@@ -571,7 +603,7 @@ export default function PreCutPage() {
                       <div className="h-px flex-1 bg-radar-grey-dark"></div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 max-w-4xl mx-auto">
                       {materialOptions.map((material) => (
                         <div
                           key={material.id}
