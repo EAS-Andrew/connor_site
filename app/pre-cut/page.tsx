@@ -17,6 +17,14 @@ export default function PreCutPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [error, setError] = useState('');
+  const [useManualEntry, setUseManualEntry] = useState(false);
+  const [manualVehicleData, setManualVehicleData] = useState({
+    make: '',
+    model: '',
+    year: new Date().getFullYear(),
+    variant: '',
+    vehicleClass: 'Car' as 'Car' | 'Motorcycle',
+  });
 
   // Refs for each step section
   const step1Ref = useRef<HTMLDivElement>(null);
@@ -126,6 +134,30 @@ export default function PreCutPage() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleManualEntrySubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    // Validate manual entry
+    if (!manualVehicleData.make || !manualVehicleData.model) {
+      setError('INCOMPLETE DATA - Please provide at least make and model');
+      return;
+    }
+
+    // Create vehicle data from manual entry
+    const vehicleInfo: VehicleData = {
+      registration: 'MANUAL',
+      make: manualVehicleData.make,
+      model: manualVehicleData.model,
+      year: manualVehicleData.year,
+      variant: manualVehicleData.variant || undefined,
+      vehicleClass: manualVehicleData.vehicleClass,
+    };
+
+    setVehicleData(vehicleInfo);
+    setCurrentStep(2);
   };
 
   const handleVehicleConfirm = () => {
@@ -328,13 +360,17 @@ export default function PreCutPage() {
                     </div>
 
                     <h2 className="text-3xl sm:text-4xl font-heading mb-3 text-ghost-white">
-                      ENTER YOUR REGISTRATION
+                      {useManualEntry ? 'ENTER VEHICLE DETAILS' : 'ENTER YOUR REGISTRATION'}
                     </h2>
                     <p className="text-radar-grey-light mb-8 text-sm leading-relaxed">
-                      We&apos;ll automatically look up your vehicle details to ensure perfect fitment
+                      {useManualEntry 
+                        ? 'Provide your vehicle information manually'
+                        : 'We\'ll automatically look up your vehicle details to ensure perfect fitment'
+                      }
                     </p>
 
-                    <form onSubmit={handleRegistrationSubmit}>
+                    {!useManualEntry ? (
+                      <form onSubmit={handleRegistrationSubmit}>
                       <div className="mb-6">
                         <label htmlFor="registration" className="block text-ghost-white mb-3 font-heading text-sm tracking-wider uppercase">
                           Registration Code
@@ -361,23 +397,166 @@ export default function PreCutPage() {
                         </div>
                       )}
 
-                      <Button
-                        type="submit"
-                        size="lg"
-                        className="w-full"
-                        disabled={isLoading || registration.length < 2}
-                      >
-                        {isLoading ? 'Looking up vehicle...' : 'Find My Vehicle'}
-                      </Button>
-                    </form>
+                        <Button
+                          type="submit"
+                          size="lg"
+                          className="w-full"
+                          disabled={isLoading || registration.length < 2}
+                        >
+                          {isLoading ? 'Looking up vehicle...' : 'Find My Vehicle'}
+                        </Button>
+                      </form>
+                    ) : (
+                      <form onSubmit={handleManualEntrySubmit}>
+                        <div className="space-y-4 mb-6">
+                          {/* Vehicle Class */}
+                          <div>
+                            <label htmlFor="vehicleClass" className="block text-ghost-white mb-3 font-heading text-sm tracking-wider uppercase">
+                              Vehicle Type
+                            </label>
+                            <div className="grid grid-cols-2 gap-3">
+                              <button
+                                type="button"
+                                onClick={() => setManualVehicleData(prev => ({ ...prev, vehicleClass: 'Car' }))}
+                                className={`
+                                  px-4 py-3 font-heading text-sm tracking-wider uppercase transition-all
+                                  ${manualVehicleData.vehicleClass === 'Car'
+                                    ? 'bg-infrared text-ghost-white border-2 border-infrared'
+                                    : 'bg-stealth-black text-radar-grey-light border-2 border-radar-grey-dark hover:border-infrared/50'
+                                  }
+                                `}
+                              >
+                                Car
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setManualVehicleData(prev => ({ ...prev, vehicleClass: 'Motorcycle' }))}
+                                className={`
+                                  px-4 py-3 font-heading text-sm tracking-wider uppercase transition-all
+                                  ${manualVehicleData.vehicleClass === 'Motorcycle'
+                                    ? 'bg-infrared text-ghost-white border-2 border-infrared'
+                                    : 'bg-stealth-black text-radar-grey-light border-2 border-radar-grey-dark hover:border-infrared/50'
+                                  }
+                                `}
+                              >
+                                Motorcycle
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Make */}
+                          <div>
+                            <label htmlFor="make" className="block text-ghost-white mb-3 font-heading text-sm tracking-wider uppercase">
+                              Make *
+                            </label>
+                            <input
+                              type="text"
+                              id="make"
+                              value={manualVehicleData.make}
+                              onChange={(e) => setManualVehicleData(prev => ({ ...prev, make: e.target.value }))}
+                              placeholder="e.g., Tesla, BMW, Ducati"
+                              className="w-full px-4 py-3 bg-stealth-black border-2 border-radar-grey-dark text-ghost-white focus:outline-none focus:border-infrared transition-colors"
+                              required
+                            />
+                          </div>
+
+                          {/* Model */}
+                          <div>
+                            <label htmlFor="model" className="block text-ghost-white mb-3 font-heading text-sm tracking-wider uppercase">
+                              Model *
+                            </label>
+                            <input
+                              type="text"
+                              id="model"
+                              value={manualVehicleData.model}
+                              onChange={(e) => setManualVehicleData(prev => ({ ...prev, model: e.target.value }))}
+                              placeholder="e.g., Model Y, M3, Panigale V4"
+                              className="w-full px-4 py-3 bg-stealth-black border-2 border-radar-grey-dark text-ghost-white focus:outline-none focus:border-infrared transition-colors"
+                              required
+                            />
+                          </div>
+
+                          {/* Year */}
+                          <div>
+                            <label htmlFor="year" className="block text-ghost-white mb-3 font-heading text-sm tracking-wider uppercase">
+                              Year *
+                            </label>
+                            <input
+                              type="number"
+                              id="year"
+                              value={manualVehicleData.year}
+                              onChange={(e) => setManualVehicleData(prev => ({ ...prev, year: parseInt(e.target.value) || new Date().getFullYear() }))}
+                              min="1980"
+                              max={new Date().getFullYear() + 1}
+                              className="w-full px-4 py-3 bg-stealth-black border-2 border-radar-grey-dark text-ghost-white focus:outline-none focus:border-infrared transition-colors"
+                              required
+                            />
+                          </div>
+
+                          {/* Variant */}
+                          <div>
+                            <label htmlFor="variant" className="block text-ghost-white mb-3 font-heading text-sm tracking-wider uppercase">
+                              Variant (Optional)
+                            </label>
+                            <input
+                              type="text"
+                              id="variant"
+                              value={manualVehicleData.variant}
+                              onChange={(e) => setManualVehicleData(prev => ({ ...prev, variant: e.target.value }))}
+                              placeholder="e.g., Performance, Competition Pack"
+                              className="w-full px-4 py-3 bg-stealth-black border-2 border-radar-grey-dark text-ghost-white focus:outline-none focus:border-infrared transition-colors"
+                            />
+                          </div>
+                        </div>
+
+                        {error && (
+                          <div ref={errorRef} className="mb-6 p-4 bg-infrared/10 border-l-4 border-infrared">
+                            <p className="text-infrared font-heading text-sm tracking-wider">⚠ {error}</p>
+                          </div>
+                        )}
+
+                        <Button
+                          type="submit"
+                          size="lg"
+                          className="w-full"
+                        >
+                          Continue
+                        </Button>
+                      </form>
+                    )}
 
                     <div className="mt-8 pt-6 border-t border-radar-grey-dark">
-                      <div className="flex items-start gap-3">
-                        <div className="w-1 h-1 bg-infrared rotate-45 mt-2 flex-shrink-0"></div>
-                        <p className="text-xs text-radar-grey-light leading-relaxed">
-                          <span className="text-ghost-white font-heading">INSTANT VERIFICATION:</span> Enter your UK registration for automatic vehicle identification and precision kit matching
-                        </p>
-                      </div>
+                      {!useManualEntry ? (
+                        <>
+                          <div className="flex items-start gap-3 mb-4">
+                            <div className="w-1 h-1 bg-infrared rotate-45 mt-2 flex-shrink-0"></div>
+                            <p className="text-xs text-radar-grey-light leading-relaxed">
+                              <span className="text-ghost-white font-heading">INSTANT VERIFICATION:</span> Enter your UK registration for automatic vehicle identification and precision kit matching
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setUseManualEntry(true);
+                              setError('');
+                            }}
+                            className="text-xs text-infrared hover:text-ghost-white transition-colors uppercase tracking-wider font-heading"
+                          >
+                            → Enter details manually instead
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setUseManualEntry(false);
+                            setError('');
+                          }}
+                          className="text-xs text-infrared hover:text-ghost-white transition-colors uppercase tracking-wider font-heading"
+                        >
+                          ← Use registration lookup instead
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -400,17 +579,22 @@ export default function PreCutPage() {
                       CONFIRM YOUR VEHICLE
                     </h2>
                     <p className="text-radar-grey-light mb-8 text-sm leading-relaxed">
-                      Please verify these details match your vehicle exactly
+                      {vehicleData.registration === 'MANUAL' 
+                        ? 'Please verify these details are correct'
+                        : 'Please verify these details match your vehicle exactly'
+                      }
                     </p>
 
                     {/* Technical spec display */}
                     <div className="bg-stealth-black border-l-4 border-infrared p-4 sm:p-6 mb-6 sm:mb-8">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                        <div>
-                          <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-1">REG_ID</div>
-                          <div className="text-ghost-white font-heading text-xl sm:text-2xl tracking-wider">{vehicleData.registration}</div>
-                        </div>
-                        <div>
+                        {vehicleData.registration !== 'MANUAL' && (
+                          <div>
+                            <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-1">REG_ID</div>
+                            <div className="text-ghost-white font-heading text-xl sm:text-2xl tracking-wider">{vehicleData.registration}</div>
+                          </div>
+                        )}
+                        <div className={vehicleData.registration === 'MANUAL' ? 'sm:col-span-2' : ''}>
                           <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-1">YEAR</div>
                           <div className="text-ghost-white font-heading text-xl sm:text-2xl">{vehicleData.year}</div>
                         </div>
@@ -742,7 +926,12 @@ export default function PreCutPage() {
                           {vehicleData.year} {vehicleData.make} {vehicleData.model}
                           {vehicleData.variant && ` ${vehicleData.variant}`}
                         </div>
-                        <div className="text-radar-grey-light text-sm tracking-wider">{vehicleData.registration}</div>
+                        {vehicleData.registration !== 'MANUAL' && (
+                          <div className="text-radar-grey-light text-sm tracking-wider">{vehicleData.registration}</div>
+                        )}
+                        {vehicleData.vehicleClass && (
+                          <div className="text-infrared text-xs uppercase tracking-wider mt-2">{vehicleData.vehicleClass}</div>
+                        )}
                       </div>
 
                       {/* Protection config */}
@@ -788,8 +977,10 @@ export default function PreCutPage() {
                       <div className="bg-radar-grey/30 border-l-4 border-radar-grey-light p-6">
                         <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-3">POST_DEPLOY_PROTOCOL</div>
                         <p className="text-radar-grey-light text-sm leading-relaxed">
-                          Automated system will request vehicle imagery (front/rear bumpers) plus sensor configuration data.
-                          This ensures precision pattern matching for your specific vehicle configuration.
+                          {vehicleData.registration === 'MANUAL' 
+                            ? 'After purchase, our system will request vehicle imagery to verify your exact configuration and ensure precision pattern matching before cutting your kit.'
+                            : 'Automated system will request vehicle imagery (front/rear bumpers) plus sensor configuration data. This ensures precision pattern matching for your specific vehicle configuration.'
+                          }
                         </p>
                       </div>
 
