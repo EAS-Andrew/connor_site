@@ -20,3 +20,4 @@ async function generateAppleIcon() {
 
 generateAppleIcon();
 
+

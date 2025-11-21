@@ -19,18 +19,35 @@ export default function ContactPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus('idle');
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const formDataToSubmit = new FormData(e.currentTarget as HTMLFormElement);
+      formDataToSubmit.append("access_key", "52a9e82f-eb18-4f3b-b324-7d8008ecf5ec");
 
-    setIsSubmitting(false);
-    setSubmitStatus('success');
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formDataToSubmit
+      });
 
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-      setSubmitStatus('idle');
-    }, 3000);
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitStatus('success');
+        // Reset form after 3 seconds
+        setTimeout(() => {
+          setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+          setSubmitStatus('idle');
+        }, 3000);
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
