@@ -513,8 +513,25 @@ export default function PreCutPage() {
                                   {option.name}
                                 </h3>
                                 <div className="flex items-baseline gap-2">
-                                  <span className="text-2xl sm:text-3xl font-heading text-infrared">£{option.price}</span>
-                                  <span className="text-[10px] sm:text-xs text-radar-grey-light uppercase">GBP</span>
+                                  {(() => {
+                                    // Check if variants have different prices
+                                    const prices = option.variants.map(v => v.price);
+                                    const minPrice = Math.min(...prices);
+                                    const maxPrice = Math.max(...prices);
+                                    const hasDifferentPrices = minPrice !== maxPrice && prices.length > 1;
+                                    
+                                    return (
+                                      <>
+                                        {hasDifferentPrices && (
+                                          <span className="text-sm sm:text-base font-heading text-radar-grey-light">from</span>
+                                        )}
+                                        <span className="text-2xl sm:text-3xl font-heading text-infrared">
+                                          £{hasDifferentPrices ? minPrice : option.price}
+                                        </span>
+                                        <span className="text-[10px] sm:text-xs text-radar-grey-light uppercase">GBP</span>
+                                      </>
+                                    );
+                                  })()}
                                 </div>
                               </div>
 
@@ -614,6 +631,25 @@ export default function PreCutPage() {
                               <div className="text-sm text-infrared font-heading uppercase tracking-wider mb-4">
                                 {material.finish}
                               </div>
+                              
+                              {/* Show variant price if available */}
+                              {(() => {
+                                const variant = selectedCoverage.variants.find(
+                                  (v) => v.title.toLowerCase() === material.id.toLowerCase()
+                                );
+                                if (variant) {
+                                  return (
+                                    <div className="mb-4 pb-4 border-b border-radar-grey-dark">
+                                      <div className="flex items-baseline gap-2">
+                                        <span className="text-2xl font-heading text-ghost-white">£{variant.price}</span>
+                                        <span className="text-[10px] text-radar-grey-light uppercase tracking-wider">GBP</span>
+                                      </div>
+                                    </div>
+                                  );
+                                }
+                                return null;
+                              })()}
+
                               <p className="text-radar-grey-light text-sm leading-relaxed flex-1">
                                 {material.description}
                               </p>
@@ -703,7 +739,15 @@ export default function PreCutPage() {
                         
                         {/* Price - Separate section for mobile compatibility */}
                         <div className="pt-4 border-t border-radar-grey-dark">
-                          <div className="text-infrared font-heading text-3xl">£{selectedCoverage.price}</div>
+                          <div className="text-infrared font-heading text-3xl">
+                            £{(() => {
+                              // Get the selected variant's price
+                              const selectedVariant = selectedCoverage.variants.find(
+                                (v) => v.title.toLowerCase() === selectedMaterial.id.toLowerCase()
+                              );
+                              return selectedVariant ? selectedVariant.price : selectedCoverage.price;
+                            })()}
+                          </div>
                           <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mt-1">TOTAL_GBP</div>
                         </div>
                       </div>
