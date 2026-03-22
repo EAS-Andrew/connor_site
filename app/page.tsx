@@ -323,7 +323,16 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
               {/* Front End */}
-              <div className="bg-radar-grey border-2 border-radar-grey-dark hover:border-infrared/50 transition-all p-6 sm:p-8 flex flex-col">
+              <div className="bg-radar-grey border-2 border-radar-grey-dark hover:border-infrared/50 transition-all flex flex-col overflow-hidden">
+                <div className="bg-ghost-white/5 p-4 flex items-center justify-center">
+                  <img
+                    src="/frontend_ppf.png"
+                    alt="Vehicle diagram showing front end PPF coverage areas"
+                    className="w-full max-w-[200px] h-auto object-contain"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="p-6 sm:p-8 flex flex-col flex-1">
                 <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-3 font-heading">
                   TIER_01
                 </div>
@@ -379,15 +388,24 @@ export default function Home() {
                     Select Front End
                   </Button>
                 </Link>
+                </div>
               </div>
 
               {/* Extended - Popular Choice */}
-              <div className="bg-radar-grey border-2 border-infrared transition-all p-6 sm:p-8 flex flex-col relative">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-infrared">
+              <div className="bg-radar-grey border-2 border-infrared transition-all flex flex-col relative overflow-hidden">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-infrared z-10">
                   <span className="text-stealth-black text-xs font-heading uppercase tracking-wider">Most Popular</span>
                 </div>
-                
-                <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-3 font-heading mt-2">
+                <div className="bg-ghost-white/5 p-4 pt-6 flex items-center justify-center">
+                  <img
+                    src="/frontend_ppf_extended.png"
+                    alt="Vehicle diagram showing extended PPF coverage areas"
+                    className="w-full max-w-[200px] h-auto object-contain"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="p-6 sm:p-8 flex flex-col flex-1">
+                <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-3 font-heading">
                   TIER_02
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-heading text-ghost-white mb-3 uppercase">
@@ -442,10 +460,20 @@ export default function Home() {
                     Select Extended
                   </Button>
                 </Link>
+                </div>
               </div>
 
               {/* Full Coverage */}
-              <div className="bg-radar-grey border-2 border-radar-grey-dark hover:border-infrared/50 transition-all p-6 sm:p-8 flex flex-col">
+              <div className="bg-radar-grey border-2 border-radar-grey-dark hover:border-infrared/50 transition-all flex flex-col overflow-hidden">
+                <div className="bg-ghost-white/5 p-4 flex items-center justify-center">
+                  <img
+                    src="/full_ppf.png"
+                    alt="Vehicle diagram showing full body PPF coverage areas"
+                    className="w-full max-w-[200px] h-auto object-contain"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="p-6 sm:p-8 flex flex-col flex-1">
                 <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-3 font-heading">
                   TIER_03
                 </div>
@@ -501,6 +529,7 @@ export default function Home() {
                     Select Full Coverage
                   </Button>
                 </Link>
+                </div>
               </div>
             </div>
 
