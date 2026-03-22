@@ -508,7 +508,7 @@ export default function Home() {
                 {/* Mobile: compact swipeable cards */}
                 <div className="md:hidden">
                   <div className="-mx-4 px-4 overflow-x-auto scrollbar-hide">
-                    <div className={`flex gap-4 pb-4 ${activeTiers.length <= 2 ? 'justify-center' : 'w-max'}`}>
+                    <div className={`flex gap-4 pb-4 ${activeTiers.length <= 1 ? 'justify-center' : 'w-max'}`}>
                       {activeTiers.map((t) => (
                         <div key={t.tier} className={`bg-radar-grey border-2 ${t.mobileBorder} flex flex-col overflow-hidden relative w-[280px] flex-shrink-0`}>
                           {t.popular && (
@@ -554,7 +554,7 @@ export default function Home() {
                       ))}
                     </div>
                   </div>
-                  {activeTiers.length > 2 && (
+                  {activeTiers.length > 1 && (
                     <div className="flex items-center justify-center gap-2 mt-4 animate-swipe-hint">
                       <svg className="w-4 h-4 text-infrared" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />

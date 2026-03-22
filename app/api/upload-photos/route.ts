@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { validatePhotoToken, deletePhotoToken } from '@/lib/photoToken';
-import { uploadToCloudinary } from '@/lib/cloudinary';
+import { uploadToCloudinary, deleteFromCloudinary } from '@/lib/cloudinary';
 import { updateOrderWithPhotos } from '@/lib/shopify-admin';
 
 interface UploadRequest {
@@ -35,7 +35,6 @@ export async function POST(request: NextRequest) {
 
     const { shopifyOrderId, shopifyOrderName } = tokenData;
 
-    // Upload front bumper photo to Cloudinary
     console.log(`Uploading front bumper photo for order ${shopifyOrderName}...`);
     const frontPhotoUrl = await uploadToCloudinary(
       frontImage,
@@ -43,13 +42,21 @@ export async function POST(request: NextRequest) {
       'front'
     );
 
-    // Upload rear bumper photo to Cloudinary
-    console.log(`Uploading rear bumper photo for order ${shopifyOrderName}...`);
-    const rearPhotoUrl = await uploadToCloudinary(
-      rearImage,
-      shopifyOrderName,
-      'rear'
-    );
+    let rearPhotoUrl: string;
+    try {
+      console.log(`Uploading rear bumper photo for order ${shopifyOrderName}...`);
+      rearPhotoUrl = await uploadToCloudinary(
+        rearImage,
+        shopifyOrderName,
+        'rear'
+      );
+    } catch (rearError) {
+      const cleanOrder = shopifyOrderName.replace('#', '');
+      const now = new Date();
+      const folder = `stealthshield/orders/${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}`;
+      await deleteFromCloudinary(`${folder}/${cleanOrder}_front`);
+      throw rearError;
+    }
 
     // Update Shopify order with photo URLs
     console.log(`Updating Shopify order ${shopifyOrderId} with photo URLs...`);

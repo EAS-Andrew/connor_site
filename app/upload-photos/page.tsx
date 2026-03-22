@@ -18,6 +18,32 @@ interface OrderData {
 
 type CaptureStep = 'front' | 'rear' | 'preview' | 'success';
 
+const MAX_DIMENSION = 2400;
+const JPEG_QUALITY = 0.82;
+
+function compressImage(dataUrl: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      let { width, height } = img;
+      if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+        const ratio = Math.min(MAX_DIMENSION / width, MAX_DIMENSION / height);
+        width = Math.round(width * ratio);
+        height = Math.round(height * ratio);
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return reject(new Error('Canvas context unavailable'));
+      ctx.drawImage(img, 0, 0, width, height);
+      resolve(canvas.toDataURL('image/jpeg', JPEG_QUALITY));
+    };
+    img.onerror = () => reject(new Error('Failed to load image for compression'));
+    img.src = dataUrl;
+  });
+}
+
 function UploadPhotosContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
@@ -30,6 +56,7 @@ function UploadPhotosContent() {
   const [frontImage, setFrontImage] = useState<string | null>(null);
   const [rearImage, setRearImage] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [uploadPhase, setUploadPhase] = useState<string>('');
   const [isMobile, setIsMobile] = useState(false);
   
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -136,8 +163,12 @@ function UploadPhotosContent() {
   };
 
   useEffect(() => {
-    return () => stopCamera();
-  }, []);
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [stream]);
 
   const capturePhoto = () => {
     if (!videoRef.current || !canvasRef.current) return;
@@ -179,16 +210,14 @@ function UploadPhotosContent() {
     }
 
     const reader = new FileReader();
-    reader.onload = (event) => {
-      const imageData = event.target?.result as string;
+    reader.onload = async (event) => {
+      const raw = event.target?.result as string;
+      const imageData = await compressImage(raw);
       
       if (bumper === 'front') {
         setFrontImage(imageData);
-        if (rearImage) setStep('preview');
-        else setStep('rear');
       } else {
         setRearImage(imageData);
-        if (frontImage) setStep('preview');
       }
     };
     reader.readAsDataURL(file);
@@ -209,10 +238,15 @@ function UploadPhotosContent() {
 
     setSubmitting(true);
     try {
+      setUploadPhase('Compressing images...');
+      const compressedFront = await compressImage(frontImage);
+      const compressedRear = await compressImage(rearImage);
+
+      setUploadPhase('Uploading photos...');
       const response = await fetch('/api/upload-photos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token, frontImage, rearImage }),
+        body: JSON.stringify({ token, frontImage: compressedFront, rearImage: compressedRear }),
       });
 
       if (!response.ok) {
@@ -220,10 +254,12 @@ function UploadPhotosContent() {
         throw new Error(errorData.error || 'Upload failed');
       }
 
+      setUploadPhase('Finalizing...');
       setStep('success');
     } catch (err) {
       alert(err instanceof Error ? err.message : 'Failed to upload photos.');
       setSubmitting(false);
+      setUploadPhase('');
     }
   };
 
@@ -440,12 +476,14 @@ function UploadPhotosContent() {
         {/* Desktop: File Upload Mode */}
         {!isMobile && step !== 'preview' && (
           <div className="space-y-6">
-            {/* Front Bumper */}
-            {step === 'front' || frontImage ? (
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Front Bumper */}
               <div className="border border-radar-grey-dark bg-radar-grey/20">
                 <div className="border-b border-radar-grey-dark bg-radar-grey/50 px-6 py-3">
                   <h3 className="font-heading tracking-wider uppercase text-sm flex items-center gap-2">
-                    <span className="w-6 h-6 bg-infrared/20 border border-infrared flex items-center justify-center text-xs">1</span>
+                    <span className={`w-6 h-6 border flex items-center justify-center text-xs ${frontImage ? 'bg-green-900/30 border-green-500 text-green-400' : 'bg-infrared/20 border-infrared text-infrared'}`}>
+                      {frontImage ? '✓' : '1'}
+                    </span>
                     Front_Bumper
                   </h3>
                 </div>
@@ -462,8 +500,8 @@ function UploadPhotosContent() {
                     </div>
                   ) : (
                     <label className="block cursor-pointer group">
-                      <div className="border-2 border-dashed border-radar-grey-dark group-hover:border-infrared transition p-16 text-center">
-                        <div className="text-6xl mb-4 text-radar-grey-light group-hover:text-infrared transition">📁</div>
+                      <div className="border-2 border-dashed border-radar-grey-dark group-hover:border-infrared transition p-12 text-center">
+                        <div className="text-5xl mb-4 text-radar-grey-light group-hover:text-infrared transition">📁</div>
                         <p className="text-ghost-white font-heading tracking-wider uppercase text-sm mb-2">Click to Upload</p>
                         <p className="text-xs text-radar-grey-light">JPG, PNG • Max 10MB</p>
                       </div>
@@ -477,14 +515,14 @@ function UploadPhotosContent() {
                   )}
                 </div>
               </div>
-            ) : null}
 
-            {/* Rear Bumper */}
-            {(step === 'rear' || rearImage) && frontImage ? (
+              {/* Rear Bumper */}
               <div className="border border-radar-grey-dark bg-radar-grey/20">
                 <div className="border-b border-radar-grey-dark bg-radar-grey/50 px-6 py-3">
                   <h3 className="font-heading tracking-wider uppercase text-sm flex items-center gap-2">
-                    <span className="w-6 h-6 bg-infrared/20 border border-infrared flex items-center justify-center text-xs">2</span>
+                    <span className={`w-6 h-6 border flex items-center justify-center text-xs ${rearImage ? 'bg-green-900/30 border-green-500 text-green-400' : 'bg-infrared/20 border-infrared text-infrared'}`}>
+                      {rearImage ? '✓' : '2'}
+                    </span>
                     Rear_Bumper
                   </h3>
                 </div>
@@ -501,8 +539,8 @@ function UploadPhotosContent() {
                     </div>
                   ) : (
                     <label className="block cursor-pointer group">
-                      <div className="border-2 border-dashed border-radar-grey-dark group-hover:border-infrared transition p-16 text-center">
-                        <div className="text-6xl mb-4 text-radar-grey-light group-hover:text-infrared transition">📁</div>
+                      <div className="border-2 border-dashed border-radar-grey-dark group-hover:border-infrared transition p-12 text-center">
+                        <div className="text-5xl mb-4 text-radar-grey-light group-hover:text-infrared transition">📁</div>
                         <p className="text-ghost-white font-heading tracking-wider uppercase text-sm mb-2">Click to Upload</p>
                         <p className="text-xs text-radar-grey-light">JPG, PNG • Max 10MB</p>
                       </div>
@@ -516,7 +554,7 @@ function UploadPhotosContent() {
                   )}
                 </div>
               </div>
-            ) : null}
+            </div>
 
             {frontImage && rearImage && (
               <button
@@ -572,7 +610,12 @@ function UploadPhotosContent() {
               disabled={submitting}
               className="w-full bg-infrared text-ghost-white py-4 font-heading tracking-widest text-sm uppercase hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {submitting ? 'Transmitting Data...' : 'Submit Photos'}
+              {submitting ? (
+                <span className="flex items-center justify-center gap-3">
+                  <span className="w-4 h-4 border-2 border-ghost-white border-t-transparent rounded-full animate-spin"></span>
+                  {uploadPhase || 'Transmitting Data...'}
+                </span>
+              ) : 'Submit Photos'}
             </button>
           </div>
         )}

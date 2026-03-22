@@ -27,6 +27,7 @@ function configureCloudinary() {
 
 interface UploadResult {
   url: string;
+  secure_url: string;
   public_id: string;
 }
 
@@ -73,8 +74,8 @@ export async function uploadToCloudinary(
       overwrite: true,
     }) as UploadResult;
 
-    console.log(`Successfully uploaded to Cloudinary: ${result.url}`);
-    return result.url;
+    console.log(`Successfully uploaded to Cloudinary: ${result.secure_url}`);
+    return result.secure_url;
   } catch (error) {
     console.error('Cloudinary upload error:', error);
     throw new Error('Failed to upload image');
