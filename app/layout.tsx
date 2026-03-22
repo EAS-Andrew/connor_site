@@ -18,6 +18,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://stealthshieldppf.com"),
   title: "StealthShield | Premium Paint Protection Film",
   description:
     "Precision-cut paint protection film for cars and motorcycles. Enter your registration for instant pricing. Free fitting kit with every pre-cut order. UK-based with fast delivery.",
