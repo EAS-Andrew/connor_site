@@ -385,40 +385,37 @@ export default function Home() {
                 Choose your coverage level. Every tier is precision-cut for your exact vehicle and includes a free fitting kit.
               </p>
 
-              {/* Car / Motorcycle Toggle */}
-              <div className="flex items-center justify-center">
-                <div className="inline-flex">
+              {/* Car / Motorcycle Tabs */}
+              <div className="max-w-md mx-auto border-b border-radar-grey-dark">
+                <div className="flex">
                   <button
                     onClick={() => setTierMode('Car')}
-                    className={`relative px-6 sm:px-8 py-3 font-heading text-[10px] sm:text-xs uppercase tracking-[0.2em] transition-all border ${
+                    className={`flex-1 flex items-center justify-center gap-2 pb-3 font-heading text-xs uppercase tracking-[0.2em] transition-all relative ${
                       tierMode === 'Car'
-                        ? 'bg-stealth-black border-infrared text-ghost-white'
-                        : 'bg-radar-grey/30 border-radar-grey-dark text-radar-grey-light hover:border-infrared/50 hover:text-ghost-white'
+                        ? 'text-ghost-white'
+                        : 'text-radar-grey-light hover:text-ghost-white'
                     }`}
                   >
-                    {tierMode === 'Car' && (
-                      <div className="absolute -top-px -left-px w-2 h-2 border-l border-t border-infrared"></div>
-                    )}
-                    {tierMode === 'Car' && (
-                      <div className="absolute -bottom-px -right-px w-2 h-2 border-r border-b border-infrared"></div>
-                    )}
+                    {tierMode === 'Car' && <div className="w-1 h-1 bg-infrared rotate-45"></div>}
                     Cars
+                    {tierMode === 'Car' && (
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-infrared"></div>
+                    )}
                   </button>
+                  <div className="w-px bg-radar-grey-dark self-stretch mb-3"></div>
                   <button
                     onClick={() => setTierMode('Motorcycle')}
-                    className={`relative px-6 sm:px-8 py-3 font-heading text-[10px] sm:text-xs uppercase tracking-[0.2em] transition-all border -ml-px ${
+                    className={`flex-1 flex items-center justify-center gap-2 pb-3 font-heading text-xs uppercase tracking-[0.2em] transition-all relative ${
                       tierMode === 'Motorcycle'
-                        ? 'bg-stealth-black border-infrared text-ghost-white'
-                        : 'bg-radar-grey/30 border-radar-grey-dark text-radar-grey-light hover:border-infrared/50 hover:text-ghost-white'
+                        ? 'text-ghost-white'
+                        : 'text-radar-grey-light hover:text-ghost-white'
                     }`}
                   >
-                    {tierMode === 'Motorcycle' && (
-                      <div className="absolute -top-px -left-px w-2 h-2 border-l border-t border-infrared"></div>
-                    )}
-                    {tierMode === 'Motorcycle' && (
-                      <div className="absolute -bottom-px -right-px w-2 h-2 border-r border-b border-infrared"></div>
-                    )}
+                    {tierMode === 'Motorcycle' && <div className="w-1 h-1 bg-infrared rotate-45"></div>}
                     Motorcycles
+                    {tierMode === 'Motorcycle' && (
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-infrared"></div>
+                    )}
                   </button>
                 </div>
               </div>
