@@ -3,27 +3,30 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { PageLayout, Button, Card } from '@/components';
+import { ComparisonSlider } from '@/components';
 
 export default function Home() {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   return (
     <PageLayout>
       {/* Hero Section */}
-      <section className="relative min-h-[80vh] sm:min-h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Angular background pattern */}
-        <div className="absolute inset-0 opacity-5 overflow-hidden">
-          <div className="absolute top-0 left-0 w-48 h-48 md:w-96 md:h-96 border border-ghost-white transform -rotate-45 translate-x-[-50%] translate-y-[-50%]"></div>
-          <div className="absolute bottom-0 right-0 w-64 h-64 md:w-96 md:h-96 lg:w-[600px] lg:h-[600px] border border-ghost-white transform rotate-12 translate-x-[30%] translate-y-[30%]"></div>
-        </div>
+      <section className="relative min-h-[80vh] sm:min-h-[90vh] flex items-center overflow-hidden">
+        <img
+          src="/hero-installed-car.png"
+          alt="Black sports car with paint protection film installed in a premium studio setting"
+          className="absolute inset-0 w-full h-full object-cover"
+          fetchPriority="high"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-stealth-black via-stealth-black/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-stealth-black via-transparent to-stealth-black/40" />
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            {/* Tactical classification label */}
-            <div className="mt-4 sm:mt-0 mb-6 sm:mb-8">
+          <div className="max-w-2xl">
+            <div className="mb-6 sm:mb-8">
               <div className="inline-block relative">
                 <div className="absolute -top-1 -left-1 w-4 h-4 border-l-2 border-t-2 border-infrared"></div>
                 <div className="absolute -bottom-1 -right-1 w-4 h-4 border-r-2 border-b-2 border-infrared"></div>
-                <div className="px-6 py-2 border border-radar-grey-dark bg-radar-grey">
+                <div className="px-6 py-2 border border-radar-grey-dark bg-stealth-black/60 backdrop-blur-sm">
                   <span className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading">
                     PRECISION_PPF_SYSTEMS
                   </span>
@@ -31,386 +34,77 @@ export default function Home() {
               </div>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-heading mb-4 sm:mb-6 text-ghost-white leading-tight tracking-wider">
-              PERFECT FIT.<br />EVERY TIME.
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-heading mb-4 sm:mb-6 text-ghost-white leading-tight tracking-wider">
+              PREMIUM PAINT PROTECTION, PRECISION-CUT FOR YOUR CAR
             </h1>
 
-            {/* Horizontal accent */}
-            <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="flex items-center gap-3 mb-4">
               <div className="h-px w-12 bg-infrared"></div>
               <div className="w-1 h-1 bg-infrared rotate-45"></div>
               <div className="h-px w-12 bg-infrared"></div>
             </div>
 
-            <p className="text-lg sm:text-xl md:text-2xl text-ghost-white mb-6 sm:mb-8 font-heading tracking-wide">
-              PRECISION-CUT PAINT PROTECTION FILM
+            <p className="text-base sm:text-lg md:text-xl text-radar-grey-light mb-8 sm:mb-10 leading-relaxed">
+              Protect high-impact areas with a clean, near-invisible finish.
             </p>
 
-            {/* 3-Step Visual Path */}
-            <div className="mb-8 sm:mb-10 max-w-3xl mx-auto px-4">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-center gap-4 sm:gap-8">
-                <div className="flex items-center gap-3">
-                  <div className="flex-shrink-0 w-8 h-8 bg-infrared/20 border border-infrared flex items-center justify-center">
-                    <span className="text-infrared font-heading text-sm">1</span>
-                  </div>
-                  <span className="text-ghost-white text-sm tracking-wide">Enter your reg</span>
-                </div>
-                
-                <div className="hidden sm:block w-8 h-px bg-infrared/30"></div>
-                
-                <div className="flex items-center gap-3">
-                  <div className="flex-shrink-0 w-8 h-8 bg-infrared/20 border border-infrared flex items-center justify-center">
-                    <span className="text-infrared font-heading text-sm">2</span>
-                  </div>
-                  <span className="text-ghost-white text-sm tracking-wide">Choose coverage</span>
-                </div>
-                
-                <div className="hidden sm:block w-8 h-px bg-infrared/30"></div>
-                
-                <div className="flex items-center gap-3">
-                  <div className="flex-shrink-0 w-8 h-8 bg-infrared/20 border border-infrared flex items-center justify-center">
-                    <span className="text-infrared font-heading text-sm">3</span>
-                  </div>
-                  <span className="text-ghost-white text-sm tracking-wide">Delivered to door</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
               <Link href="/pre-cut" className="w-full sm:w-auto">
                 <Button size="lg" className="w-full sm:w-auto">
-                  Start with your reg
+                  Shop Protection Kits
                 </Button>
               </Link>
               <Link href="#products" className="w-full sm:w-auto">
                 <Button variant="secondary" size="lg" className="w-full sm:w-auto">
-                  How It Works
+                  Choose Your Coverage
                 </Button>
               </Link>
             </div>
 
-            {/* Professional Installer Path */}
             <div className="mt-6 sm:mt-8">
               <Link href="/rolls" className="inline-flex items-center gap-2 text-radar-grey-light hover:text-infrared transition-colors text-sm group">
                 <span>Prefer a professional installer?</span>
-                <span className="group-hover:translate-x-1 transition-transform">→</span>
+                <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
                 <span className="border-b border-radar-grey-light group-hover:border-infrared">Shop PPF Rolls</span>
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Bottom fade */}
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-stealth-black to-transparent"></div>
       </section>
 
-      {/* Why StealthShield Section */}
+      {/* Pair A — Before/After Reveal Slider */}
       <section className="py-12 sm:py-16 md:py-24 bg-stealth-black border-b border-radar-grey-dark">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            {/* Section header with tactical styling */}
-            <div className="text-center mb-12 sm:mb-16">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-10 sm:mb-14">
               <div className="inline-block mb-4">
                 <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
-                  WHY_STEALTHSHIELD
+                  SURFACE_ANALYSIS
                 </span>
               </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading mb-3 sm:mb-4 text-ghost-white tracking-wider">
-                TACTICAL ADVANTAGES
+                SEE THE FINISH BEFORE AND AFTER PROTECTION
               </h2>
 
-              {/* Divider */}
-              <div className="flex items-center justify-center gap-3">
+              <div className="flex items-center justify-center gap-3 mb-4">
                 <div className="h-px w-16 bg-radar-grey-dark"></div>
                 <div className="w-1 h-1 bg-infrared rotate-45"></div>
                 <div className="h-px w-16 bg-radar-grey-dark"></div>
               </div>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Capability 01 */}
-              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
-                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                <Card className="h-full group-hover:scale-100">
-                  <div className="text-center">
-                    <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-4">
-                      CAPABILITY_01
-                    </div>
-                    <div className="w-16 h-16 mx-auto mb-6 bg-infrared/10 flex items-center justify-center">
-                      <div className="relative w-8 h-8">
-                        <div className="absolute inset-x-0 bottom-0 w-0 h-0 mx-auto border-l-[16px] border-r-[16px] border-b-[28px] border-l-transparent border-r-transparent border-b-infrared animate-pulse"></div>
-                        <div className="absolute inset-x-0 bottom-0 w-0 h-0 mx-auto border-l-[16px] border-r-[16px] border-b-[28px] border-l-transparent border-r-transparent border-b-infrared opacity-30"></div>
-                      </div>
-                    </div>
-                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">CRYSTAL CLARITY</h3>
-                    <p className="text-radar-grey-light text-sm leading-relaxed">
-                      Invisible protection that preserves your vehicle&apos;s finish. Optical clarity that maintains the original appearance with zero distortion.
-                    </p>
-                  </div>
-                </Card>
-              </div>
-
-              {/* Capability 02 */}
-              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
-                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                <Card className="h-full group-hover:scale-100">
-                  <div className="text-center">
-                    <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-4">
-                      CAPABILITY_02
-                    </div>
-                    <div className="w-16 h-16 mx-auto mb-6 bg-infrared/10 flex items-center justify-center">
-                      <div className="relative w-8 h-8">
-                        <div className="absolute inset-0 border-2 border-infrared transform rotate-45 animate-spin-slow"></div>
-                        <div className="absolute inset-0 border-2 border-infrared transform rotate-45 opacity-30"></div>
-                      </div>
-                    </div>
-                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">PERFECT FIT</h3>
-                    <p className="text-radar-grey-light text-sm leading-relaxed">
-                      Registration-verified fitment for your exact vehicle. No guesswork, no wrong trim, just perfect-fit patterns cut to spec.
-                    </p>
-                  </div>
-                </Card>
-              </div>
-
-              {/* Capability 03 */}
-              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
-                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                <Card className="h-full group-hover:scale-100">
-                  <div className="text-center">
-                    <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-4">
-                      CAPABILITY_03
-                    </div>
-                    <div className="w-16 h-16 mx-auto mb-6 bg-infrared/10 flex items-center justify-center">
-                      <div className="relative w-10 h-10">
-                        <svg className="absolute inset-0 animate-ping opacity-75" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <polygon points="20,2 35,12 35,28 20,38 5,28 5,12" stroke="#D6422F" strokeWidth="2" fill="none" />
-                        </svg>
-                        <svg className="absolute inset-0" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <polygon points="20,2 35,12 35,28 20,38 5,28 5,12" stroke="#D6422F" strokeWidth="2" fill="none" />
-                        </svg>
-                      </div>
-                    </div>
-                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">BUILT TO LAST</h3>
-                    <p className="text-radar-grey-light text-sm leading-relaxed">
-                      Premium PPF with self-healing technology. Manufactured in the UK, engineered for exceptional clarity and long-term protection that performs in all conditions.
-                    </p>
-                  </div>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Accordion - Moved Lower */}
-      <section className="py-12 sm:py-16 bg-radar-grey/10 border-b border-radar-grey-dark">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8">
-              <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
-                QUICK_INTEL
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-heading text-ghost-white mt-3 mb-2 tracking-wider">
-                COMMON QUESTIONS
-              </h2>
-            </div>
-
-            <div className="space-y-3">
-              {[
-                {
-                  q: 'How does registration lookup work?',
-                  a: 'Enter your vehicle registration and our system automatically queries official databases to identify your exact make, model, trim level, and year. This eliminates manual entry errors and ensures perfect fitment.'
-                },
-                {
-                  q: 'Can I install PPF myself?',
-                  a: 'While our kits include everything needed, PPF installation requires specific skills and experience for optimal results. We strongly recommend professional installation and can connect you with certified installers in your area.'
-                },
-                {
-                  q: 'What if the kit doesn\'t fit?',
-                  a: 'If there\'s a fitment issue due to incorrect cutting, we\'ll recut the affected pieces at no charge. Our photo verification process prevents this by confirming your exact vehicle spec before cutting begins.'
-                },
-                {
-                  q: 'How long does delivery take?',
-                  a: 'Once your vehicle is verified, kits are precision-cut within 3-5 business days. UK delivery typically takes 2-3 days. Total time from order to delivery: approximately 5-8 days.'
-                },
-                {
-                  q: 'What\'s the difference between coverage levels?',
-                  a: 'Front End covers high-impact zones (bonnet, bumper, wings). Extended adds front doors and skirts for daily drivers. Full Coverage protects all exterior panels for maximum protection.'
-                },
-                {
-                  q: 'Do you offer installation services?',
-                  a: 'We work with a network of certified installers across the UK. After ordering, we can connect you with a trusted professional in your area for expert installation.'
-                }
-              ].map((faq, index) => {
-                const isOpen = openFaqIndex === index;
-                return (
-                  <div
-                    key={index}
-                    className="bg-radar-grey border border-radar-grey-dark hover:border-infrared/50 transition-all"
-                  >
-                    <button
-                      onClick={() => setOpenFaqIndex(isOpen ? null : index)}
-                      className="w-full px-5 py-4 flex items-center justify-between gap-4 text-left group"
-                    >
-                      <span className="text-ghost-white font-heading text-sm sm:text-base tracking-wide flex-1">
-                        {faq.q}
-                      </span>
-                      <div className="flex-shrink-0">
-                        <div
-                          className={`w-6 h-6 border border-infrared flex items-center justify-center transition-transform duration-300 ${
-                            isOpen ? 'rotate-45 bg-infrared/20' : 'bg-infrared/10'
-                          }`}
-                        >
-                          <svg
-                            className="w-4 h-4 text-infrared"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d={isOpen ? 'M6 18L18 6M6 6l12 12' : 'M12 6v12m6-6H6'}
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    </button>
-
-                    {isOpen && (
-                      <div className="px-5 pb-4 border-t border-radar-grey-dark pt-4">
-                        <p className="text-radar-grey-light text-sm leading-relaxed">{faq.a}</p>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="text-center mt-8">
-              <Link href="/faq" className="inline-flex items-center gap-2 text-infrared hover:text-ghost-white transition-colors text-sm font-heading uppercase tracking-wider group">
-                <span>View All FAQs</span>
-                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Social Proof Section */}
-      <section className="py-12 sm:py-16 md:py-20 bg-radar-grey/10 border-y border-radar-grey-dark">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            {/* Trust Stat */}
-            <div className="text-center mb-8 sm:mb-12">
-              <div className="inline-flex items-center gap-3 mb-3">
-                <div className="flex gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-5 h-5 text-infrared" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-              </div>
-              <p className="text-ghost-white font-heading text-xl sm:text-2xl tracking-wider mb-2">
-                1,200+ VEHICLES PROTECTED
+              <p className="text-radar-grey-light text-sm sm:text-base max-w-2xl mx-auto">
+                A cleaner, glossier surface starts with protecting the areas that take the most daily wear.
               </p>
-              <p className="text-radar-grey-light text-sm">Trusted by car enthusiasts across the UK</p>
             </div>
 
-            {/* Car Brand Badges */}
-            <div className="mb-10 sm:mb-16">
-              <div className="text-center mb-6">
-                <span className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading">
-                  PATTERNS AVAILABLE FOR
-                </span>
-              </div>
-              <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 opacity-60">
-                {['BMW', 'MERCEDES', 'AUDI', 'TESLA', 'PORSCHE', 'VOLKSWAGEN'].map((brand) => (
-                  <div key={brand} className="px-4 py-2 border border-radar-grey-dark bg-radar-grey/30">
-                    <span className="text-ghost-white font-heading text-xs sm:text-sm tracking-wider">{brand}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Testimonials */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-radar-grey border border-radar-grey-dark p-6 hover:border-infrared/50 transition-all">
-                <div className="flex gap-1 mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-4 h-4 text-infrared" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-ghost-white mb-4 leading-relaxed text-sm">
-                  "Perfect fit on my M3. Everything lined up exactly as it should. The registration lookup made ordering so simple."
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-infrared/20 border border-infrared flex items-center justify-center">
-                    <span className="text-infrared font-heading text-sm">JM</span>
-                  </div>
-                  <div>
-                    <div className="text-ghost-white text-sm font-heading">James M.</div>
-                    <div className="text-radar-grey-light text-xs">2024 BMW M3</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-radar-grey border border-radar-grey-dark p-6 hover:border-infrared/50 transition-all">
-                <div className="flex gap-1 mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-4 h-4 text-infrared" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-ghost-white mb-4 leading-relaxed text-sm">
-                  "Installation was straightforward with pre-cut pieces. Quality of the film is outstanding. Highly recommend."
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-infrared/20 border border-infrared flex items-center justify-center">
-                    <span className="text-infrared font-heading text-sm">SC</span>
-                  </div>
-                  <div>
-                    <div className="text-ghost-white text-sm font-heading">Sarah C.</div>
-                    <div className="text-radar-grey-light text-xs">2023 Tesla Model Y</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-radar-grey border border-radar-grey-dark p-6 hover:border-infrared/50 transition-all">
-                <div className="flex gap-1 mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-4 h-4 text-infrared" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-ghost-white mb-4 leading-relaxed text-sm">
-                  "Best decision for protecting my car. The self-healing film is incredible. Already got two small scratches that disappeared."
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-infrared/20 border border-infrared flex items-center justify-center">
-                    <span className="text-infrared font-heading text-sm">DP</span>
-                  </div>
-                  <div>
-                    <div className="text-ghost-white text-sm font-heading">David P.</div>
-                    <div className="text-radar-grey-light text-xs">2023 Porsche 911</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ComparisonSlider
+              beforeSrc="/pair-a-before.png"
+              afterSrc="/pair-a-after.png"
+              beforeAlt="Close-up of a black car front panel showing visible swirl marks and surface scratches"
+              afterAlt="Close-up of the same black car front panel with a clean glossy finish"
+            />
           </div>
         </div>
       </section>
@@ -419,7 +113,6 @@ export default function Home() {
       <section id="products" className="py-12 sm:py-16 md:py-24 bg-radar-grey/20">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
-            {/* Section header */}
             <div className="text-center mb-12 sm:mb-16">
               <div className="inline-block mb-4">
                 <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
@@ -430,7 +123,6 @@ export default function Home() {
                 CHOOSE YOUR SOLUTION
               </h2>
 
-              {/* Divider */}
               <div className="flex items-center justify-center gap-3 mb-4">
                 <div className="h-px w-16 bg-radar-grey-dark"></div>
                 <div className="w-1 h-1 bg-infrared rotate-45"></div>
@@ -460,7 +152,6 @@ export default function Home() {
                     Perfect-fit protection cut specifically for your vehicle. Enter your registration, choose your coverage, we verify and cut to your exact spec. Starting from £299.
                   </p>
 
-                  {/* Specs list */}
                   <div className="mb-6 flex-1">
                     <div className="text-[10px] text-radar-grey-light uppercase tracking-widest font-heading mb-3">
                       KEY_BENEFITS
@@ -510,7 +201,6 @@ export default function Home() {
                     Professional-grade protection film for custom applications. Perfect for installers who prefer bulk rolls for multiple vehicles or custom coverage patterns.
                   </p>
 
-                  {/* Specs list */}
                   <div className="mb-6 flex-1">
                     <div className="text-[10px] text-radar-grey-light uppercase tracking-widest font-heading mb-3">
                       KEY_BENEFITS
@@ -570,7 +260,7 @@ export default function Home() {
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-infrared mt-1">✓</span>
-                      <span className="text-radar-grey-light text-sm">You're protecting one specific vehicle</span>
+                      <span className="text-radar-grey-light text-sm">You&apos;re protecting one specific vehicle</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-infrared mt-1">✓</span>
@@ -584,7 +274,7 @@ export default function Home() {
                   <ul className="space-y-2">
                     <li className="flex items-start gap-2">
                       <span className="text-infrared mt-1">✓</span>
-                      <span className="text-radar-grey-light text-sm">You're a professional installer</span>
+                      <span className="text-radar-grey-light text-sm">You&apos;re a professional installer</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-infrared mt-1">✓</span>
@@ -610,7 +300,6 @@ export default function Home() {
       <section className="py-12 sm:py-16 md:py-24 bg-stealth-black">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
-            {/* Section header */}
             <div className="text-center mb-12 sm:mb-16">
               <div className="inline-block mb-4">
                 <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
@@ -621,7 +310,6 @@ export default function Home() {
                 PROTECTION TIERS
               </h2>
 
-              {/* Divider */}
               <div className="flex items-center justify-center gap-3 mb-4">
                 <div className="h-px w-16 bg-radar-grey-dark"></div>
                 <div className="w-1 h-1 bg-infrared rotate-45"></div>
@@ -816,7 +504,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Note */}
             <div className="mt-8 sm:mt-12 text-center">
               <p className="text-radar-grey-light text-sm">
                 All prices are estimates. Final pricing calculated after vehicle verification. 
@@ -827,11 +514,224 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Feature Block — Precision Engineering + Macro Edge Detail */}
+      <section className="py-12 sm:py-16 md:py-24 bg-stealth-black border-b border-radar-grey-dark">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto">
+            {/* Two-column feature with macro image */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16 items-center mb-16 sm:mb-24">
+              <div>
+                <div className="mb-4">
+                  <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
+                    PRECISION_ENGINEERING
+                  </span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading mb-4 text-ghost-white tracking-wider">
+                  PRECISION-CUT FOR AN ALMOST INVISIBLE FINISH
+                </h2>
+
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="h-px w-16 bg-radar-grey-dark"></div>
+                  <div className="w-1 h-1 bg-infrared rotate-45"></div>
+                  <div className="h-px w-16 bg-radar-grey-dark"></div>
+                </div>
+
+                <p className="text-radar-grey-light text-sm sm:text-base leading-relaxed">
+                  Designed to follow panel lines cleanly for discreet protection without disrupting the look of the car.
+                </p>
+              </div>
+
+              <div className="relative">
+                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared"></div>
+                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared"></div>
+                <img
+                  src="/macro-edge-detail.png"
+                  alt="Macro detail of paint protection film aligned cleanly along a vehicle panel edge"
+                  className="w-full border border-radar-grey-dark"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+
+            {/* Capability cards */}
+            <div className="text-center mb-12 sm:mb-16">
+              <div className="inline-block mb-4">
+                <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
+                  WHY_STEALTHSHIELD
+                </span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading mb-3 sm:mb-4 text-ghost-white tracking-wider">
+                TACTICAL ADVANTAGES
+              </h2>
+
+              <div className="flex items-center justify-center gap-3">
+                <div className="h-px w-16 bg-radar-grey-dark"></div>
+                <div className="w-1 h-1 bg-infrared rotate-45"></div>
+                <div className="h-px w-16 bg-radar-grey-dark"></div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Capability 01 */}
+              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
+                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                <Card className="h-full group-hover:scale-100">
+                  <div className="text-center">
+                    <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-4">
+                      CAPABILITY_01
+                    </div>
+                    <div className="w-16 h-16 mx-auto mb-6 bg-infrared/10 flex items-center justify-center">
+                      <div className="relative w-8 h-8">
+                        <div className="absolute inset-x-0 bottom-0 w-0 h-0 mx-auto border-l-[16px] border-r-[16px] border-b-[28px] border-l-transparent border-r-transparent border-b-infrared animate-pulse"></div>
+                        <div className="absolute inset-x-0 bottom-0 w-0 h-0 mx-auto border-l-[16px] border-r-[16px] border-b-[28px] border-l-transparent border-r-transparent border-b-infrared opacity-30"></div>
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">CRYSTAL CLARITY</h3>
+                    <p className="text-radar-grey-light text-sm leading-relaxed">
+                      Invisible protection that preserves your vehicle&apos;s finish. Optical clarity that maintains the original appearance with zero distortion.
+                    </p>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Capability 02 */}
+              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
+                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                <Card className="h-full group-hover:scale-100">
+                  <div className="text-center">
+                    <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-4">
+                      CAPABILITY_02
+                    </div>
+                    <div className="w-16 h-16 mx-auto mb-6 bg-infrared/10 flex items-center justify-center">
+                      <div className="relative w-8 h-8">
+                        <div className="absolute inset-0 border-2 border-infrared transform rotate-45 animate-spin-slow"></div>
+                        <div className="absolute inset-0 border-2 border-infrared transform rotate-45 opacity-30"></div>
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">PERFECT FIT</h3>
+                    <p className="text-radar-grey-light text-sm leading-relaxed">
+                      Registration-verified fitment for your exact vehicle. No guesswork, no wrong trim, just perfect-fit patterns cut to spec.
+                    </p>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Capability 03 */}
+              <div className="relative group transition-transform duration-300 hover:scale-[1.02]">
+                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                <Card className="h-full group-hover:scale-100">
+                  <div className="text-center">
+                    <div className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading mb-4">
+                      CAPABILITY_03
+                    </div>
+                    <div className="w-16 h-16 mx-auto mb-6 bg-infrared/10 flex items-center justify-center">
+                      <div className="relative w-10 h-10">
+                        <svg className="absolute inset-0 animate-ping opacity-75" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <polygon points="20,2 35,12 35,28 20,38 5,28 5,12" stroke="#D6422F" strokeWidth="2" fill="none" />
+                        </svg>
+                        <svg className="absolute inset-0" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <polygon points="20,2 35,12 35,28 20,38 5,28 5,12" stroke="#D6422F" strokeWidth="2" fill="none" />
+                        </svg>
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-heading mb-4 text-ghost-white tracking-wide">BUILT TO LAST</h3>
+                    <p className="text-radar-grey-light text-sm leading-relaxed">
+                      Premium PPF with self-healing technology. Manufactured in the UK, engineered for exceptional clarity and long-term protection that performs in all conditions.
+                    </p>
+                  </div>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Installation Process Section */}
+      <section className="py-12 sm:py-16 md:py-24 bg-radar-grey/20 border-b border-radar-grey-dark">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16 items-center">
+              <div className="relative order-2 md:order-1">
+                <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared"></div>
+                <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared"></div>
+                <img
+                  src="/installation-process.png"
+                  alt="Installer applying paint protection film to the front corner of a black sports car"
+                  className="w-full border border-radar-grey-dark"
+                  loading="lazy"
+                />
+              </div>
+
+              <div className="order-1 md:order-2">
+                <div className="mb-4">
+                  <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
+                    APPLICATION_PROTOCOL
+                  </span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading mb-4 text-ghost-white tracking-wider">
+                  PROFESSIONALLY CUT. CLEANLY APPLIED. BUILT TO LAST.
+                </h2>
+
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="h-px w-16 bg-radar-grey-dark"></div>
+                  <div className="w-1 h-1 bg-infrared rotate-45"></div>
+                  <div className="h-px w-16 bg-radar-grey-dark"></div>
+                </div>
+
+                <p className="text-radar-grey-light text-sm sm:text-base leading-relaxed">
+                  Vehicle-specific templates and careful application help deliver accurate coverage, clean alignment, and a premium finish.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pair B — Self-Healing Before/After Slider */}
+      <section className="py-12 sm:py-16 md:py-24 bg-stealth-black border-b border-radar-grey-dark">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-10 sm:mb-14">
+              <div className="inline-block mb-4">
+                <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
+                  SELF_HEALING_TECHNOLOGY
+                </span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading mb-3 sm:mb-4 text-ghost-white tracking-wider">
+                LIGHT SURFACE MARKS, VISIBLY REDUCED
+              </h2>
+
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="h-px w-16 bg-radar-grey-dark"></div>
+                <div className="w-1 h-1 bg-infrared rotate-45"></div>
+                <div className="h-px w-16 bg-radar-grey-dark"></div>
+              </div>
+
+              <p className="text-radar-grey-light text-sm sm:text-base max-w-2xl mx-auto">
+                Designed to maintain a cleaner-looking finish and recover from minor surface marring with heat.
+              </p>
+            </div>
+
+            <ComparisonSlider
+              beforeSrc="/pair-b-before.png"
+              afterSrc="/pair-b-after.png"
+              beforeAlt="Macro close-up of light scratches on a black painted surface"
+              afterAlt="Macro close-up of the same black painted surface with a smooth glossy finish"
+            />
+          </div>
+        </div>
+      </section>
+
       {/* What's In Your Kit Section */}
       <section className="py-12 sm:py-16 md:py-24 bg-stealth-black border-t border-radar-grey-dark">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
-            {/* Section header */}
             <div className="text-center mb-12 sm:mb-16">
               <div className="inline-block mb-4">
                 <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
@@ -839,15 +739,29 @@ export default function Home() {
                 </span>
               </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading mb-3 sm:mb-4 text-ghost-white tracking-wider">
-                WHAT'S IN YOUR KIT
+                EVERYTHING YOU NEED FOR A PREMIUM INSTALL
               </h2>
 
-              {/* Divider */}
               <div className="flex items-center justify-center gap-3">
                 <div className="h-px w-16 bg-radar-grey-dark"></div>
                 <div className="w-1 h-1 bg-infrared rotate-45"></div>
                 <div className="h-px w-16 bg-radar-grey-dark"></div>
               </div>
+            </div>
+
+            {/* Kit contents image */}
+            <div className="max-w-2xl mx-auto mb-12 sm:mb-16 relative">
+              <div className="absolute -top-2 -left-2 w-6 h-6 border-l-2 border-t-2 border-infrared"></div>
+              <div className="absolute -bottom-2 -right-2 w-6 h-6 border-r-2 border-b-2 border-infrared"></div>
+              <img
+                src="/kit-contents.png"
+                alt="StealthShield paint protection film kit contents arranged on a dark background"
+                className="w-full border border-radar-grey-dark"
+                loading="lazy"
+              />
+              <p className="text-center text-radar-grey-light text-xs mt-4 uppercase tracking-wider">
+                High-clarity film and essential install tools presented as a complete, premium system.
+              </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -942,7 +856,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Note */}
             <div className="mt-8 sm:mt-12 max-w-3xl mx-auto text-center">
               <div className="bg-radar-grey/50 border-l-4 border-infrared p-6">
                 <p className="text-radar-grey-light text-sm leading-relaxed">
@@ -958,7 +871,6 @@ export default function Home() {
       <section className="py-12 sm:py-16 md:py-24 bg-radar-grey/20 border-t border-radar-grey-dark">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
-            {/* Section header */}
             <div className="text-center mb-12 sm:mb-16">
               <div className="inline-block mb-4">
                 <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
@@ -969,7 +881,6 @@ export default function Home() {
                 OUR GUARANTEES
               </h2>
 
-              {/* Divider */}
               <div className="flex items-center justify-center gap-3">
                 <div className="h-px w-16 bg-radar-grey-dark"></div>
                 <div className="w-1 h-1 bg-infrared rotate-45"></div>
@@ -1039,7 +950,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Additional Trust Elements */}
             <div className="mt-12 sm:mt-16 max-w-4xl mx-auto">
               <div className="bg-stealth-black border-2 border-infrared/30 p-6 sm:p-8">
                 <div className="text-center">
@@ -1047,7 +957,7 @@ export default function Home() {
                     BUY WITH CONFIDENCE
                   </h3>
                   <p className="text-radar-grey-light text-sm leading-relaxed mb-6">
-                    We stand behind every kit. If there's a fitment issue due to incorrect cutting, we'll recut the affected pieces at no charge. 
+                    We stand behind every kit. If there&apos;s a fitment issue due to incorrect cutting, we&apos;ll recut the affected pieces at no charge. 
                     Our photo verification process prevents this, but your satisfaction is guaranteed.
                   </p>
                   <div className="flex flex-wrap justify-center gap-4 sm:gap-6 text-ghost-white text-xs">
@@ -1083,15 +993,217 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Social Proof Section */}
+      <section className="py-12 sm:py-16 md:py-20 bg-radar-grey/10 border-y border-radar-grey-dark">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-8 sm:mb-12">
+              <div className="inline-flex items-center gap-3 mb-3">
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5 text-infrared" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+              </div>
+              <p className="text-ghost-white font-heading text-xl sm:text-2xl tracking-wider mb-2">
+                1,200+ VEHICLES PROTECTED
+              </p>
+              <p className="text-radar-grey-light text-sm">Trusted by car enthusiasts across the UK</p>
+            </div>
+
+            <div className="mb-10 sm:mb-16">
+              <div className="text-center mb-6">
+                <span className="text-[10px] text-radar-grey-light uppercase tracking-[0.3em] font-heading">
+                  PATTERNS AVAILABLE FOR
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 opacity-60">
+                {['BMW', 'MERCEDES', 'AUDI', 'TESLA', 'PORSCHE', 'VOLKSWAGEN'].map((brand) => (
+                  <div key={brand} className="px-4 py-2 border border-radar-grey-dark bg-radar-grey/30">
+                    <span className="text-ghost-white font-heading text-xs sm:text-sm tracking-wider">{brand}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-radar-grey border border-radar-grey-dark p-6 hover:border-infrared/50 transition-all">
+                <div className="flex gap-1 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-4 h-4 text-infrared" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-ghost-white mb-4 leading-relaxed text-sm">
+                  &ldquo;Perfect fit on my M3. Everything lined up exactly as it should. The registration lookup made ordering so simple.&rdquo;
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-infrared/20 border border-infrared flex items-center justify-center">
+                    <span className="text-infrared font-heading text-sm">JM</span>
+                  </div>
+                  <div>
+                    <div className="text-ghost-white text-sm font-heading">James M.</div>
+                    <div className="text-radar-grey-light text-xs">2024 BMW M3</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-radar-grey border border-radar-grey-dark p-6 hover:border-infrared/50 transition-all">
+                <div className="flex gap-1 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-4 h-4 text-infrared" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-ghost-white mb-4 leading-relaxed text-sm">
+                  &ldquo;Installation was straightforward with pre-cut pieces. Quality of the film is outstanding. Highly recommend.&rdquo;
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-infrared/20 border border-infrared flex items-center justify-center">
+                    <span className="text-infrared font-heading text-sm">SC</span>
+                  </div>
+                  <div>
+                    <div className="text-ghost-white text-sm font-heading">Sarah C.</div>
+                    <div className="text-radar-grey-light text-xs">2023 Tesla Model Y</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-radar-grey border border-radar-grey-dark p-6 hover:border-infrared/50 transition-all">
+                <div className="flex gap-1 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-4 h-4 text-infrared" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-ghost-white mb-4 leading-relaxed text-sm">
+                  &ldquo;Best decision for protecting my car. The self-healing film is incredible. Already got two small scratches that disappeared.&rdquo;
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-infrared/20 border border-infrared flex items-center justify-center">
+                    <span className="text-infrared font-heading text-sm">DP</span>
+                  </div>
+                  <div>
+                    <div className="text-ghost-white text-sm font-heading">David P.</div>
+                    <div className="text-radar-grey-light text-xs">2023 Porsche 911</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Accordion */}
+      <section className="py-12 sm:py-16 bg-radar-grey/10 border-b border-radar-grey-dark">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
+                QUICK_INTEL
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-heading text-ghost-white mt-3 mb-2 tracking-wider">
+                COMMON QUESTIONS
+              </h2>
+            </div>
+
+            <div className="space-y-3">
+              {[
+                {
+                  q: 'How does registration lookup work?',
+                  a: 'Enter your vehicle registration and our system automatically queries official databases to identify your exact make, model, trim level, and year. This eliminates manual entry errors and ensures perfect fitment.'
+                },
+                {
+                  q: 'Can I install PPF myself?',
+                  a: 'While our kits include everything needed, PPF installation requires specific skills and experience for optimal results. We strongly recommend professional installation and can connect you with certified installers in your area.'
+                },
+                {
+                  q: 'What if the kit doesn\'t fit?',
+                  a: 'If there\'s a fitment issue due to incorrect cutting, we\'ll recut the affected pieces at no charge. Our photo verification process prevents this by confirming your exact vehicle spec before cutting begins.'
+                },
+                {
+                  q: 'How long does delivery take?',
+                  a: 'Once your vehicle is verified, kits are precision-cut within 3-5 business days. UK delivery typically takes 2-3 days. Total time from order to delivery: approximately 5-8 days.'
+                },
+                {
+                  q: 'What\'s the difference between coverage levels?',
+                  a: 'Front End covers high-impact zones (bonnet, bumper, wings). Extended adds front doors and skirts for daily drivers. Full Coverage protects all exterior panels for maximum protection.'
+                },
+                {
+                  q: 'Do you offer installation services?',
+                  a: 'We work with a network of certified installers across the UK. After ordering, we can connect you with a trusted professional in your area for expert installation.'
+                }
+              ].map((faq, index) => {
+                const isOpen = openFaqIndex === index;
+                return (
+                  <div
+                    key={index}
+                    className="bg-radar-grey border border-radar-grey-dark hover:border-infrared/50 transition-all"
+                  >
+                    <button
+                      onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+                      className="w-full px-5 py-4 flex items-center justify-between gap-4 text-left group"
+                    >
+                      <span className="text-ghost-white font-heading text-sm sm:text-base tracking-wide flex-1">
+                        {faq.q}
+                      </span>
+                      <div className="flex-shrink-0">
+                        <div
+                          className={`w-6 h-6 border border-infrared flex items-center justify-center transition-transform duration-300 ${
+                            isOpen ? 'rotate-45 bg-infrared/20' : 'bg-infrared/10'
+                          }`}
+                        >
+                          <svg
+                            className="w-4 h-4 text-infrared"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d={isOpen ? 'M6 18L18 6M6 6l12 12' : 'M12 6v12m6-6H6'}
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </button>
+
+                    {isOpen && (
+                      <div className="px-5 pb-4 border-t border-radar-grey-dark pt-4">
+                        <p className="text-radar-grey-light text-sm leading-relaxed">{faq.a}</p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="text-center mt-8">
+              <Link href="/faq" className="inline-flex items-center gap-2 text-infrared hover:text-ghost-white transition-colors text-sm font-heading uppercase tracking-wider group">
+                <span>View All FAQs</span>
+                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-12 sm:py-16 md:py-24 bg-stealth-black relative overflow-hidden">
-        {/* Angular accent elements */}
         <div className="absolute top-0 right-0 w-64 h-64 border border-infrared/10 transform rotate-45 translate-x-32 -translate-y-32"></div>
         <div className="absolute bottom-0 left-0 w-48 h-48 border border-infrared/10 transform rotate-12 -translate-x-24 translate-y-24"></div>
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-4xl mx-auto">
-            {/* Tactical frame */}
             <div className="relative border-2 border-radar-grey-dark p-8 sm:p-12">
               <div className="absolute -top-2 -left-2 w-8 h-8 border-l-2 border-t-2 border-infrared"></div>
               <div className="absolute -top-2 -right-2 w-8 h-8 border-r-2 border-t-2 border-infrared"></div>
@@ -1109,7 +1221,6 @@ export default function Home() {
                   CONFIGURE YOUR KIT
                 </h2>
 
-                {/* Divider */}
                 <div className="flex items-center justify-center gap-3 mb-6">
                   <div className="h-px w-12 bg-radar-grey-dark"></div>
                   <div className="w-1 h-1 bg-infrared rotate-45"></div>
