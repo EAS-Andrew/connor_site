@@ -35,7 +35,7 @@ export function ComparisonSlider({
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     e.preventDefault();
     setIsDragging(true);
-    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    containerRef.current?.setPointerCapture(e.pointerId);
     updatePosition(e.clientX);
   }, [updatePosition]);
 
@@ -69,7 +69,7 @@ export function ComparisonSlider({
   return (
     <div
       ref={containerRef}
-      className="relative w-full overflow-hidden select-none border border-radar-grey-dark"
+      className="relative w-full overflow-hidden select-none border border-radar-grey-dark touch-none"
       style={{ aspectRatio: '16 / 10' }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
