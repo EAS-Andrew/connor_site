@@ -18,8 +18,23 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://stealthshieldppf.com"),
   title: "StealthShield | Premium Paint Protection Film",
-  description: "Invisible Strength. Precision-engineered PPF for your vehicle.",
+  description:
+    "Precision-cut paint protection film for cars and motorcycles. Enter your registration for instant pricing. Free fitting kit with every pre-cut order. UK-based with fast delivery.",
+  openGraph: {
+    title: "StealthShield | Premium Paint Protection Film",
+    description:
+      "Precision-cut PPF for cars and motorcycles. Free fitting kit included. UK-based with 2-3 day delivery.",
+    siteName: "StealthShield",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "StealthShield | Premium Paint Protection Film",
+    description:
+      "Precision-cut PPF for cars and motorcycles. Free fitting kit included. UK-based with 2-3 day delivery.",
+  },
 };
 
 export const viewport = {

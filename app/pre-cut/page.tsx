@@ -284,7 +284,7 @@ export default function PreCutPage() {
                     </h3>
                     <p className="text-radar-grey-light text-xs sm:text-sm leading-relaxed">
                       No installer markup. No middleman. Registration-verified patterns cut specifically for your vehicle.
-                      Get professional-grade PPF at direct-to-consumer pricing with guaranteed perfect fit.
+                      Get professional-grade PPF at direct-to-consumer pricing with guaranteed perfect fit. Every order includes a free fitting kit.
                     </p>
                   </div>
                 </div>
@@ -642,7 +642,7 @@ export default function PreCutPage() {
                     CHOOSE YOUR COVERAGE
                   </h2>
                   <p className="text-radar-grey-light text-xs sm:text-sm leading-relaxed max-w-xl mx-auto">
-                    Select your protection level and finish • All kits are precision-cut for your {vehicleData?.vehicleClass?.toLowerCase() || 'vehicle'}
+                    Select your protection level and finish • All kits are precision-cut for your {vehicleData?.vehicleClass?.toLowerCase() || 'vehicle'} and include a free fitting kit
                   </p>
                 </div>
 

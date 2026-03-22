@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react';
 import { PageLayout, Button, Card } from '@/components';
 import Link from 'next/link';
-import { fetchPPFRolls, ShopifyProduct } from '@/lib/shopify';
-import { addToCart, createCart } from '@/lib/shopify';
+import { fetchPPFRolls, ShopifyProduct, addToCart, createCart } from '@/lib/shopify';
 
 export default function RollsPage() {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
@@ -50,20 +49,6 @@ export default function RollsPage() {
       console.error('Failed to add to cart:', error);
       setMessage('Failed to add to cart. Please try again.');
     } finally {
-      setIsAddingToCart(false);
-    }
-  };
-
-  const handleBuyNow = async (product: ShopifyProduct, variantId: string) => {
-    setIsAddingToCart(true);
-    setMessage('');
-
-    try {
-      const cart = await createCart(variantId, 1);
-      window.location.href = cart.checkoutUrl;
-    } catch (error) {
-      console.error('Failed to checkout:', error);
-      setMessage('Failed to checkout. Please try again.');
       setIsAddingToCart(false);
     }
   };
@@ -189,7 +174,7 @@ export default function RollsPage() {
                     Will It Fit My Car?
                   </h3>
                   <p className="text-radar-grey-light text-sm leading-relaxed">
-                    Film rolls are universal - they work with any vehicle when cut to size. Perfect for custom coverage patterns, partial wraps, or multiple vehicles. Installers use plotters with vehicle-specific templates to achieve perfect fits.
+                    Film rolls are universal — they work with any car or motorcycle when cut to size. Perfect for custom coverage patterns, partial wraps, or multiple vehicles. Installers use plotters with vehicle-specific templates to achieve perfect fits.
                   </p>
                 </div>
               </div>
@@ -365,7 +350,7 @@ export default function RollsPage() {
                     <svg className="w-5 h-5 text-infrared flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-sm">Businesses with vehicle fleets</span>
+                    <span className="text-sm">Businesses with car & motorcycle fleets</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <svg className="w-5 h-5 text-infrared flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">

@@ -14,7 +14,7 @@ export default function FAQPage() {
       questions: [
         {
           q: 'What is Paint Protection Film (PPF)?',
-          a: 'PPF is a transparent, self-healing urethane film applied to vehicle surfaces to protect against stone chips, scratches, and environmental damage. It provides invisible protection while maintaining your vehicle\'s original appearance.',
+          a: 'PPF is a transparent, self-healing urethane film applied to cars and motorcycles to protect against stone chips, scratches, and environmental damage. It provides invisible protection while maintaining your vehicle\'s original appearance.',
         },
         {
           q: 'What\'s the difference between Gloss and Matte PPF?',
@@ -43,11 +43,15 @@ export default function FAQPage() {
         },
         {
           q: 'Why do you request photos after ordering?',
-          a: 'Photos of your front and rear bumpers allow us to verify your exact vehicle specification - parking sensors, radar systems, trim variations, and aftermarket modifications. This ensures your kit matches your car perfectly, not just the model.',
+          a: 'Photos of your front and rear bumpers allow us to verify your exact vehicle specification — parking sensors, radar systems, trim variations, and aftermarket modifications. This ensures your kit matches your car or motorcycle perfectly, not just the model.',
         },
         {
           q: 'How long does cutting and delivery take?',
           a: 'Once your vehicle is verified, kits are precision-cut within 3-5 business days. UK delivery typically takes 2-3 days. Rush orders may be available - contact us for details.',
+        },
+        {
+          q: 'Is the fitting kit really free?',
+          a: 'Yes. Every pre-cut kit order includes a complimentary fitting kit at no extra cost. It contains a professional-grade squeegee, slip solution, tack solution, and a detailed installation guide — everything you need to get started.',
         },
       ],
     },
@@ -64,7 +68,7 @@ export default function FAQPage() {
         },
         {
           q: 'What\'s included in the kit?',
-          a: 'Each kit includes precision-cut PPF pieces for your selected coverage level, application guidelines, and care instructions. All pieces are labeled for easy identification during installation.',
+          a: 'Each kit includes precision-cut PPF pieces for your selected coverage level, plus a free fitting kit containing a professional-grade squeegee, slip solution, tack solution, and a step-by-step installation guide — all included at no extra charge.',
         },
         {
           q: 'Do I need to prep my vehicle before installation?',
@@ -98,7 +102,7 @@ export default function FAQPage() {
       questions: [
         {
           q: 'How do I care for PPF?',
-          a: 'Wash regularly with pH-neutral soap and microfiber materials. Avoid automatic car washes with brushes. PPF can be waxed or sealed with most products. Detailed care instructions are included with every kit.',
+          a: 'Wash regularly with pH-neutral soap and microfiber materials. Avoid automatic washes with brushes. PPF can be waxed or sealed with most products. Detailed care instructions are included with every kit.',
         },
         {
           q: 'What warranty do you offer?',
@@ -145,7 +149,7 @@ export default function FAQPage() {
               </div>
 
               <p className="text-lg sm:text-xl text-radar-grey-light max-w-2xl mx-auto leading-relaxed">
-                Everything you need to know about StealthShield PPF and our precision process.
+                Everything you need to know about StealthShield PPF for cars and motorcycles.
               </p>
             </div>
           </div>

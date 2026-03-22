@@ -229,7 +229,7 @@ function UploadPhotosContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-void-black flex items-center justify-center">
+      <div className="min-h-screen bg-stealth-black flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-infrared border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-radar-grey-light font-heading tracking-[0.2em] text-sm">VERIFYING_LINK</p>
@@ -240,7 +240,7 @@ function UploadPhotosContent() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-void-black flex items-center justify-center p-4">
+      <div className="min-h-screen bg-stealth-black flex items-center justify-center p-4">
         <div className="max-w-md text-center">
           <div className="relative inline-block mb-6">
             <div className="absolute -top-1 -left-1 w-4 h-4 border-l-2 border-t-2 border-infrared"></div>
@@ -252,7 +252,7 @@ function UploadPhotosContent() {
           <h1 className="text-2xl font-heading text-ghost-white mb-4 tracking-wider uppercase">Access Denied</h1>
           <p className="text-radar-grey-light mb-8 text-sm leading-relaxed">{error}</p>
           <a
-            href="mailto:hello@orders.stealthshieldppf.com"
+            href="mailto:info@stealthshieldppf.com"
             className="inline-block bg-infrared text-ghost-white px-8 py-3 font-heading tracking-widest text-sm uppercase hover:bg-red-700 transition"
           >
             Contact Support
@@ -264,7 +264,7 @@ function UploadPhotosContent() {
 
   if (step === 'success') {
     return (
-      <div className="min-h-screen bg-void-black flex items-center justify-center p-4">
+      <div className="min-h-screen bg-stealth-black flex items-center justify-center p-4">
         <div className="max-w-md text-center">
           <div className="relative inline-block mb-6">
             <div className="absolute -top-1 -left-1 w-4 h-4 border-l-2 border-t-2 border-infrared"></div>
@@ -300,7 +300,7 @@ function UploadPhotosContent() {
   const progress = step === 'front' ? 33 : step === 'rear' ? 66 : 100;
 
   return (
-    <div className="min-h-screen bg-void-black text-ghost-white">
+    <div className="min-h-screen bg-stealth-black text-ghost-white">
       {/* Tactical Header */}
       <div className="border-b border-radar-grey-dark bg-radar-grey/30">
         <div className="max-w-5xl mx-auto p-4 md:p-6">
@@ -584,7 +584,7 @@ function UploadPhotosContent() {
 // Loading fallback component
 function LoadingFallback() {
   return (
-    <div className="min-h-screen bg-void-black flex items-center justify-center">
+    <div className="min-h-screen bg-stealth-black flex items-center justify-center">
       <div className="text-center">
         <div className="w-16 h-16 border-4 border-infrared border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
         <p className="text-radar-grey-light font-heading tracking-[0.2em] text-sm">LOADING</p>

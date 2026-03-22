@@ -48,8 +48,19 @@ export function ExitIntentPopup() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      const formData = new FormData();
+      formData.append('access_key', '52a9e82f-eb18-4f3b-b324-7d8008ecf5ec');
+      formData.append('subject', 'StealthShield — New discount signup');
+      formData.append('email', email);
+
+      await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData,
+      });
+    } catch {
+      // Silently fail — non-critical
+    }
 
     setHasSubmitted(true);
     localStorage.setItem('stealthshield_exit_submitted', 'true');

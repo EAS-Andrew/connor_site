@@ -133,6 +133,7 @@ export interface CoverageOption {
   price: number;
   includes: string[];
   image?: string;
+  tags: string[];
   variants: Array<{
     id: string;
     title: string;
@@ -173,9 +174,10 @@ function transformShopifyProductToCoverageOption(product: ShopifyProduct): Cover
     id,
     name: product.title,
     description: product.description,
-    price: Math.round(price), // Round to whole number
+    price: Math.round(price),
     includes,
     image,
+    tags: product.tags || [],
     variants: product.variants.edges.map((edge) => ({
       id: edge.node.id,
       title: edge.node.title,
@@ -212,6 +214,7 @@ export async function getCoverageOptions(vehicleType: 'Car' | 'Motorcycle' = 'Ca
             'Side Fairings',
             'Front Fender'
           ],
+          tags: ['pre-cut-kit', 'motorcycle'],
           variants: []
         },
         {
@@ -226,6 +229,7 @@ export async function getCoverageOptions(vehicleType: 'Car' | 'Motorcycle' = 'Ca
             'Swingarm',
             'Frame Protection'
           ],
+          tags: ['pre-cut-kit', 'motorcycle'],
           variants: []
         }
       ];
@@ -234,43 +238,46 @@ export async function getCoverageOptions(vehicleType: 'Car' | 'Motorcycle' = 'Ca
     // Car fallback data
     return [
       {
-        id: 'front-end',
-        name: 'Front End PPF',
-        description: 'Coverage for specific high-impact areas',
-        price: 599,
-        includes: [
-          'Front Bumper',
-          'Bonnet',
-          'Headlights',
-          'Mirror Caps',
-          'Front Wings',
-          'Front A Pillar & Edge Of Roof'
-        ],
-        variants: []
-      },
-      {
-        id: 'extended-front',
-        name: 'Extended Front End PPF',
-        description: 'Comprehensive front and side protection',
-        price: 899,
-        includes: [
-          'Everything in Front End PPF',
-          'Front Doors',
-          'Skirts'
-        ],
-        variants: []
-      },
-      {
-        id: 'premium-full',
-        name: 'Premium Full Car Cover',
-        description: 'Complete protection for your entire vehicle',
-        price: 1599,
-        includes: [
-          'All Panels Covered',
-          '(Excluding Glass)'
-        ],
-        variants: []
-      }
+          id: 'front-end',
+          name: 'Front End PPF',
+          description: 'Coverage for specific high-impact areas',
+          price: 599,
+          includes: [
+            'Front Bumper',
+            'Bonnet',
+            'Headlights',
+            'Mirror Caps',
+            'Front Wings',
+            'Front A Pillar & Edge Of Roof'
+          ],
+          tags: ['pre-cut-kit', 'car'],
+          variants: []
+        },
+        {
+          id: 'extended-front',
+          name: 'Extended Front End PPF',
+          description: 'Comprehensive front and side protection',
+          price: 899,
+          includes: [
+            'Everything in Front End PPF',
+            'Front Doors',
+            'Skirts'
+          ],
+          tags: ['pre-cut-kit', 'car', 'recommended'],
+          variants: []
+        },
+        {
+          id: 'premium-full',
+          name: 'Premium Full Car Cover',
+          description: 'Complete protection for your entire vehicle',
+          price: 1599,
+          includes: [
+            'All Panels Covered',
+            '(Excluding Glass)'
+          ],
+          tags: ['pre-cut-kit', 'car'],
+          variants: []
+        }
     ];
   }
 }
