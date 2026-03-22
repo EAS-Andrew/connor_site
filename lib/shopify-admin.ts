@@ -8,7 +8,7 @@
 
 const SHOPIFY_STORE = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
 const ADMIN_TOKEN = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN;
-const API_VERSION = '2025-01';
+const API_VERSION = '2025-04';
 
 interface UpdateOrderResult {
   success: boolean;
