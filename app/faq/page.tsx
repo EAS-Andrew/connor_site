@@ -49,6 +49,10 @@ export default function FAQPage() {
           q: 'How long does cutting and delivery take?',
           a: 'Once your vehicle is verified, kits are precision-cut within 3-5 business days. UK delivery typically takes 2-3 days. Rush orders may be available - contact us for details.',
         },
+        {
+          q: 'Is the fitting kit really free?',
+          a: 'Yes. Every pre-cut kit order includes a complimentary fitting kit at no extra cost. It contains a professional-grade squeegee, slip solution, tack solution, and a detailed installation guide — everything you need to get started.',
+        },
       ],
     },
     {
@@ -64,7 +68,7 @@ export default function FAQPage() {
         },
         {
           q: 'What\'s included in the kit?',
-          a: 'Each kit includes precision-cut PPF pieces for your selected coverage level, application guidelines, and care instructions. All pieces are labeled for easy identification during installation.',
+          a: 'Each kit includes precision-cut PPF pieces for your selected coverage level, plus a free fitting kit containing a professional-grade squeegee, slip solution, tack solution, and a step-by-step installation guide — all included at no extra charge.',
         },
         {
           q: 'Do I need to prep my vehicle before installation?',

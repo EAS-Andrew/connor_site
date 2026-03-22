@@ -61,6 +61,13 @@ export default function Home() {
               </Link>
             </div>
 
+            <div className="mt-4 inline-flex items-center gap-2 text-sm text-ghost-white">
+              <svg className="w-4 h-4 text-infrared flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              <span>Free fitting kit included with every pre-cut order</span>
+            </div>
+
             <div className="mt-6 sm:mt-8">
               <Link href="/rolls" className="inline-flex items-center gap-2 text-radar-grey-light hover:text-infrared transition-colors text-sm group">
                 <span>Prefer a professional installer?</span>
@@ -145,8 +152,13 @@ export default function Home() {
                     SYSTEM_ALPHA
                   </div>
                   <h3 className="text-3xl font-heading mb-4 text-ghost-white tracking-wide">PRECISION-CUT KITS</h3>
-                  <div className="mb-4 inline-block px-3 py-1 bg-infrared/20 border border-infrared">
-                    <span className="text-infrared text-xs font-heading uppercase tracking-wider">Perfect for DIY & Professionals</span>
+                  <div className="mb-4 flex flex-wrap gap-2">
+                    <div className="inline-block px-3 py-1 bg-infrared/20 border border-infrared">
+                      <span className="text-infrared text-xs font-heading uppercase tracking-wider">Perfect for DIY & Professionals</span>
+                    </div>
+                    <div className="inline-block px-3 py-1 bg-infrared/10 border border-infrared/50">
+                      <span className="text-ghost-white text-xs font-heading uppercase tracking-wider">Free Fitting Kit</span>
+                    </div>
                   </div>
                   <p className="text-radar-grey-light mb-6 leading-relaxed text-sm">
                     Perfect-fit protection cut specifically for your vehicle. Enter your registration, choose your coverage, we verify and cut to your exact spec. Starting from £299.
@@ -167,7 +179,7 @@ export default function Home() {
                       </li>
                       <li className="flex items-start gap-3">
                         <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                        <span className="text-sm">Installation guide included</span>
+                        <span className="text-sm">Free fitting kit with every order</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
@@ -317,7 +329,7 @@ export default function Home() {
               </div>
 
               <p className="text-radar-grey-light text-sm sm:text-base max-w-2xl mx-auto">
-                Choose your coverage level. Every tier is precision-cut for your exact vehicle.
+                Choose your coverage level. Every tier is precision-cut for your exact vehicle and includes a free fitting kit.
               </p>
             </div>
 
@@ -737,11 +749,15 @@ export default function Home() {
                 EVERYTHING YOU NEED FOR A PREMIUM INSTALL
               </h2>
 
-              <div className="flex items-center justify-center gap-3">
+              <div className="flex items-center justify-center gap-3 mb-4">
                 <div className="h-px w-16 bg-radar-grey-dark"></div>
                 <div className="w-1 h-1 bg-infrared rotate-45"></div>
                 <div className="h-px w-16 bg-radar-grey-dark"></div>
               </div>
+
+              <p className="text-radar-grey-light text-sm sm:text-base max-w-2xl mx-auto">
+                Every pre-cut kit ships with a free fitting kit — squeegee, slip solution, tack solution, and install guide included at no extra cost.
+              </p>
             </div>
 
             {/* Kit contents image */}
@@ -1128,6 +1144,10 @@ export default function Home() {
                 {
                   q: 'What\'s the difference between coverage levels?',
                   a: 'Front End covers high-impact zones (bonnet, bumper, wings). Extended adds front doors and skirts for daily drivers. Full Coverage protects all exterior panels for maximum protection.'
+                },
+                {
+                  q: 'What\'s included in the free fitting kit?',
+                  a: 'Every pre-cut kit order includes a complimentary fitting kit at no extra charge. It contains a professional-grade squeegee, slip solution, tack solution, and a step-by-step installation guide — everything you need to get started.'
                 },
                 {
                   q: 'Do you offer installation services?',
