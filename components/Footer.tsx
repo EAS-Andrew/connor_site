@@ -58,8 +58,8 @@ export function Footer() {
                 <h4 className="font-heading text-[10px] sm:text-xs uppercase mb-3 sm:mb-4 text-infrared tracking-[0.3em]">Product</h4>
                 <ul className="space-y-2">
                   <li><Link href="/pre-cut" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">Configure Kit</Link></li>
+                  <li><Link href="/rolls" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">PPF Rolls</Link></li>
                   <li><Link href="/how-it-works" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">How It Works</Link></li>
-                  <li><Link href="/#products" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">Products</Link></li>
                 </ul>
             </div>
 

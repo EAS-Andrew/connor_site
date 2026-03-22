@@ -1,19 +1,72 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { PageLayout, Button, Card } from '@/components';
 import { ComparisonSlider } from '@/components';
+import { getCoverageOptions, CoverageOption } from '@/lib/api';
+
+type VehicleMode = 'Car' | 'Motorcycle';
+
+function shopifyToTier(opt: CoverageOption, index: number, mode: VehicleMode) {
+  const isPopular = opt.tags.includes('recommended');
+  return {
+    tier: `TIER_0${index + 1}`,
+    name: opt.name.replace(/ppf/i, '').replace(/kit/i, '').trim().toUpperCase(),
+    price: `From £${opt.price.toLocaleString()}`,
+    image: opt.image,
+    imageAlt: `${mode} diagram showing ${opt.name} PPF coverage areas`,
+    bestFor: opt.description || 'Precision-cut protection for your vehicle.',
+    shortBestFor: opt.description ? opt.description.split('.')[0] + '.' : 'Precision-cut protection.',
+    includes: opt.includes.length > 0 ? opt.includes : ['See product page for details'],
+    shortIncludes: opt.includes.length > 0 ? opt.includes.slice(0, 5) : ['See product page'],
+    cta: `Select ${opt.name.replace(/ppf/i, '').replace(/kit/i, '').trim()}`,
+    shortCta: 'Select',
+    variant: (isPopular ? 'primary' : 'secondary') as 'primary' | 'secondary',
+    border: isPopular ? 'border-infrared' : 'border-radar-grey-dark hover:border-infrared/50',
+    mobileBorder: isPopular ? 'border-infrared' : 'border-radar-grey-dark',
+    popular: isPopular,
+  };
+}
 
 export default function Home() {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const [tierMode, setTierMode] = useState<VehicleMode>('Car');
+  const [carTiers, setCarTiers] = useState<ReturnType<typeof shopifyToTier>[]>([]);
+  const [bikeTiers, setBikeTiers] = useState<ReturnType<typeof shopifyToTier>[]>([]);
+  const [tiersLoading, setTiersLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadTiers() {
+      try {
+        const [carOptions, bikeOptions] = await Promise.all([
+          getCoverageOptions('Car'),
+          getCoverageOptions('Motorcycle'),
+        ]);
+
+        if (carOptions.length > 0) {
+          setCarTiers(carOptions.map((o, i) => shopifyToTier(o, i, 'Car')));
+        }
+        if (bikeOptions.length > 0) {
+          setBikeTiers(bikeOptions.map((o, i) => shopifyToTier(o, i, 'Motorcycle')));
+        }
+      } catch (err) {
+        console.error('Failed to load tiers from Shopify:', err);
+      } finally {
+        setTiersLoading(false);
+      }
+    }
+    loadTiers();
+  }, []);
+
+  const activeTiers = tierMode === 'Car' ? carTiers : bikeTiers;
   return (
     <PageLayout>
       {/* Hero Section */}
       <section className="relative min-h-[80vh] sm:min-h-[90vh] flex items-center overflow-hidden">
         <img
           src="/hero-installed-car.png"
-          alt="Black sports car with paint protection film installed in a premium studio setting"
+          alt="Vehicle with paint protection film installed in a premium studio setting"
           className="absolute inset-0 w-full h-full object-cover"
           fetchPriority="high"
         />
@@ -35,7 +88,7 @@ export default function Home() {
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-6xl font-heading mb-4 sm:mb-6 text-ghost-white leading-tight tracking-wider">
-              PREMIUM PAINT PROTECTION, PRECISION-CUT FOR YOUR CAR
+              PREMIUM PAINT PROTECTION FOR CARS & MOTORCYCLES
             </h1>
 
             <div className="flex items-center gap-3 mb-4">
@@ -161,7 +214,7 @@ export default function Home() {
                     </div>
                   </div>
                   <p className="text-radar-grey-light mb-6 leading-relaxed text-sm">
-                    Perfect-fit protection cut specifically for your vehicle. Enter your registration, choose your coverage, we verify and cut to your exact spec. Starting from £299.
+                    Perfect-fit protection cut specifically for your car or motorcycle. Enter your registration, choose your coverage, we verify and cut to your exact spec. Starting from £299.
                   </p>
 
                   <div className="mb-6 flex-1">
@@ -210,7 +263,7 @@ export default function Home() {
                     <span className="text-infrared text-xs font-heading uppercase tracking-wider">For Professional Installers</span>
                   </div>
                   <p className="text-radar-grey-light mb-6 leading-relaxed text-sm">
-                    Professional-grade protection film for custom applications. Perfect for installers who prefer bulk rolls for multiple vehicles or custom coverage patterns.
+                    Professional-grade protection film for custom applications. Perfect for installers who prefer bulk rolls for multiple cars, motorcycles, or custom coverage patterns.
                   </p>
 
                   <div className="mb-6 flex-1">
@@ -228,7 +281,7 @@ export default function Home() {
                       </li>
                       <li className="flex items-start gap-3">
                         <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                        <span className="text-sm">Multiple vehicle applications</span>
+                        <span className="text-sm">Multiple car & motorcycle applications</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
@@ -328,188 +381,196 @@ export default function Home() {
                 <div className="h-px w-16 bg-radar-grey-dark"></div>
               </div>
 
-              <p className="text-radar-grey-light text-sm sm:text-base max-w-2xl mx-auto">
+              <p className="text-radar-grey-light text-sm sm:text-base max-w-2xl mx-auto mb-8">
                 Choose your coverage level. Every tier is precision-cut for your exact vehicle and includes a free fitting kit.
               </p>
-            </div>
 
-            {/* Mobile: horizontal scroll strip. Desktop: 3-column grid. */}
-            <div className="hidden md:grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  tier: 'TIER_01',
-                  name: 'FRONT END',
-                  price: 'From £299',
-                  image: '/frontend_ppf.png',
-                  imageAlt: 'Vehicle diagram showing front end PPF coverage areas',
-                  bestFor: 'Protect high-impact zones where stone chips and road debris cause the most damage.',
-                  includes: ['Front Bumper', 'Bonnet', 'Front Wings', 'Headlights', 'Mirror Caps'],
-                  cta: 'Select Front End',
-                  variant: 'secondary' as const,
-                  border: 'border-radar-grey-dark hover:border-infrared/50',
-                  popular: false,
-                },
-                {
-                  tier: 'TIER_02',
-                  name: 'EXTENDED',
-                  price: 'From £499',
-                  image: '/frontend_ppf_extended.png',
-                  imageAlt: 'Vehicle diagram showing extended PPF coverage areas',
-                  bestFor: 'Best value for daily drivers. Comprehensive protection for front and side panels.',
-                  includes: ['Everything in Front End', 'Front Doors', 'Side Skirts', 'Front A-Pillar', 'Edge of Roof'],
-                  cta: 'Select Extended',
-                  variant: 'primary' as const,
-                  border: 'border-infrared',
-                  popular: true,
-                },
-                {
-                  tier: 'TIER_03',
-                  name: 'FULL COVERAGE',
-                  price: 'From £1,299',
-                  image: '/full_ppf.png',
-                  imageAlt: 'Vehicle diagram showing full body PPF coverage areas',
-                  bestFor: 'OEM-level full-body protection. Maximum coverage for ultimate peace of mind.',
-                  includes: ['Complete Vehicle Coverage', 'All Exterior Panels', 'Rear Bumper', 'Boot/Trunk Lid', 'All visible surfaces'],
-                  cta: 'Select Full Coverage',
-                  variant: 'secondary' as const,
-                  border: 'border-radar-grey-dark hover:border-infrared/50',
-                  popular: false,
-                },
-              ].map((t) => (
-                <div key={t.tier} className={`bg-radar-grey border-2 ${t.border} transition-all flex flex-col overflow-hidden relative`}>
-                  {t.popular && (
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 px-4 py-1 bg-infrared z-10">
-                      <span className="text-stealth-black text-xs font-heading uppercase tracking-wider">Most Popular</span>
-                    </div>
-                  )}
-                  <div className="bg-stealth-black/40 p-6 flex items-center justify-center border-b border-radar-grey-dark">
-                    <img
-                      src={t.image}
-                      alt={t.imageAlt}
-                      className="w-full max-w-[180px] h-auto object-contain drop-shadow-[0_4px_20px_rgba(214,66,47,0.15)]"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="p-6 sm:p-8 flex flex-col flex-1">
-                    <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-2 font-heading">
-                      {t.tier}
-                    </div>
-                    <h3 className="text-2xl font-heading text-ghost-white mb-3 uppercase tracking-wide">{t.name}</h3>
-                    <div className="text-3xl font-heading text-infrared mb-1">{t.price}</div>
-                    <p className="text-xs text-radar-grey-light uppercase tracking-wider mb-5">Starting Price</p>
-
-                    <p className="text-ghost-white text-sm leading-relaxed mb-5 pb-5 border-b border-radar-grey-dark">{t.bestFor}</p>
-
-                    <ul className="space-y-2 mb-6 flex-1">
-                      {t.includes.map((item) => (
-                        <li key={item} className="flex items-start gap-2">
-                          <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                          <span className="text-sm text-ghost-white">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <Link href="/pre-cut" className="mt-auto">
-                      <Button variant={t.variant} className="w-full">{t.cta}</Button>
-                    </Link>
-                  </div>
+              {/* Car / Motorcycle Toggle */}
+              <div className="flex items-center justify-center">
+                <div className="inline-flex">
+                  <button
+                    onClick={() => setTierMode('Car')}
+                    className={`relative px-6 sm:px-8 py-3 font-heading text-[10px] sm:text-xs uppercase tracking-[0.2em] transition-all border ${
+                      tierMode === 'Car'
+                        ? 'bg-stealth-black border-infrared text-ghost-white'
+                        : 'bg-radar-grey/30 border-radar-grey-dark text-radar-grey-light hover:border-infrared/50 hover:text-ghost-white'
+                    }`}
+                  >
+                    {tierMode === 'Car' && (
+                      <div className="absolute -top-px -left-px w-2 h-2 border-l border-t border-infrared"></div>
+                    )}
+                    {tierMode === 'Car' && (
+                      <div className="absolute -bottom-px -right-px w-2 h-2 border-r border-b border-infrared"></div>
+                    )}
+                    Cars
+                  </button>
+                  <button
+                    onClick={() => setTierMode('Motorcycle')}
+                    className={`relative px-6 sm:px-8 py-3 font-heading text-[10px] sm:text-xs uppercase tracking-[0.2em] transition-all border -ml-px ${
+                      tierMode === 'Motorcycle'
+                        ? 'bg-stealth-black border-infrared text-ghost-white'
+                        : 'bg-radar-grey/30 border-radar-grey-dark text-radar-grey-light hover:border-infrared/50 hover:text-ghost-white'
+                    }`}
+                  >
+                    {tierMode === 'Motorcycle' && (
+                      <div className="absolute -top-px -left-px w-2 h-2 border-l border-t border-infrared"></div>
+                    )}
+                    {tierMode === 'Motorcycle' && (
+                      <div className="absolute -bottom-px -right-px w-2 h-2 border-r border-b border-infrared"></div>
+                    )}
+                    Motorcycles
+                  </button>
                 </div>
-              ))}
+              </div>
             </div>
 
-            {/* Mobile: compact swipeable cards */}
-            <div className="md:hidden">
-              <div className="-mx-4 px-4 overflow-x-auto scrollbar-hide">
-                <div className="flex gap-4 w-max pb-4">
-                  {[
-                    {
-                      tier: 'TIER_01',
-                      name: 'FRONT END',
-                      price: 'From £299',
-                      image: '/frontend_ppf.png',
-                      imageAlt: 'Vehicle diagram showing front end PPF coverage areas',
-                      bestFor: 'High-impact zone protection.',
-                      includes: ['Front Bumper', 'Bonnet', 'Wings', 'Headlights', 'Mirrors'],
-                      cta: 'Select',
-                      variant: 'secondary' as const,
-                      border: 'border-radar-grey-dark',
-                      popular: false,
-                    },
-                    {
-                      tier: 'TIER_02',
-                      name: 'EXTENDED',
-                      price: 'From £499',
-                      image: '/frontend_ppf_extended.png',
-                      imageAlt: 'Vehicle diagram showing extended PPF coverage areas',
-                      bestFor: 'Best value for daily drivers.',
-                      includes: ['All Front End +', 'Front Doors', 'Side Skirts', 'A-Pillar', 'Roof Edge'],
-                      cta: 'Select',
-                      variant: 'primary' as const,
-                      border: 'border-infrared',
-                      popular: true,
-                    },
-                    {
-                      tier: 'TIER_03',
-                      name: 'FULL',
-                      price: 'From £1,299',
-                      image: '/full_ppf.png',
-                      imageAlt: 'Vehicle diagram showing full body PPF coverage areas',
-                      bestFor: 'Maximum full-body protection.',
-                      includes: ['All Panels', 'Rear Bumper', 'Boot Lid', 'All Surfaces'],
-                      cta: 'Select',
-                      variant: 'secondary' as const,
-                      border: 'border-radar-grey-dark',
-                      popular: false,
-                    },
-                  ].map((t) => (
-                    <div key={t.tier} className={`bg-radar-grey border-2 ${t.border} flex flex-col overflow-hidden relative w-[280px] flex-shrink-0`}>
+            {/* Loading state */}
+            {tiersLoading && (
+              <div className="flex items-center justify-center py-16">
+                <div className="text-center">
+                  <div className="w-8 h-8 border-2 border-infrared border-t-transparent animate-spin mx-auto mb-3"></div>
+                  <p className="text-radar-grey-light text-sm font-heading tracking-wider">LOADING_TIERS</p>
+                </div>
+              </div>
+            )}
+
+            {/* No tiers available for this mode */}
+            {!tiersLoading && activeTiers.length === 0 && (
+              <div className="max-w-lg mx-auto text-center py-12">
+                <div className="bg-radar-grey border border-radar-grey-dark p-8">
+                  <div className="w-12 h-12 bg-infrared/10 border border-infrared flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-6 h-6 text-infrared" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="5" cy="17" r="3" />
+                      <circle cx="19" cy="17" r="3" />
+                      <path d="M9 17h6m-9-4l3-6h4l3 6" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-heading text-ghost-white mb-3 tracking-wider">MOTORCYCLE KITS COMING SOON</h3>
+                  <p className="text-radar-grey-light text-sm leading-relaxed mb-6">
+                    We&apos;re preparing precision-cut motorcycle PPF kits. Contact us for a custom quote in the meantime.
+                  </p>
+                  <Link href="/contact">
+                    <Button variant="secondary">Get a Custom Quote</Button>
+                  </Link>
+                </div>
+              </div>
+            )}
+
+            {/* Desktop grid */}
+            {!tiersLoading && activeTiers.length > 0 && (
+              <>
+                <div className={`hidden md:grid gap-8 ${activeTiers.length === 1 ? 'md:grid-cols-1 max-w-md mx-auto' : activeTiers.length === 2 ? 'md:grid-cols-2 max-w-3xl mx-auto' : 'md:grid-cols-3'}`}>
+                  {activeTiers.map((t) => (
+                    <div key={t.tier} className={`bg-radar-grey border-2 ${t.border} transition-all flex flex-col overflow-hidden relative`}>
                       {t.popular && (
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-infrared z-10">
-                          <span className="text-stealth-black text-[10px] font-heading uppercase tracking-wider">Popular</span>
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 px-4 py-1 bg-infrared z-10">
+                          <span className="text-stealth-black text-xs font-heading uppercase tracking-wider">Most Popular</span>
                         </div>
                       )}
-                      <div className="bg-stealth-black/40 p-4 flex items-center justify-center border-b border-radar-grey-dark">
-                        <img
-                          src={t.image}
-                          alt={t.imageAlt}
-                          className="w-full max-w-[140px] h-auto object-contain drop-shadow-[0_4px_20px_rgba(214,66,47,0.15)]"
-                          loading="lazy"
-                        />
+                      <div className="bg-stealth-black/40 h-[200px] flex items-center justify-center border-b border-radar-grey-dark">
+                        {t.image ? (
+                          <img
+                            src={t.image}
+                            alt={t.imageAlt}
+                            className="max-h-[160px] w-auto object-contain drop-shadow-[0_4px_20px_rgba(214,66,47,0.15)]"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="w-16 h-16 border border-radar-grey-dark flex items-center justify-center">
+                            <div className="w-2 h-2 bg-infrared rotate-45"></div>
+                          </div>
+                        )}
                       </div>
-                      <div className="p-4 flex flex-col flex-1">
-                        <h3 className="text-lg font-heading text-ghost-white mb-1 uppercase tracking-wide">{t.name}</h3>
-                        <div className="text-2xl font-heading text-infrared mb-1">{t.price}</div>
-                        <p className="text-[10px] text-radar-grey-light uppercase tracking-wider mb-3">Starting Price</p>
+                      <div className="p-6 sm:p-8 flex flex-col flex-1">
+                        <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-2 font-heading">
+                          {t.tier}
+                        </div>
+                        <h3 className="text-2xl font-heading text-ghost-white mb-3 uppercase tracking-wide">{t.name}</h3>
+                        <div className="text-3xl font-heading text-infrared mb-1">{t.price}</div>
+                        <p className="text-xs text-radar-grey-light uppercase tracking-wider mb-5">Starting Price</p>
 
-                        <p className="text-ghost-white text-xs leading-relaxed mb-3 pb-3 border-b border-radar-grey-dark">{t.bestFor}</p>
+                        <p className="text-ghost-white text-sm leading-relaxed mb-5 pb-5 border-b border-radar-grey-dark">{t.bestFor}</p>
 
-                        <ul className="space-y-1.5 mb-4 flex-1">
+                        <ul className="space-y-2 mb-6 flex-1">
                           {t.includes.map((item) => (
                             <li key={item} className="flex items-start gap-2">
-                              <div className="w-1 h-1 bg-infrared rotate-45 mt-1 flex-shrink-0"></div>
-                              <span className="text-xs text-ghost-white">{item}</span>
+                              <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
+                              <span className="text-sm text-ghost-white">{item}</span>
                             </li>
                           ))}
                         </ul>
 
                         <Link href="/pre-cut" className="mt-auto">
-                          <Button variant={t.variant} size="sm" className="w-full">{t.cta}</Button>
+                          <Button variant={t.variant} className="w-full">{t.cta}</Button>
                         </Link>
                       </div>
                     </div>
                   ))}
                 </div>
-              </div>
-              <div className="flex items-center justify-center gap-2 mt-4 animate-swipe-hint">
-                <svg className="w-4 h-4 text-infrared" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-                </svg>
-                <span className="text-[10px] text-radar-grey-light uppercase tracking-widest font-heading">Swipe to compare</span>
-                <svg className="w-4 h-4 text-infrared" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </div>
-            </div>
+
+                {/* Mobile: compact swipeable cards */}
+                <div className="md:hidden">
+                  <div className="-mx-4 px-4 overflow-x-auto scrollbar-hide">
+                    <div className={`flex gap-4 pb-4 ${activeTiers.length <= 2 ? 'justify-center' : 'w-max'}`}>
+                      {activeTiers.map((t) => (
+                        <div key={t.tier} className={`bg-radar-grey border-2 ${t.mobileBorder} flex flex-col overflow-hidden relative w-[280px] flex-shrink-0`}>
+                          {t.popular && (
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-infrared z-10">
+                              <span className="text-stealth-black text-[10px] font-heading uppercase tracking-wider">Popular</span>
+                            </div>
+                          )}
+                          <div className="bg-stealth-black/40 h-[160px] flex items-center justify-center border-b border-radar-grey-dark">
+                            {t.image ? (
+                              <img
+                                src={t.image}
+                                alt={t.imageAlt}
+                                className="max-h-[120px] w-auto object-contain drop-shadow-[0_4px_20px_rgba(214,66,47,0.15)]"
+                                loading="lazy"
+                              />
+                            ) : (
+                              <div className="w-12 h-12 border border-radar-grey-dark flex items-center justify-center">
+                                <div className="w-1.5 h-1.5 bg-infrared rotate-45"></div>
+                              </div>
+                            )}
+                          </div>
+                          <div className="p-4 flex flex-col flex-1">
+                            <h3 className="text-lg font-heading text-ghost-white mb-1 uppercase tracking-wide">{t.name}</h3>
+                            <div className="text-2xl font-heading text-infrared mb-1">{t.price}</div>
+                            <p className="text-[10px] text-radar-grey-light uppercase tracking-wider mb-3">Starting Price</p>
+
+                            <p className="text-ghost-white text-xs leading-relaxed mb-3 pb-3 border-b border-radar-grey-dark">{t.shortBestFor}</p>
+
+                            <ul className="space-y-1.5 mb-4 flex-1">
+                              {t.shortIncludes.map((item) => (
+                                <li key={item} className="flex items-start gap-2">
+                                  <div className="w-1 h-1 bg-infrared rotate-45 mt-1 flex-shrink-0"></div>
+                                  <span className="text-xs text-ghost-white">{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+
+                            <Link href="/pre-cut" className="mt-auto">
+                              <Button variant={t.variant} size="sm" className="w-full">{t.shortCta}</Button>
+                            </Link>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  {activeTiers.length > 2 && (
+                    <div className="flex items-center justify-center gap-2 mt-4 animate-swipe-hint">
+                      <svg className="w-4 h-4 text-infrared" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+                      </svg>
+                      <span className="text-[10px] text-radar-grey-light uppercase tracking-widest font-heading">Swipe to compare</span>
+                      <svg className="w-4 h-4 text-infrared" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
 
             <div className="mt-8 sm:mt-12 text-center">
               <p className="text-radar-grey-light text-sm">
@@ -1021,7 +1082,7 @@ export default function Home() {
               <p className="text-ghost-white font-heading text-xl sm:text-2xl tracking-wider mb-2">
                 1,200+ VEHICLES PROTECTED
               </p>
-              <p className="text-radar-grey-light text-sm">Trusted by car enthusiasts across the UK</p>
+              <p className="text-radar-grey-light text-sm">Trusted by car and motorcycle enthusiasts across the UK</p>
             </div>
 
             <div className="mb-10 sm:mb-16">
@@ -1127,7 +1188,7 @@ export default function Home() {
               {[
                 {
                   q: 'How does registration lookup work?',
-                  a: 'Enter your vehicle registration and our system automatically queries official databases to identify your exact make, model, trim level, and year. This eliminates manual entry errors and ensures perfect fitment.'
+                  a: 'Enter your car or motorcycle registration and our system automatically queries official databases to identify your exact make, model, trim level, and year. This eliminates manual entry errors and ensures perfect fitment.'
                 },
                 {
                   q: 'Can I install PPF myself?',

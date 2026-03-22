@@ -9,7 +9,7 @@ export default function HowItWorksPage() {
     {
       number: '01',
       title: 'Enter Your Registration',
-      description: 'Start by entering your vehicle registration. Our intelligent lookup system automatically identifies your exact make, model, trim, and year.',
+      description: 'Start by entering your car or motorcycle registration. Our intelligent lookup system automatically identifies your exact make, model, trim, and year.',
       tactical: 'AUTOMATED_VEHICLE_SCAN',
       details: [
         'Instant vehicle identification',
@@ -194,7 +194,7 @@ export default function HowItWorksPage() {
                     VERIFIED ACCURACY
                   </h3>
                   <p className="text-radar-grey-light leading-relaxed">
-                    Photo verification catches spec variations that databases miss - parking sensors, radar systems, aftermarket modifications. We ensure your kit matches your car, not just the model.
+                    Photo verification catches spec variations that databases miss — parking sensors, radar systems, aftermarket modifications. We ensure your kit matches your exact vehicle, not just the model.
                   </p>
                 </div>
 

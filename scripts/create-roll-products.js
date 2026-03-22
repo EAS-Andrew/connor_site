@@ -8,7 +8,7 @@ require('dotenv').config({ path: '.env.local' });
 
 const ADMIN_API_TOKEN = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN;
 const STORE_DOMAIN = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN;
-const API_VERSION = '2025-01';
+const API_VERSION = '2025-04';
 
 if (!ADMIN_API_TOKEN || !STORE_DOMAIN) {
   console.error('❌ Missing environment variables. Make sure SHOPIFY_ADMIN_ACCESS_TOKEN and NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN are set.');

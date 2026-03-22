@@ -19,13 +19,6 @@ export default function CartPage() {
         const currentCart = await getCurrentCart();
         if (currentCart) {
           setCart(currentCart);
-          
-          // Debug: Check what image data we're getting
-          if (currentCart.lines.edges.length > 0) {
-            console.log('Merchandise:', currentCart.lines.edges[0].node.merchandise);
-            console.log('Variant image:', currentCart.lines.edges[0].node.merchandise.image);
-            console.log('Product images:', currentCart.lines.edges[0].node.merchandise.product.images);
-          }
         }
       } catch (error) {
         console.error('Failed to load cart:', error);

@@ -101,19 +101,17 @@ export default function ContactPage() {
                 <div className="bg-radar-grey border border-radar-grey-dark p-6">
                   <div className="mb-3">
                     <span className="text-[9px] text-infrared uppercase tracking-[0.3em] font-heading">
-                      DIRECT_LINE
+                      RESPONSE_TIME
                     </span>
                   </div>
                   <h3 className="text-xl font-heading text-ghost-white mb-4 uppercase tracking-wider">
-                    Phone
+                    Availability
                   </h3>
-                  <p className="text-radar-grey-light">
-                    <a href="tel:+441234567890" className="hover:text-infrared transition-colors">
-                      +44 (0) 1234 567 890
-                    </a>
+                  <p className="text-radar-grey-light text-sm">
+                    We typically respond within 24 hours.
                   </p>
                   <p className="text-radar-grey-light text-sm mt-2">
-                    Mon-Fri: 9:00 AM - 6:00 PM GMT
+                    Mon–Fri: 9:00 AM – 6:00 PM GMT
                   </p>
                 </div>
 

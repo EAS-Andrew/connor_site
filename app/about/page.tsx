@@ -105,7 +105,7 @@ export default function AboutPage() {
                                 </div>
 
                                 <p>
-                                    StealthShield serves enthusiasts, daily drivers, and professional installers who demand <span className="text-ghost-white font-semibold">clarity, quality, and confidence</span>. You don&apos;t have to be an expert. You just need to care about your car.
+                                    StealthShield serves car and motorcycle enthusiasts, daily drivers, riders, and professional installers who demand <span className="text-ghost-white font-semibold">clarity, quality, and confidence</span>. You don&apos;t have to be an expert. You just need to care about your vehicle.
                                 </p>
 
                                 <p>
@@ -201,7 +201,7 @@ export default function AboutPage() {
                                         DAILY DRIVERS
                                     </h3>
                                     <p className="text-radar-grey-light text-sm leading-relaxed">
-                                        Your car deserves protection that works. No fuss, just results.
+                                        Your car or motorcycle deserves protection that works. No fuss, just results.
                                     </p>
                                 </div>
 
