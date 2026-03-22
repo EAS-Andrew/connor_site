@@ -321,215 +321,181 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-              {/* Front End */}
-              <div className="bg-radar-grey border-2 border-radar-grey-dark hover:border-infrared/50 transition-all flex flex-col overflow-hidden">
-                <div className="bg-ghost-white/5 p-4 flex items-center justify-center">
-                  <img
-                    src="/frontend_ppf.png"
-                    alt="Vehicle diagram showing front end PPF coverage areas"
-                    className="w-full max-w-[200px] h-auto object-contain"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-6 sm:p-8 flex flex-col flex-1">
-                <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-3 font-heading">
-                  TIER_01
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-heading text-ghost-white mb-3 uppercase">
-                  FRONT END
-                </h3>
-                <div className="mb-6">
-                  <div className="text-3xl sm:text-4xl font-heading text-infrared mb-2">
-                    From £299
+            {/* Mobile: horizontal scroll strip. Desktop: 3-column grid. */}
+            <div className="hidden md:grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  tier: 'TIER_01',
+                  name: 'FRONT END',
+                  price: 'From £299',
+                  image: '/frontend_ppf.png',
+                  imageAlt: 'Vehicle diagram showing front end PPF coverage areas',
+                  bestFor: 'Protect high-impact zones where stone chips and road debris cause the most damage.',
+                  includes: ['Front Bumper', 'Bonnet', 'Front Wings', 'Headlights', 'Mirror Caps'],
+                  cta: 'Select Front End',
+                  variant: 'secondary' as const,
+                  border: 'border-radar-grey-dark hover:border-infrared/50',
+                  popular: false,
+                },
+                {
+                  tier: 'TIER_02',
+                  name: 'EXTENDED',
+                  price: 'From £499',
+                  image: '/frontend_ppf_extended.png',
+                  imageAlt: 'Vehicle diagram showing extended PPF coverage areas',
+                  bestFor: 'Best value for daily drivers. Comprehensive protection for front and side panels.',
+                  includes: ['Everything in Front End', 'Front Doors', 'Side Skirts', 'Front A-Pillar', 'Edge of Roof'],
+                  cta: 'Select Extended',
+                  variant: 'primary' as const,
+                  border: 'border-infrared',
+                  popular: true,
+                },
+                {
+                  tier: 'TIER_03',
+                  name: 'FULL COVERAGE',
+                  price: 'From £1,299',
+                  image: '/full_ppf.png',
+                  imageAlt: 'Vehicle diagram showing full body PPF coverage areas',
+                  bestFor: 'OEM-level full-body protection. Maximum coverage for ultimate peace of mind.',
+                  includes: ['Complete Vehicle Coverage', 'All Exterior Panels', 'Rear Bumper', 'Boot/Trunk Lid', 'All visible surfaces'],
+                  cta: 'Select Full Coverage',
+                  variant: 'secondary' as const,
+                  border: 'border-radar-grey-dark hover:border-infrared/50',
+                  popular: false,
+                },
+              ].map((t) => (
+                <div key={t.tier} className={`bg-radar-grey border-2 ${t.border} transition-all flex flex-col overflow-hidden relative`}>
+                  {t.popular && (
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 px-4 py-1 bg-infrared z-10">
+                      <span className="text-stealth-black text-xs font-heading uppercase tracking-wider">Most Popular</span>
+                    </div>
+                  )}
+                  <div className="bg-stealth-black/40 p-6 flex items-center justify-center border-b border-radar-grey-dark">
+                    <img
+                      src={t.image}
+                      alt={t.imageAlt}
+                      className="w-full max-w-[180px] h-auto object-contain drop-shadow-[0_4px_20px_rgba(214,66,47,0.15)]"
+                      loading="lazy"
+                    />
                   </div>
-                  <p className="text-xs text-radar-grey-light uppercase tracking-wider">Starting Price</p>
-                </div>
+                  <div className="p-6 sm:p-8 flex flex-col flex-1">
+                    <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-2 font-heading">
+                      {t.tier}
+                    </div>
+                    <h3 className="text-2xl font-heading text-ghost-white mb-3 uppercase tracking-wide">{t.name}</h3>
+                    <div className="text-3xl font-heading text-infrared mb-1">{t.price}</div>
+                    <p className="text-xs text-radar-grey-light uppercase tracking-wider mb-5">Starting Price</p>
 
-                <div className="mb-6 pb-6 border-b border-radar-grey-dark">
-                  <div className="text-[10px] text-infrared uppercase tracking-widest mb-3 font-heading">
-                    BEST FOR
+                    <p className="text-ghost-white text-sm leading-relaxed mb-5 pb-5 border-b border-radar-grey-dark">{t.bestFor}</p>
+
+                    <ul className="space-y-2 mb-6 flex-1">
+                      {t.includes.map((item) => (
+                        <li key={item} className="flex items-start gap-2">
+                          <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
+                          <span className="text-sm text-ghost-white">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <Link href="/pre-cut" className="mt-auto">
+                      <Button variant={t.variant} className="w-full">{t.cta}</Button>
+                    </Link>
                   </div>
-                  <p className="text-ghost-white text-sm leading-relaxed">
-                    Protect high-impact zones where stone chips and road debris cause the most damage.
-                  </p>
                 </div>
+              ))}
+            </div>
 
-                <div className="mb-6 flex-1">
-                  <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-3 font-heading">
-                    COVERAGE_INCLUDES
-                  </div>
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                      <span className="text-sm text-ghost-white">Front Bumper</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                      <span className="text-sm text-ghost-white">Bonnet</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                      <span className="text-sm text-ghost-white">Front Wings</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                      <span className="text-sm text-ghost-white">Headlights</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                      <span className="text-sm text-ghost-white">Mirror Caps</span>
-                    </li>
-                  </ul>
-                </div>
+            {/* Mobile: compact swipeable cards */}
+            <div className="md:hidden">
+              <div className="-mx-4 px-4 overflow-x-auto scrollbar-hide">
+                <div className="flex gap-4 w-max pb-4">
+                  {[
+                    {
+                      tier: 'TIER_01',
+                      name: 'FRONT END',
+                      price: 'From £299',
+                      image: '/frontend_ppf.png',
+                      imageAlt: 'Vehicle diagram showing front end PPF coverage areas',
+                      bestFor: 'High-impact zone protection.',
+                      includes: ['Front Bumper', 'Bonnet', 'Wings', 'Headlights', 'Mirrors'],
+                      cta: 'Select',
+                      variant: 'secondary' as const,
+                      border: 'border-radar-grey-dark',
+                      popular: false,
+                    },
+                    {
+                      tier: 'TIER_02',
+                      name: 'EXTENDED',
+                      price: 'From £499',
+                      image: '/frontend_ppf_extended.png',
+                      imageAlt: 'Vehicle diagram showing extended PPF coverage areas',
+                      bestFor: 'Best value for daily drivers.',
+                      includes: ['All Front End +', 'Front Doors', 'Side Skirts', 'A-Pillar', 'Roof Edge'],
+                      cta: 'Select',
+                      variant: 'primary' as const,
+                      border: 'border-infrared',
+                      popular: true,
+                    },
+                    {
+                      tier: 'TIER_03',
+                      name: 'FULL',
+                      price: 'From £1,299',
+                      image: '/full_ppf.png',
+                      imageAlt: 'Vehicle diagram showing full body PPF coverage areas',
+                      bestFor: 'Maximum full-body protection.',
+                      includes: ['All Panels', 'Rear Bumper', 'Boot Lid', 'All Surfaces'],
+                      cta: 'Select',
+                      variant: 'secondary' as const,
+                      border: 'border-radar-grey-dark',
+                      popular: false,
+                    },
+                  ].map((t) => (
+                    <div key={t.tier} className={`bg-radar-grey border-2 ${t.border} flex flex-col overflow-hidden relative w-[280px] flex-shrink-0`}>
+                      {t.popular && (
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-infrared z-10">
+                          <span className="text-stealth-black text-[10px] font-heading uppercase tracking-wider">Popular</span>
+                        </div>
+                      )}
+                      <div className="bg-stealth-black/40 p-4 flex items-center justify-center border-b border-radar-grey-dark">
+                        <img
+                          src={t.image}
+                          alt={t.imageAlt}
+                          className="w-full max-w-[140px] h-auto object-contain drop-shadow-[0_4px_20px_rgba(214,66,47,0.15)]"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div className="p-4 flex flex-col flex-1">
+                        <h3 className="text-lg font-heading text-ghost-white mb-1 uppercase tracking-wide">{t.name}</h3>
+                        <div className="text-2xl font-heading text-infrared mb-1">{t.price}</div>
+                        <p className="text-[10px] text-radar-grey-light uppercase tracking-wider mb-3">Starting Price</p>
 
-                <Link href="/pre-cut" className="mt-auto">
-                  <Button variant="secondary" className="w-full">
-                    Select Front End
-                  </Button>
-                </Link>
+                        <p className="text-ghost-white text-xs leading-relaxed mb-3 pb-3 border-b border-radar-grey-dark">{t.bestFor}</p>
+
+                        <ul className="space-y-1.5 mb-4 flex-1">
+                          {t.includes.map((item) => (
+                            <li key={item} className="flex items-start gap-2">
+                              <div className="w-1 h-1 bg-infrared rotate-45 mt-1 flex-shrink-0"></div>
+                              <span className="text-xs text-ghost-white">{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+
+                        <Link href="/pre-cut" className="mt-auto">
+                          <Button variant={t.variant} size="sm" className="w-full">{t.cta}</Button>
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-
-              {/* Extended - Popular Choice */}
-              <div className="bg-radar-grey border-2 border-infrared transition-all flex flex-col relative overflow-hidden">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-infrared z-10">
-                  <span className="text-stealth-black text-xs font-heading uppercase tracking-wider">Most Popular</span>
-                </div>
-                <div className="bg-ghost-white/5 p-4 pt-6 flex items-center justify-center">
-                  <img
-                    src="/frontend_ppf_extended.png"
-                    alt="Vehicle diagram showing extended PPF coverage areas"
-                    className="w-full max-w-[200px] h-auto object-contain"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-6 sm:p-8 flex flex-col flex-1">
-                <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-3 font-heading">
-                  TIER_02
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-heading text-ghost-white mb-3 uppercase">
-                  EXTENDED
-                </h3>
-                <div className="mb-6">
-                  <div className="text-3xl sm:text-4xl font-heading text-infrared mb-2">
-                    From £499
-                  </div>
-                  <p className="text-xs text-radar-grey-light uppercase tracking-wider">Starting Price</p>
-                </div>
-
-                <div className="mb-6 pb-6 border-b border-radar-grey-dark">
-                  <div className="text-[10px] text-infrared uppercase tracking-widest mb-3 font-heading">
-                    BEST FOR
-                  </div>
-                  <p className="text-ghost-white text-sm leading-relaxed">
-                    Best value for daily drivers. Comprehensive protection for front and side panels.
-                  </p>
-                </div>
-
-                <div className="mb-6 flex-1">
-                  <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-3 font-heading">
-                    COVERAGE_INCLUDES
-                  </div>
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                      <span className="text-sm text-ghost-white">Everything in Front End</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                      <span className="text-sm text-ghost-white">Front Doors</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                      <span className="text-sm text-ghost-white">Side Skirts</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                      <span className="text-sm text-ghost-white">Front A-Pillar</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                      <span className="text-sm text-ghost-white">Edge of Roof</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <Link href="/pre-cut" className="mt-auto">
-                  <Button className="w-full">
-                    Select Extended
-                  </Button>
-                </Link>
-                </div>
-              </div>
-
-              {/* Full Coverage */}
-              <div className="bg-radar-grey border-2 border-radar-grey-dark hover:border-infrared/50 transition-all flex flex-col overflow-hidden">
-                <div className="bg-ghost-white/5 p-4 flex items-center justify-center">
-                  <img
-                    src="/full_ppf.png"
-                    alt="Vehicle diagram showing full body PPF coverage areas"
-                    className="w-full max-w-[200px] h-auto object-contain"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-6 sm:p-8 flex flex-col flex-1">
-                <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-3 font-heading">
-                  TIER_03
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-heading text-ghost-white mb-3 uppercase">
-                  FULL COVERAGE
-                </h3>
-                <div className="mb-6">
-                  <div className="text-3xl sm:text-4xl font-heading text-infrared mb-2">
-                    From £1,299
-                  </div>
-                  <p className="text-xs text-radar-grey-light uppercase tracking-wider">Starting Price</p>
-                </div>
-
-                <div className="mb-6 pb-6 border-b border-radar-grey-dark">
-                  <div className="text-[10px] text-infrared uppercase tracking-widest mb-3 font-heading">
-                    BEST FOR
-                  </div>
-                  <p className="text-ghost-white text-sm leading-relaxed">
-                    OEM-level full-body protection. Maximum coverage for ultimate peace of mind.
-                  </p>
-                </div>
-
-                <div className="mb-6 flex-1">
-                  <div className="text-[10px] text-radar-grey-light uppercase tracking-widest mb-3 font-heading">
-                    COVERAGE_INCLUDES
-                  </div>
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                      <span className="text-sm text-ghost-white">Complete Vehicle Coverage</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                      <span className="text-sm text-ghost-white">All Exterior Panels</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                      <span className="text-sm text-ghost-white">Rear Bumper</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                      <span className="text-sm text-ghost-white">Boot/Trunk Lid</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <div className="w-1 h-1 bg-infrared rotate-45 mt-1.5 flex-shrink-0"></div>
-                      <span className="text-sm text-ghost-white">All visible surfaces</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <Link href="/pre-cut" className="mt-auto">
-                  <Button variant="secondary" className="w-full">
-                    Select Full Coverage
-                  </Button>
-                </Link>
-                </div>
+              <div className="flex items-center justify-center gap-2 mt-4 animate-swipe-hint">
+                <svg className="w-4 h-4 text-infrared" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+                </svg>
+                <span className="text-[10px] text-radar-grey-light uppercase tracking-widest font-heading">Swipe to compare</span>
+                <svg className="w-4 h-4 text-infrared" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
               </div>
             </div>
 
