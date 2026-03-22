@@ -28,6 +28,12 @@ export const metadata: Metadata = {
     siteName: "StealthShield",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "StealthShield | Premium Paint Protection Film",
+    description:
+      "Precision-cut PPF for cars and motorcycles. Free fitting kit included. UK-based with 2-3 day delivery.",
+  },
 };
 
 export const viewport = {
