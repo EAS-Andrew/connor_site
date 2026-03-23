@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from './Button';
 import { getCurrentCart } from '@/lib/cart';
 
@@ -25,17 +26,17 @@ export function Header() {
     
     loadCartCount();
     
-    // Poll for cart updates every 2 seconds when on the page
-    const interval = setInterval(loadCartCount, 2000);
-    return () => clearInterval(interval);
+    const handleCartUpdate = () => loadCartCount();
+    window.addEventListener('cart-updated', handleCartUpdate);
+    return () => window.removeEventListener('cart-updated', handleCartUpdate);
   }, []);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-stealth-black/95 backdrop-blur-sm border-b border-radar-grey-dark">
       <nav className="container mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group" onClick={() => setIsMenuOpen(false)}>
-          <div className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0">
-            <img src="/logo.svg" alt="StealthShield Logo" className="w-full h-full group-hover:opacity-80 transition-opacity duration-200" />
+          <div className="w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0 relative">
+            <Image src="/logo.svg" alt="StealthShield Logo" fill className="object-contain group-hover:opacity-80 transition-opacity duration-200" />
           </div>
           <span className="font-heading text-xl sm:text-2xl text-ghost-white tracking-wider group-hover:text-infrared transition-colors duration-200">
             STEALTHSHIELD

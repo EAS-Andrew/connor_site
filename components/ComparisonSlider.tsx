@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
+import Image from 'next/image';
 
 interface ComparisonSliderProps {
   beforeSrc: string;
@@ -83,20 +84,24 @@ export function ComparisonSlider({
       onKeyDown={handleKeyDown}
     >
       {/* After image (full, underneath) */}
-      <img
+      <Image
         src={afterSrc}
         alt={afterAlt}
-        className="absolute inset-0 w-full h-full object-cover"
+        fill
+        className="object-cover"
         draggable={false}
+        sizes="(max-width: 768px) 100vw, 896px"
       />
 
       {/* Before image (clipped via clip-path for pixel-perfect alignment) */}
-      <img
+      <Image
         src={beforeSrc}
         alt={beforeAlt}
-        className="absolute inset-0 w-full h-full object-cover"
+        fill
+        className="object-cover"
         style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
         draggable={false}
+        sizes="(max-width: 768px) 100vw, 896px"
       />
 
       {/* Slider handle */}

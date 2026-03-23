@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export function Footer() {
   return (
@@ -43,8 +44,8 @@ export function Footer() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">
             <div>
               <div className="flex items-center gap-3 mb-3 sm:mb-4">
-                <div className="w-10 h-10 flex-shrink-0">
-                  <img src="/logo.svg" alt="StealthShield Logo" className="w-full h-full" />
+                <div className="w-10 h-10 flex-shrink-0 relative">
+                  <Image src="/logo.svg" alt="StealthShield Logo" fill className="object-contain" />
                 </div>
                 <h3 className="font-heading text-lg sm:text-xl text-ghost-white tracking-wider">STEALTHSHIELD</h3>
               </div>

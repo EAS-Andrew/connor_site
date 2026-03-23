@@ -9,6 +9,7 @@ export const metadata: Metadata = {
     description:
       'From registration lookup to delivery — how StealthShield precision-cuts PPF for your exact vehicle.',
   },
+  alternates: { canonical: 'https://stealthshieldppf.com/how-it-works' },
 };
 
 export default function HowItWorksLayout({ children }: { children: React.ReactNode }) {

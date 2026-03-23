@@ -9,6 +9,7 @@ export const metadata: Metadata = {
     description:
       'Precision-cut PPF for your car or motorcycle. Enter your reg, choose coverage, we verify and cut to spec.',
   },
+  alternates: { canonical: 'https://stealthshieldppf.com/pre-cut' },
 };
 
 export default function PreCutLayout({ children }: { children: React.ReactNode }) {

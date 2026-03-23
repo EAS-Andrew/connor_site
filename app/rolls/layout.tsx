@@ -9,6 +9,7 @@ export const metadata: Metadata = {
     description:
       'Professional-grade PPF rolls for cars and motorcycles. Bulk pricing available for installers and body shops.',
   },
+  alternates: { canonical: 'https://stealthshieldppf.com/rolls' },
 };
 
 export default function RollsLayout({ children }: { children: React.ReactNode }) {

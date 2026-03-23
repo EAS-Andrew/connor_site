@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { validatePhotoToken, deletePhotoToken } from '@/lib/photoToken';
 import { uploadToCloudinary } from '@/lib/cloudinary';
 import { updateOrderWithPhotos } from '@/lib/shopify-admin';
+import { checkRateLimit, rateLimitHeaders } from '@/lib/rate-limit';
 
 interface UploadRequest {
   token: string;
@@ -11,6 +12,16 @@ interface UploadRequest {
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? 'anonymous';
+    const rl = await checkRateLimit('upload-photos', `ip:${ip}`, 10, 3600);
+
+    if (!rl.success) {
+      return NextResponse.json(
+        { error: 'Too many upload attempts. Please try again later.' },
+        { status: 429, headers: rateLimitHeaders(rl) }
+      );
+    }
+
     const body: UploadRequest = await request.json();
     const { token, frontImage, rearImage } = body;
 

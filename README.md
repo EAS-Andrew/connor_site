@@ -1,216 +1,99 @@
-# StealthShield PPF E-Commerce Site
+# StealthShield PPF
 
-A premium, dark-themed e-commerce website for Paint Protection Film (PPF) sales, built with Next.js 14, TypeScript, and Tailwind CSS.
+Premium paint protection film e-commerce site for cars and motorcycles. Built with Next.js 16, React 19, and Shopify Storefront API.
 
-## 🎯 Project Overview
+## Tech Stack
 
-StealthShield is a performance-driven, stealth-inspired PPF brand featuring:
-- Modern, minimalist dark UI with angular design elements
-- Guided pre-cut PPF kit configuration process
-- Vehicle registration lookup integration (stubbed for demo)
-- Fully responsive design (mobile, tablet, desktop)
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 16 (App Router) |
+| UI | React 19, TypeScript 5 |
+| Styling | Tailwind CSS v4, PostCSS |
+| Fonts | Sora (headings), Inter (body) via next/font |
+| Commerce | Shopify Storefront API (cart, checkout), Admin API (order updates) |
+| Caching | Redis (ioredis) for vehicle lookups, rate limiting, photo tokens |
+| Media | Cloudinary for customer photo uploads |
+| Email | Resend for transactional emails |
+| Vehicle Data | UK Vehicle Data API for registration lookups |
+| Analytics | Vercel Analytics + Speed Insights |
+| Deployment | Vercel |
 
-## 🎨 Brand Identity
-
-**Brand Values:**
-- **Discretion** - Subtle, sleek protection
-- **Precision** - Engineered for perfect fit
-- **Performance** - High-end durability and speed
-
-**Color Palette:**
-- Stealth Black: `#0A0A0A`
-- Radar Grey: `#2B2B2D`
-- Ghost White: `#F3F3F3`
-- Infrared Accent: `#D6422F`
-
-**Typography:**
-- Headings: Sora Bold
-- Body: Inter Regular
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn
-
-### Installation
+## Getting Started
 
 ```bash
-# Navigate to the project directory
-cd stealthshield
-
-# Install dependencies
 npm install
-
-# Run development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000).
 
-## 📁 Project Structure
+### Environment Variables
 
 ```
-stealthshield/
-├── app/
-│   ├── layout.tsx          # Root layout with fonts
-│   ├── page.tsx            # Landing page
-│   ├── pre-cut/
-│   │   └── page.tsx        # Pre-cut configuration flow
-│   └── globals.css         # Global styles & brand tokens
-├── components/
-│   ├── Button.tsx          # Primary/secondary button variants
-│   ├── Card.tsx            # Card component with hover states
-│   ├── StepIndicator.tsx   # Multi-step progress indicator
-│   ├── Header.tsx          # Navigation with mobile menu
-│   ├── Footer.tsx          # Site footer
-│   ├── PageLayout.tsx      # Page wrapper with header/footer
-│   └── index.ts            # Component exports
-├── lib/
-│   └── api.ts              # API functions (currently stubbed)
-└── public/                 # Static assets
+NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN=
+NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN=
+SHOPIFY_ADMIN_ACCESS_TOKEN=
+SHOPIFY_WEBHOOK_SECRET=
+REDIS_URL=
+UK_VEHICLE_DATA_API_KEY=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+RESEND_API_KEY=
+NEXT_PUBLIC_SITE_URL=
 ```
 
-## ✨ Features
+## Project Structure
 
-### Landing Page
-- Hero section with bold tagline and CTAs
-- "Why Us" section highlighting brand values (Discretion, Precision, Performance)
-- Product overview (Pre-cut kits & PPF rolls)
-- Clear call-to-action sections
-
-### Pre-Cut Configuration Flow
-
-**Step 1: Vehicle Registration Lookup**
-- UK registration input
-- Stubbed Vehicle Smart API integration
-- Demo registrations: `AB12CDE`, `XY34FGH`, `CD56IJK`
-
-**Step 2: Vehicle Confirmation**
-- Display retrieved vehicle details
-- Option to modify if incorrect
-
-**Step 3: Coverage & Material Selection**
-- Three coverage tiers:
-  - **Front End PPF** (£599) - Front Bumper, Bonnet, Headlights, Mirror Caps, Front Wings, Front A Pillar & Edge Of Roof
-  - **Extended Front End PPF** (£899) - Everything in Front End PPF + Front Doors + Skirts
-  - **Premium Full Car Cover** (£1599) - All Panels Covered (Excluding Glass)
-- Material options:
-  - **Gloss PPF** - Clear, glossy protection with high durability
-  - **Matte PPF** - Satin/matte finish for a unique look while protecting
-- Visual comparison with included items
-- Progressive reveal of material selection after coverage choice
-
-**Step 4: Review & Summary**
-- Order summary
-- Next steps explanation
-- Checkout placeholder (Shopify integration pending)
-
-## 🔌 Integration Points
-
-### Vehicle Smart API (Currently Stubbed)
-Location: `lib/api.ts` - `lookupVehicleByRegistration()`
-
-**TODO:** Replace stub with actual Vehicle Smart API integration
-- API endpoint configuration
-- Authentication setup
-- Error handling for real API responses
-
-### Shopify Integration (Pending)
-The pre-cut flow is fully functional but requires:
-- Shopify store setup
-- Product catalog integration
-- Checkout flow connection
-- Inventory management sync
-
-## 📱 Responsive Design
-
-Fully optimized for:
-- **Mobile**: 320px - 767px (hamburger menu, stacked layouts)
-- **Tablet**: 768px - 1023px (2-column grids)
-- **Desktop**: 1024px+ (full navigation, 3-column grids)
-
-Key responsive features:
-- Mobile-friendly navigation with hamburger menu
-- Adaptive typography and spacing
-- Touch-optimized buttons and interactions
-- Optimized step indicator for small screens
-
-## 🎨 Design System
-
-### Components
-
-**Button**
-```tsx
-<Button variant="primary" size="lg">Click Me</Button>
-<Button variant="secondary" size="md">Secondary</Button>
+```
+app/
+  page.tsx              # Homepage (server component)
+  pre-cut/              # Kit configuration flow
+  rolls/                # PPF rolls for professionals
+  cart/                 # Shopping cart
+  checkout/             # Checkout with Shopify redirect
+  upload-photos/        # Post-purchase bumper photo upload
+  about/, faq/, contact/, how-it-works/
+  api/
+    vehicle-lookup/     # UK reg lookup with Redis caching
+    upload-photos/      # Cloudinary upload + Shopify order update
+    validate-token/     # One-time photo upload token validation
+    webhooks/orders/    # Shopify order webhook handler
+components/
+  home/                 # Homepage section components
+    FaqAccordion.tsx     # Interactive FAQ (client)
+    TierTabs.tsx         # Coverage tier switching (client)
+  Header.tsx, Footer.tsx, PageLayout.tsx
+  ComparisonSlider.tsx   # Before/after image slider
+  ScrollToTop.tsx        # Floating scroll-to-top button
+  CookieConsent.tsx      # GDPR cookie consent banner
+lib/
+  shopify.ts            # Storefront API GraphQL client
+  shopify-admin.ts      # Admin API for order updates
+  cart.ts               # Cart state with event-driven updates
+  api.ts                # Vehicle lookup + coverage options
+  rate-limit.ts         # Shared Redis rate limiter
+  cloudinary.ts, email.ts, photoToken.ts, ukvehicledata.ts
 ```
 
-**Card**
-```tsx
-<Card hover>Content here</Card>
-```
+## Brand Identity
 
-**StepIndicator**
-```tsx
-<StepIndicator steps={steps} currentStep={2} />
-```
+- **Stealth Black** `#0A0A0A` -- primary background
+- **Radar Grey** `#2B2B2D` -- card/section backgrounds
+- **Ghost White** `#F3F3F3` -- primary text
+- **Infrared** `#D6422F` -- accent and CTAs
 
-### Color Usage
-- Use `bg-stealth-black` for primary backgrounds
-- Use `bg-radar-grey` for card/section backgrounds
-- Use `text-ghost-white` for primary text
-- Use `text-infrared` for accents and CTAs
+## Key Features
 
-## 🔧 Development
+- Registration-verified PPF kit ordering with Shopify checkout
+- Server-rendered homepage with client islands for interactivity
+- Optimised images via next/image (AVIF/WebP)
+- SEO: sitemap, robots.txt, JSON-LD structured data, canonical URLs
+- Security headers, timing-safe webhook verification, Redis rate limiting
+- Event-driven cart state (no polling)
+- Branded 404/error pages, loading skeletons
+- GDPR cookie consent banner
 
-### Build for Production
-```bash
-npm run build
-npm start
-```
-
-### Linting
-```bash
-npm run lint
-```
-
-## 📝 Notes
-
-### Demo Mode
-The vehicle lookup currently uses mock data. Try these registrations:
-- `AB12CDE` → BMW 3 Series 2022
-- `XY34FGH` → Audi A4 2021
-- `CD56IJK` → Mercedes-Benz C-Class 2023
-- Any other registration → Generic Vehicle 2022
-
-### Post-Purchase Flow (Planned)
-After checkout completion, customers will receive automated emails requesting:
-- Front and rear bumper photos
-- Sensor/radar confirmation
-- Trim-specific variation details
-
-This ensures accurate kit matching while minimizing friction during initial purchase.
-
-## 🚧 Roadmap
-
-- [ ] Integrate Vehicle Smart API with real credentials
-- [ ] Connect Shopify checkout and inventory
-- [ ] Add PPF rolls product catalog
-- [ ] Implement FAQ page
-- [ ] Add warranty information page
-- [ ] Create contact form
-- [ ] Optional project gallery
-- [ ] Email automation for post-purchase vehicle confirmation
-
-## 📄 License
+## License
 
 Private project for StealthShield PPF.
-
-## 🤝 Contributing
-
-This is a client project. Contact the project owner for contribution guidelines.
-
----
-
-Built with precision. Engineered in the shadows. 🥷

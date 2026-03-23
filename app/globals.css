@@ -118,3 +118,18 @@ h6 {
 .animate-swipe-hint {
   animation: swipe-hint 2s ease-in-out infinite;
 }
+
+@keyframes logo-breathe {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-logo-breathe {
+  animation: logo-breathe 2s ease-in-out infinite;
+}

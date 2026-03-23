@@ -9,6 +9,7 @@ export const metadata: Metadata = {
     description:
       'UK-based PPF specialists delivering precision-cut protection kits with guaranteed fitment accuracy.',
   },
+  alternates: { canonical: 'https://stealthshieldppf.com/about' },
 };
 
 export default function AboutLayout({ children }: { children: React.ReactNode }) {

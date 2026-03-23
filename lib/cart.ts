@@ -50,6 +50,12 @@ export function createVehicleAttributes(vehicleData: VehicleData): Array<{ key: 
   return attributes;
 }
 
+function dispatchCartUpdate() {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('cart-updated'));
+  }
+}
+
 /**
  * Create a new cart with vehicle metadata
  */
@@ -61,6 +67,7 @@ export async function createCartWithVehicle(
   const attributes = createVehicleAttributes(vehicleData);
   const cart = await createCart(variantId, quantity, attributes);
   setCartId(cart.id);
+  dispatchCartUpdate();
   return cart;
 }
 
@@ -77,17 +84,15 @@ export async function addToCartWithVehicle(
 
   if (existingCartId) {
     try {
-      // Try to add to existing cart
       const cart = await shopifyAddToCart(existingCartId, variantId, quantity, attributes);
+      dispatchCartUpdate();
       return cart;
     } catch (error) {
-      // If cart doesn't exist or is invalid, create a new one
       console.log('Existing cart invalid, creating new cart');
       clearCartId();
       return createCartWithVehicle(variantId, vehicleData, quantity);
     }
   } else {
-    // No existing cart, create new one
     return createCartWithVehicle(variantId, vehicleData, quantity);
   }
 }

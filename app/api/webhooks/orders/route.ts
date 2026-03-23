@@ -52,7 +52,11 @@ function verifyWebhook(body: string, hmacHeader: string): boolean {
     .update(body, 'utf8')
     .digest('base64');
 
-  return hash === hmacHeader;
+  try {
+    return crypto.timingSafeEqual(Buffer.from(hash), Buffer.from(hmacHeader));
+  } catch {
+    return false;
+  }
 }
 
 // Extract vehicle data from order line item properties

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Sora, Inter } from "next/font/google";
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { CookieConsent } from '@/components/CookieConsent';
 import "./globals.css";
 
 const sora = Sora({
@@ -22,6 +24,9 @@ export const metadata: Metadata = {
   title: "StealthShield | Premium Paint Protection Film",
   description:
     "Precision-cut paint protection film for cars and motorcycles. Enter your registration for instant pricing. Free fitting kit with every pre-cut order. UK-based with fast delivery.",
+  alternates: {
+    canonical: "https://stealthshieldppf.com",
+  },
   openGraph: {
     title: "StealthShield | Premium Paint Protection Film",
     description:
@@ -40,8 +45,7 @@ export const metadata: Metadata = {
 export const viewport = {
     width: "device-width",
     initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
+    maximumScale: 5,
 };
 
 export default function RootLayout({
@@ -49,13 +53,31 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'StealthShield',
+    url: 'https://stealthshieldppf.com',
+    logo: 'https://stealthshieldppf.com/logo.svg',
+    email: 'info@stealthshieldppf.com',
+    description: 'Precision-cut paint protection film for cars and motorcycles. UK-based with fast delivery.',
+    areaServed: 'GB',
+    sameAs: [],
+  };
+
   return (
     <html lang="en" className="dark">
       <body
         className={`${sora.variable} ${inter.variable} antialiased`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
         {children}
         <Analytics />
+        <SpeedInsights />
+        <CookieConsent />
       </body>
     </html>
   );

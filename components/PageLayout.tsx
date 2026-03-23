@@ -1,6 +1,7 @@
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { ExitIntentPopup } from './ExitIntentPopup';
+import { ScrollToTop } from './ScrollToTop';
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -15,6 +16,7 @@ export function PageLayout({ children }: PageLayoutProps) {
       </main>
       <Footer />
       <ExitIntentPopup />
+      <ScrollToTop />
     </div>
   );
 }

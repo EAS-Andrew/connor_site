@@ -9,6 +9,7 @@ export const metadata: Metadata = {
     description:
       'Questions about PPF, ordering, or installation? Contact StealthShield — we typically respond within 24 hours.',
   },
+  alternates: { canonical: 'https://stealthshieldppf.com/contact' },
 };
 
 export default function ContactLayout({ children }: { children: React.ReactNode }) {
