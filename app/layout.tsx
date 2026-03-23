@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Sora, Inter } from "next/font/google";
+import { Sora, Inter, Space_Grotesk } from "next/font/google";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { CookieConsent } from '@/components/CookieConsent';
@@ -16,6 +16,13 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  weight: ["700"],
   display: "swap",
 });
 
@@ -68,7 +75,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${sora.variable} ${inter.variable} antialiased`}
+        className={`${sora.variable} ${inter.variable} ${spaceGrotesk.variable} antialiased`}
       >
         <script
           type="application/ld+json"

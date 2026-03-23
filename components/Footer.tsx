@@ -56,7 +56,7 @@ export function Footer() {
             </div>
 
             <div>
-                <h4 className="font-heading text-[10px] sm:text-xs uppercase mb-3 sm:mb-4 text-infrared tracking-[0.3em]">Product</h4>
+                <h4 className="font-heading text-[10px] sm:text-xs uppercase mb-3 sm:mb-4 text-infrared-light tracking-[0.3em]">Product</h4>
                 <ul className="space-y-2">
                   <li><Link href="/pre-cut" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">Configure Kit</Link></li>
                   <li><Link href="/rolls" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">PPF Rolls</Link></li>
@@ -65,7 +65,7 @@ export function Footer() {
             </div>
 
             <div>
-                <h4 className="font-heading text-[10px] sm:text-xs uppercase mb-3 sm:mb-4 text-infrared tracking-[0.3em]">Company</h4>
+                <h4 className="font-heading text-[10px] sm:text-xs uppercase mb-3 sm:mb-4 text-infrared-light tracking-[0.3em]">Company</h4>
                 <ul className="space-y-2">
                   <li><Link href="/about" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">About</Link></li>
                   <li><Link href="/faq" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">FAQ</Link></li>
@@ -74,7 +74,7 @@ export function Footer() {
             </div>
 
             <div>
-              <h4 className="font-heading text-[10px] sm:text-xs uppercase mb-3 sm:mb-4 text-infrared tracking-[0.3em]">Get In Touch</h4>
+              <h4 className="font-heading text-[10px] sm:text-xs uppercase mb-3 sm:mb-4 text-infrared-light tracking-[0.3em]">Get In Touch</h4>
               <ul className="space-y-2">
                 <li>
                   <a href="mailto:info@stealthshieldppf.com" className="text-radar-grey-light hover:text-infrared transition-colors text-sm">
@@ -95,6 +95,24 @@ export function Footer() {
             <p className="text-radar-grey-light text-xs sm:text-sm text-center">
               &copy; {new Date().getFullYear()} StealthShield. All rights reserved.
             </p>
+            <a
+              href="https://www.ctrl-alt-elite.uk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group mt-5 flex flex-col items-center gap-2 transition-opacity hover:opacity-100 opacity-50"
+            >
+              <span className="text-radar-grey-light text-[10px] tracking-[0.25em] uppercase">
+                Powered by
+              </span>
+              <div className="flex items-center gap-2.5">
+                <svg className="w-5 h-5 text-ghost-white group-hover:text-white transition-colors" viewBox="0 0 32 32" fill="currentColor">
+                  <path fillRule="evenodd" d="M0 0h32v32H0V0Zm11 6a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z" />
+                </svg>
+                <span className="text-ghost-white text-sm font-bold tracking-tight group-hover:text-white transition-colors" style={{ fontFamily: 'var(--font-space-grotesk), system-ui' }}>
+                  ctrl.alt.elite
+                </span>
+              </div>
+            </a>
           </div>
         </div>
       </div>

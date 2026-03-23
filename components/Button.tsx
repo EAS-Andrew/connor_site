@@ -16,7 +16,7 @@ export function Button({
   const baseStyles = "font-heading uppercase tracking-wider transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed";
   
   const variantStyles = {
-    primary: "bg-infrared text-ghost-white hover:bg-infrared-dark active:scale-95",
+    primary: "bg-infrared text-white hover:bg-infrared-dark active:scale-95",
     secondary: "bg-transparent border-2 border-ghost-white text-ghost-white hover:bg-ghost-white hover:text-stealth-black"
   };
   

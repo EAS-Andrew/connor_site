@@ -129,7 +129,7 @@ export function Header() {
           <div className="w-px h-6 bg-radar-grey-dark"></div>
           
           {/* Cart Icon */}
-          <Link href="/cart" className="relative text-ghost-white hover:text-infrared transition-colors duration-200 group">
+          <Link href="/cart" aria-label="Shopping cart" className="relative text-ghost-white hover:text-infrared transition-colors duration-200 group">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
@@ -168,7 +168,7 @@ export function Header() {
           <div className="container mx-auto px-4 py-6 flex flex-col gap-3">
             {/* Products Section */}
             <div>
-              <div className="text-[10px] text-infrared uppercase tracking-widest font-heading mb-2">Products</div>
+              <div className="text-[10px] text-infrared-light uppercase tracking-widest font-heading mb-2">Products</div>
               <Link
                 href="/pre-cut"
                 className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wide flex items-center gap-2 group pl-2"
@@ -192,7 +192,7 @@ export function Header() {
 
             {/* Learn Section */}
             <div>
-              <div className="text-[10px] text-infrared uppercase tracking-widest font-heading mb-2">Learn</div>
+              <div className="text-[10px] text-infrared-light uppercase tracking-widest font-heading mb-2">Learn</div>
               <Link
                 href="/how-it-works"
                 className="text-ghost-white hover:text-infrared transition-colors duration-200 font-sans py-2 text-sm uppercase tracking-wide flex items-center gap-2 group pl-2"

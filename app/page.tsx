@@ -151,7 +151,7 @@ export default async function Home() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10 sm:mb-14">
               <div className="inline-block mb-4">
-                <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
+                <span className="text-[10px] text-infrared-light uppercase tracking-[0.3em] font-heading">
                   SURFACE_ANALYSIS
                 </span>
               </div>
@@ -186,7 +186,7 @@ export default async function Home() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12 sm:mb-16">
               <div className="inline-block mb-4">
-                <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
+                <span className="text-[10px] text-infrared-light uppercase tracking-[0.3em] font-heading">
                   PROTECTION_SYSTEMS
                 </span>
               </div>
@@ -218,7 +218,7 @@ export default async function Home() {
                   <h3 className="text-3xl font-heading mb-4 text-ghost-white tracking-wide">PRECISION-CUT KITS</h3>
                   <div className="mb-4 flex flex-wrap gap-2">
                     <div className="inline-block px-3 py-1 bg-infrared/20 border border-infrared">
-                      <span className="text-infrared text-xs font-heading uppercase tracking-wider">Perfect for DIY & Professionals</span>
+                      <span className="text-ghost-white text-xs font-heading uppercase tracking-wider">Perfect for DIY & Professionals</span>
                     </div>
                     <div className="inline-block px-3 py-1 bg-infrared/10 border border-infrared/50">
                       <span className="text-ghost-white text-xs font-heading uppercase tracking-wider">Free Fitting Kit</span>
@@ -261,7 +261,7 @@ export default async function Home() {
                   </div>
                   <h3 className="text-3xl font-heading mb-4 text-ghost-white tracking-wide">PROFESSIONAL ROLLS</h3>
                   <div className="mb-4 inline-block px-3 py-1 bg-infrared/20 border border-infrared">
-                    <span className="text-infrared text-xs font-heading uppercase tracking-wider">For Professional Installers</span>
+                    <span className="text-ghost-white text-xs font-heading uppercase tracking-wider">For Professional Installers</span>
                   </div>
                   <p className="text-radar-grey-light mb-6 leading-relaxed text-sm">
                     Professional-grade protection film for custom applications. Perfect for installers who prefer bulk rolls for multiple cars, motorcycles, or custom coverage patterns.
@@ -293,7 +293,7 @@ export default async function Home() {
             {/* Decision Helper */}
             <div className="max-w-4xl mx-auto bg-radar-grey border-2 border-radar-grey-dark p-6 sm:p-8">
               <div className="text-center mb-6">
-                <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
+                <span className="text-[10px] text-infrared-light uppercase tracking-[0.3em] font-heading">
                   DECISION_MATRIX
                 </span>
                 <h3 className="text-xl sm:text-2xl font-heading text-ghost-white mt-3 mb-2">
@@ -308,7 +308,7 @@ export default async function Home() {
                   <ul className="space-y-2">
                     {['You want vehicle-specific patterns', 'You prefer no cutting or trimming', 'You\u2019re protecting one specific vehicle', 'You want guaranteed fitment accuracy'].map((item) => (
                       <li key={item} className="flex items-start gap-2">
-                        <span className="text-infrared mt-1">✓</span>
+                        <span className="text-infrared-light mt-1">✓</span>
                         <span className="text-radar-grey-light text-sm">{item}</span>
                       </li>
                     ))}
@@ -320,7 +320,7 @@ export default async function Home() {
                   <ul className="space-y-2">
                     {['You\u2019re a professional installer', 'You need bulk material for multiple jobs', 'You prefer custom cutting patterns', 'You have professional plotter access'].map((item) => (
                       <li key={item} className="flex items-start gap-2">
-                        <span className="text-infrared mt-1">✓</span>
+                        <span className="text-infrared-light mt-1">✓</span>
                         <span className="text-radar-grey-light text-sm">{item}</span>
                       </li>
                     ))}
@@ -338,7 +338,7 @@ export default async function Home() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12 sm:mb-16">
               <div className="inline-block mb-4">
-                <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
+                <span className="text-[10px] text-infrared-light uppercase tracking-[0.3em] font-heading">
                   COVERAGE_OPTIONS
                 </span>
               </div>
@@ -362,7 +362,7 @@ export default async function Home() {
             <div className="mt-8 sm:mt-12 text-center">
               <p className="text-radar-grey-light text-sm">
                 All prices are estimates. Final pricing calculated after vehicle verification. 
-                <Link href="/pre-cut" className="text-infrared hover:underline ml-1">Start with your registration</Link> for instant pricing.
+                <Link href="/pre-cut" className="text-infrared-light underline hover:text-ghost-white ml-1">Start with your registration</Link> for instant pricing.
               </p>
             </div>
           </div>
@@ -376,7 +376,7 @@ export default async function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16 items-center mb-16 sm:mb-24">
               <div>
                 <div className="mb-4">
-                  <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
+                  <span className="text-[10px] text-infrared-light uppercase tracking-[0.3em] font-heading">
                     PRECISION_ENGINEERING
                   </span>
                 </div>
@@ -412,7 +412,7 @@ export default async function Home() {
             {/* Capability cards */}
             <div className="text-center mb-12 sm:mb-16">
               <div className="inline-block mb-4">
-                <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
+                <span className="text-[10px] text-infrared-light uppercase tracking-[0.3em] font-heading">
                   WHY_STEALTHSHIELD
                 </span>
               </div>
@@ -516,7 +516,7 @@ export default async function Home() {
 
               <div className="order-1 md:order-2">
                 <div className="mb-4">
-                  <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
+                  <span className="text-[10px] text-infrared-light uppercase tracking-[0.3em] font-heading">
                     APPLICATION_PROTOCOL
                   </span>
                 </div>
@@ -545,7 +545,7 @@ export default async function Home() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10 sm:mb-14">
               <div className="inline-block mb-4">
-                <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
+                <span className="text-[10px] text-infrared-light uppercase tracking-[0.3em] font-heading">
                   SELF_HEALING_TECHNOLOGY
                 </span>
               </div>
@@ -580,7 +580,7 @@ export default async function Home() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12 sm:mb-16">
               <div className="inline-block mb-4">
-                <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">
+                <span className="text-[10px] text-infrared-light uppercase tracking-[0.3em] font-heading">
                   KIT_CONTENTS
                 </span>
               </div>
@@ -653,7 +653,7 @@ export default async function Home() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12 sm:mb-16">
               <div className="inline-block mb-4">
-                <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">CONFIDENCE_PROTOCOL</span>
+                <span className="text-[10px] text-infrared-light uppercase tracking-[0.3em] font-heading">CONFIDENCE_PROTOCOL</span>
               </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading mb-3 sm:mb-4 text-ghost-white tracking-wider">OUR GUARANTEES</h2>
               <div className="flex items-center justify-center gap-3">
@@ -773,14 +773,14 @@ export default async function Home() {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
-              <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">QUICK_INTEL</span>
+              <span className="text-[10px] text-infrared-light uppercase tracking-[0.3em] font-heading">QUICK_INTEL</span>
               <h2 className="text-2xl sm:text-3xl font-heading text-ghost-white mt-3 mb-2 tracking-wider">COMMON QUESTIONS</h2>
             </div>
 
             <FaqAccordion faqs={homepageFaqs} />
 
             <div className="text-center mt-8">
-              <Link href="/faq" className="inline-flex items-center gap-2 text-infrared hover:text-ghost-white transition-colors text-sm font-heading uppercase tracking-wider group">
+              <Link href="/faq" className="inline-flex items-center gap-2 text-infrared-light underline hover:text-ghost-white transition-colors text-sm font-heading uppercase tracking-wider group">
                 <span>View All FAQs</span>
                 <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -806,7 +806,7 @@ export default async function Home() {
 
               <div className="text-center">
                 <div className="mb-4">
-                  <span className="text-[10px] text-infrared uppercase tracking-[0.3em] font-heading">READY_TO_DEPLOY</span>
+                  <span className="text-[10px] text-infrared-light uppercase tracking-[0.3em] font-heading">READY_TO_DEPLOY</span>
                 </div>
 
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading mb-4 sm:mb-6 text-ghost-white tracking-wider">CONFIGURE YOUR KIT</h2>
@@ -821,8 +821,8 @@ export default async function Home() {
                   Access precision-engineered protection system in under 60 seconds
                 </p>
 
-                <Link href="/pre-cut" className="inline-block w-full sm:w-auto px-4">
-                  <Button size="lg" className="w-full sm:w-auto">Get Started</Button>
+                <Link href="/pre-cut" className="inline-block w-full sm:w-auto">
+                  <Button size="lg" className="w-full sm:w-auto min-h-[48px]">Get Started</Button>
                 </Link>
               </div>
             </div>

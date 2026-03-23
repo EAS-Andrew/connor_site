@@ -5,8 +5,8 @@
   --stealth-black: #0A0A0A;
   --stealth-black-light: #1A1A1A;
   --radar-grey: #2B2B2D;
-  --radar-grey-light: #8B8B8D;
-  /* Lighter grey for readable subtext */
+  --radar-grey-light: #9E9EA0;
+  /* Lighter grey for readable subtext — passes 4.5:1 on card bg (#2B2B2D) */
   --radar-grey-dark: #0F0F0F;
   --ghost-white: #F3F3F3;
   --infrared: #D6422F;

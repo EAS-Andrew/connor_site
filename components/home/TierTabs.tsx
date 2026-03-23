@@ -125,7 +125,7 @@ export function TierTabs({
                     {t.tier}
                   </div>
                   <h3 className="text-2xl font-heading text-ghost-white mb-3 uppercase tracking-wide">{t.name}</h3>
-                  <div className="text-3xl font-heading text-infrared mb-1">{t.price}</div>
+                  <div className="text-3xl font-heading text-infrared-light mb-1">{t.price}</div>
                   <p className="text-xs text-radar-grey-light uppercase tracking-wider mb-5">Starting Price</p>
 
                   <p className="text-ghost-white text-sm leading-relaxed mb-5 pb-5 border-b border-radar-grey-dark">{t.bestFor}</p>
@@ -175,7 +175,7 @@ export function TierTabs({
                     </div>
                     <div className="p-4 flex flex-col flex-1">
                       <h3 className="text-lg font-heading text-ghost-white mb-1 uppercase tracking-wide">{t.name}</h3>
-                      <div className="text-2xl font-heading text-infrared mb-1">{t.price}</div>
+                      <div className="text-2xl font-heading text-infrared-light mb-1">{t.price}</div>
                       <p className="text-[10px] text-radar-grey-light uppercase tracking-wider mb-3">Starting Price</p>
 
                       <p className="text-ghost-white text-xs leading-relaxed mb-3 pb-3 border-b border-radar-grey-dark">{t.shortBestFor}</p>
