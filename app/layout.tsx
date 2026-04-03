@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Sora, Inter, Space_Grotesk } from "next/font/google";
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import { ConsentGatedAnalytics } from '@/components/ConsentGatedAnalytics';
 import { CookieConsent } from '@/components/CookieConsent';
 import "./globals.css";
 
@@ -82,8 +81,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
         {children}
-        <Analytics />
-        <SpeedInsights />
+        <ConsentGatedAnalytics />
         <CookieConsent />
       </body>
     </html>

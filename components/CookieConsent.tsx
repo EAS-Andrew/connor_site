@@ -1,27 +1,26 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-
-const CONSENT_KEY = 'stealthshield_cookie_consent';
+import Link from 'next/link';
+import { getConsent, setConsent } from '@/lib/consent';
 
 export function CookieConsent() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const consent = localStorage.getItem(CONSENT_KEY);
-    if (!consent) {
+    if (!getConsent()) {
       const timer = setTimeout(() => setShow(true), 1500);
       return () => clearTimeout(timer);
     }
   }, []);
 
   const accept = () => {
-    localStorage.setItem(CONSENT_KEY, 'accepted');
+    setConsent('accepted');
     setShow(false);
   };
 
   const decline = () => {
-    localStorage.setItem(CONSENT_KEY, 'declined');
+    setConsent('declined');
     setShow(false);
   };
 
@@ -33,8 +32,15 @@ export function CookieConsent() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <div className="flex-1">
             <p className="text-ghost-white text-sm leading-relaxed">
-              We use cookies and analytics to improve your experience.
-              By continuing to use this site, you agree to our use of cookies.
+              We use cookies and analytics to improve your experience. View our{' '}
+              <Link href="/privacy" className="text-infrared hover:text-infrared-light underline">
+                Privacy Policy
+              </Link>{' '}
+              and{' '}
+              <Link href="/cookies" className="text-infrared hover:text-infrared-light underline">
+                Cookie Policy
+              </Link>{' '}
+              for details.
             </p>
           </div>
           <div className="flex gap-3 flex-shrink-0">

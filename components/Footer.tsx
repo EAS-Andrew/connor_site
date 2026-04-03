@@ -70,6 +70,9 @@ export function Footer() {
                   <li><Link href="/about" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">About</Link></li>
                   <li><Link href="/faq" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">FAQ</Link></li>
                   <li><Link href="/contact" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">Contact</Link></li>
+                  <li><Link href="/privacy" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">Privacy Policy</Link></li>
+                  <li><Link href="/cookies" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">Cookie Policy</Link></li>
+                  <li><Link href="/terms" className="text-radar-grey-light hover:text-infrared transition-colors text-sm uppercase tracking-wider">Terms of Service</Link></li>
                 </ul>
             </div>
 
