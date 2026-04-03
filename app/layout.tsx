@@ -81,8 +81,12 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
         {children}
-        <ConsentGatedAnalytics />
-        <CookieConsent />
+        {process.env.COMING_SOON !== 'true' && (
+          <>
+            <ConsentGatedAnalytics />
+            <CookieConsent />
+          </>
+        )}
       </body>
     </html>
   );
